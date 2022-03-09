@@ -50,7 +50,8 @@ Extends the [Authflow](https://github.com/PrismarineJS/prismarine-auth#authflow)
 | realmId         | `string`             | The ID of the Realm                                                   |
 | realmInviteCode | `string`             | The invite code for the Realm (Only on Bedrock)                       |
 | username        | `string`             | The username of player                                                |
-| uuid            | `string`             | The unique ID of the player, w/o hyphens                              |                       | xuid            | `string`             | The Xbox User ID of the targeted player                               |
+| uuid            | `string`             | The unique ID of the player, w/o hyphens                              |
+| xuid            | `string`             | The Xbox User ID of the targeted player                               |
 
 ---
 

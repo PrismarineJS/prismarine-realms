@@ -4,6 +4,6 @@ if (typeof process !== 'undefined' && parseInt(process.versions.node.split('.')[
   process.exit(1)
 }
 
-module.exports.helloWorld = function () {
-  console.log('Hello world !')
+module.exports = {
+  RealmAPI: require('./src/index')
 }

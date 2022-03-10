@@ -1,7 +1,5 @@
-const _GetRealms = require('./getRealms')
-
 module.exports = (auth) => {
   return {
-    getRealms: () => _GetRealms(auth)
+    getRealms: () => require('./getRealms')(auth)
   }
 }

@@ -15,33 +15,11 @@ npm install prismarine-realms
 
 ### RealmAPI
 
-#### constructor (username?: string, cacheDir?: string | CacheFactory, options?: MicrosoftAuthFlowOptions, codeCallback?: Function)
+#### constructor (authflow?: Authflow, platform: 'bedrock' | 'java')
 
-Extends the [Authflow](https://github.com/PrismarineJS/prismarine-auth#authflow) class from prismarine-auth and accepts the same parameters, you can see the documentation for this [here.](https://github.com/PrismarineJS/prismarine-auth#authflow)
+Takes an **Authflow** instance from [prismarine-auth](https://github.com/PrismarineJS/prismarine-auth), you can see the documentation for this [here.](https://github.com/PrismarineJS/prismarine-auth#authflow)
 
 ## API
-
-### Table of Contents
-
-  - [Definitions](#definitions)
-  - [Bedrock](#bedrock)
-    - [Account](#account)
-      - [getRealms()](#getrealms)
-    - [Realm](#realm)
-      - [getInfo(realmId: string)](#getinforealmid-string)
-      - [getInfoByInvite(realmInviteCode: string)](#getinfobyinviterealminvitecode-string)
-      - [getConnection(realmId: string)](#getconnectionrealmid-string)
-      - [getBlocklist(realmId: string)](#getblocklistrealmid-string)
-    - [Realm#Player](#realmplayer)
-      - [invite(realmId: string, xuid: string)](#inviterealmid-string-xuid-string)
-  - [Java](#java)
-    - [Account](#account-1)
-      - [getRealms()](#getrealms-1)
-    - [Realm](#realm-1)
-      - [getInfo(realmId: string)](#getinforealmid-string-1)
-      - [getConnection(realmId: string)](#getconnectionrealmid-string-1)
-    - [Realm#Player](#realmplayer-1)
-      - [invite(realmId: string, xuid: string)](#inviterealmid-string-xuid-string-1)
 
 ### Definitions
 
@@ -55,110 +33,38 @@ Extends the [Authflow](https://github.com/PrismarineJS/prismarine-auth#authflow)
 
 ---
 
-## Bedrock
-
 ```js
+const { Authflow } = require('prismarine-auth') 
 const { RealmAPI } = require('prismarine-realms')
 
-const api = new RealmAPI().Bedrock
+const authflow = new Authflow()
+
+const api = new RealmAPI(authflow, 'bedrock')
 ```
 
-### Account
-
-#### getRealms()
+#### getRealms(): Promise<Realm[]>
 
 Gets a list of Realms the authenticating account has joined or owns
 
 ```js
-await api.account.getRealms()
+await api.getRealms()
 ```
 
-### Realm
 
-#### getInfo(realmId: string)
+#### getRealm(realmId: string): Promise<Realm>
 
-Gets detailed information about a Realm
+Gets detailed information about a Realm if owned
 
 ```js
-await api.realm.getInfo('1234567')
+await api.getRealm('1234567')
 ```
 
-#### getInfoByInvite(realmInviteCode: string)
+#### getAddress(): Promise<Address>
 
-Gets detailed information about a Realm using the Realms invite code
-
-```js
-await api.realm.getInfoByInvite('AB1CD2EFA3B')
-```
-
-#### getConnection(realmId: string)
-
-Gets a Realms ip/port
+Gets the address for the Realm
 
 ```js
-await api.realm.getConnection('1234567')
-```
+const realm = await api.getRealm('1234567')
 
-#### getBlocklist(realmId: string)
-
-Get a list of all banned players for an owned Realm
-
-```js
-await api.realm.getBlocklist('1234567')
-```
-
-### Realm#Player
-
-#### invite(realmId: string, xuid: string)
-
-Invite a player to an owned Realm
-
-```js
-await api.realm.player.invite('1234567', '1234567890')
-```
-
-## Java
-
-```js
-const { RealmAPI } = require('prismarine-realms')
-
-const api = new RealmAPI().Java
-```
-
-### Account
-
-#### getRealms()
-
-Gets a list of Realms the authenticating account has joined or owns
-
-```js
-await api.account.getRealms()
-```
-
-### Realm
-
-#### getInfo(realmId: string)
-
-Gets detailed information about a Realm
-
-```js
-await api.realm.getInfo('1234567')
-```
-
-#### getConnection(realmId: string)
-
-Gets a Realms ip/port
-
-```js
-await api.realm.getConnection('1234567')
-```
-
-### Realm#Player
-
-#### invite(realmId: string, { uuid: string, name: string })
-
-Invite a player to an owned Realm
-
-```js
-await api.realm.player.invite('1234567', { uuid: '3333dddd2222cccc1111bbbb0000aaaa', name: 'Steve' })
+await realm.getAddress()
 ```

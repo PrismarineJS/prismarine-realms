@@ -1,5 +1,9 @@
 module.exports = {
-  BEDROCK_HOST: 'https://pocket.realms.minecraft.net',
-  JAVA_HOST: 'https://pc.realms.minecraft.net',
+  PlatformConstants: (platform) => {
+    return {
+      Host: (platform === 'bedrock') ? 'https://pocket.realms.minecraft.net' : 'https://pc.realms.minecraft.net',
+      UserAgent: (platform === 'bedrock') ? 'MCPE/UWP' : 'MinecraftLauncher/2.2.10675'
+    }
+  },
   BedrockRealmsRelyingParty: 'https://pocket.realms.minecraft.net/'
 }

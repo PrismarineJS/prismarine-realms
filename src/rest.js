@@ -36,10 +36,8 @@ module.exports = class Rest {
       'User-Agent': UserAgent
     }
 
-    if (request.auth !== false) {
-      const [key, value] = await this.getAuth(this.platform)
-      headers[key] = value
-    }
+    const [key, value] = await this.getAuth(this.platform)
+    headers[key] = value
 
     let body
 

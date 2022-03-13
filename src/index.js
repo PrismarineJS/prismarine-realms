@@ -4,12 +4,11 @@ const Realm = require('./structures/Realm')
 const RealmsBedrockAPI = require('./bedrock/api')
 const RealmsJavaAPI = require('./java/api')
 
-const { Authflow: PrismarineAuth } = require('prismarine-auth')
-
 const PlatformTypes = ['java', 'bedrock']
 
 class RealmAPI {
-  constructor (Authflow = new PrismarineAuth(undefined, undefined, { authTitle: false }), platform) {
+  constructor (Authflow, platform) {
+    if (!Authflow) throw new Error('Need to proive an Authflow instance to use the Realm API https://github.com/PrismarineJS/prismarine-auth')
     if (!PlatformTypes.includes(platform?.toLowerCase())) throw new Error(`Platform provided is not valid. Must be ${PlatformTypes.join(' | ')}`)
 
     this.rest = new Rest(Authflow, platform)

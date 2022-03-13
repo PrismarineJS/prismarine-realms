@@ -6,7 +6,7 @@ declare module 'prismarine-realms' {
      * @param authflow An Authflow instance from [prismarine-auth](https://github.com/PrismarineJS/prismarine-auth).
      * @param platform Which platforms API to access
      */
-    constructor(authflow?: Authflow, platform: 'bedrock' | 'java')
+    constructor(authflow: Authflow, platform: 'bedrock' | 'java')
 
     getRealms(): Promise<Realm[]>
 

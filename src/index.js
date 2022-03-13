@@ -1,5 +1,3 @@
-const Routes = require('./routes')('default')
-
 const Rest = require('./rest')
 const Realm = require('./structures/Realm')
 
@@ -20,12 +18,12 @@ class RealmAPI {
   }
 
   async getRealm (realmId) {
-    const data = await this.rest.get(Routes.Realm(realmId))
+    const data = await this.rest.get(`/worlds/${realmId}`)
     return new Realm(this.api, data)
   }
 
   async getRealms () {
-    const data = await this.rest.get(Routes.Realms())
+    const data = await this.rest.get('/worlds')
     return data.servers.map(realm => new Realm(this.api, realm))
   }
 }

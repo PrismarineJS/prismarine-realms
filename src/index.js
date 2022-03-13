@@ -1,30 +1,32 @@
-const _BedrockRealm = require('./bedrock/realm/Realm')
-const _BedrockAccount = require('./bedrock/account/Account')
+const Routes = require('./routes')('default')
 
-const _JavaRealm = require('./java/realm/Realm')
-const _JavaAccount = require('./java/account/Account')
+const Rest = require('./rest')
+const Realm = require('./structures/Realm')
 
-const { formatJavaAuth, formatBedrockAuth } = require('./util')
+const RealmsBedrockAPI = require('./bedrock/api')
+const RealmsJavaAPI = require('./java/api')
 
-const { BedrockRealmsRelyingParty } = require('./constants')
+const { Authflow: PrismarineAuth } = require('prismarine-auth')
 
-const { Authflow } = require('prismarine-auth')
+const PlatformTypes = ['java', 'bedrock']
 
-class RealmAPI extends Authflow {
-  constructor (username, cache, options = {}, codeCallback) {
-    super(username, cache, { ...options, authTitle: false }, codeCallback)
-    this.auth = {
-      getJavaAuth: () => (options.test) ? (async () => ({}))() : this.getMinecraftJavaToken({ fetchProfile: true }).then(formatJavaAuth),
-      getBedrockAuth: () => (options.test) ? (async () => ({}))() : this.getXboxToken(BedrockRealmsRelyingParty).then(formatBedrockAuth)
-    }
-    this.Bedrock = {
-      realm: _BedrockRealm(this.auth),
-      account: _BedrockAccount(this.auth)
-    }
-    this.Java = {
-      realm: _JavaRealm(this.auth),
-      account: _JavaAccount(this.auth)
-    }
+class RealmAPI {
+  constructor (Authflow = new PrismarineAuth(undefined, undefined, { authTitle: false }), platform) {
+    if (!PlatformTypes.includes(platform?.toLowerCase())) throw new Error(`Platform provided is not valid. Must be ${PlatformTypes.join(' | ')}`)
+
+    this.rest = new Rest(Authflow, platform)
+
+    this.api = (platform === 'bedrock') ? new RealmsBedrockAPI(this.rest) : new RealmsJavaAPI(this.rest)
+  }
+
+  async getRealm (realmId) {
+    const data = await this.rest.get(Routes.Realm(realmId))
+    return new Realm(this.api, data)
+  }
+
+  async getRealms () {
+    const data = await this.rest.get(Routes.Realms())
+    return data.servers.map(realm => new Realm(this.api, realm))
   }
 }
 

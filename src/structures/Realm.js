@@ -1,7 +1,31 @@
 module.exports = class Realm {
   constructor (api, data) {
     this.api = api
-    Object.assign(this, data)
+    Object.assign(this, {
+      id: data.id,
+      remoteSubscriptionId: data.remoteSubscriptionId,
+      owner: data.owner,
+      ownerUUID: data.ownerUUID,
+      name: data.name,
+      motd: data.motd,
+      defaultPermission: data.defaultPermission,
+      state: data.state,
+      daysLeft: data.daysLeft,
+      expired: data.expired,
+      expiredTrial: data.expiredTrial,
+      gracePeriod: data.gracePeriod,
+      worldType: data.worldType,
+      players: data.players,
+      maxPlayers: data.maxPlayers,
+      minigameName: data.minigameName,
+      minigameId: data.minigameId,
+      minigameImage: data.minigameImage,
+      activeSlot: data.activeSlot,
+      slots: data.slots,
+      member: data.member,
+      clubId: data.clubId,
+      subscriptionRefreshStatus: data.subscriptionRefreshStatus
+    })
   }
 
   async getAddress () {

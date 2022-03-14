@@ -10,6 +10,6 @@ if (!platform) {
 
 const authflow = new Authflow()
 
-const api = new RealmAPI(authflow, platform)
+const api = RealmAPI.from(authflow, platform)
 
 api.getRealms().then(console.log)

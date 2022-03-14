@@ -1,8 +1,6 @@
-module.exports = class JavaRealmAPI {
-  constructor (rest) {
-    this.rest = rest
-  }
+const RealmAPI = require('../index')
 
+module.exports = class JavaRealmAPI extends RealmAPI {
   async getRealmAddress (realmId) {
     return await this.rest.get(`/worlds/v1/${realmId}/join/pc`)
   }

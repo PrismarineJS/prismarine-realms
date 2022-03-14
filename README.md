@@ -39,7 +39,7 @@ const { RealmAPI } = require('prismarine-realms')
 
 const authflow = new Authflow()
 
-const api = new RealmAPI(authflow, 'bedrock')
+const api = RealmAPI.from(authflow, 'bedrock')
 ```
 
 #### getRealms(): Promise<Realm[]>

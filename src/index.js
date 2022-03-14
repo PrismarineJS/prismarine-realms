@@ -1,9 +1,6 @@
 const Rest = require('./rest')
 const Realm = require('./structures/Realm')
 
-const RealmsBedrockAPI = require('./bedrock/api')
-const RealmsJavaAPI = require('./java/api')
-
 const PlatformTypes = ['java', 'bedrock']
 
 class RealmAPI {
@@ -12,18 +9,20 @@ class RealmAPI {
     if (!PlatformTypes.includes(platform?.toLowerCase())) throw new Error(`Platform provided is not valid. Must be ${PlatformTypes.join(' | ')}`)
 
     this.rest = new Rest(Authflow, platform)
+  }
 
-    this.api = (platform === 'bedrock') ? new RealmsBedrockAPI(this.rest) : new RealmsJavaAPI(this.rest)
+  static from (authflow, platform) {
+    return (platform === 'bedrock') ? new (require('./bedrock/api'))(authflow, platform) : new (require('./java/api'))(authflow, platform)
   }
 
   async getRealm (realmId) {
     const data = await this.rest.get(`/worlds/${realmId}`)
-    return new Realm(this.api, data)
+    return new Realm(this, data)
   }
 
   async getRealms () {
     const data = await this.rest.get('/worlds')
-    return data.servers.map(realm => new Realm(this.api, realm))
+    return data.servers.map(realm => new Realm(this, realm))
   }
 }
 

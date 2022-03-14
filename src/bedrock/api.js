@@ -2,7 +2,8 @@ const RealmAPI = require('../index')
 
 module.exports = class BedrockRealmAPI extends RealmAPI {
   async getRealmAddress (realmId) {
-    return await this.rest.get(`/worlds/${realmId}/join`)
+    const data = await this.rest.get(`/worlds/${realmId}/join`)
+    return { address: data.address }
   }
 
   async invitePlayer (realmId, uuid) {

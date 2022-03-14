@@ -18,12 +18,12 @@ declare module 'prismarine-realms' {
 
   export class BedrockRealmAPI extends RealmAPI {
     getRealmAddress(realmId: string): Promise<Address>
-    invitePlayer(realmId: string, uuid: string, name: string): Promise<void>
+    invitePlayer(realmId: string, uuid: string): Promise<void>
   }
 
   export class JavaRealmAPI extends RealmAPI {
     getRealmAddress(realmId: string): Promise<Address>
-    invitePlayer(realmId: string, uuid: string): Promise<void>
+    invitePlayer(realmId: string, uuid: string, name: string): Promise<void>
   }
 
   export interface Realm {

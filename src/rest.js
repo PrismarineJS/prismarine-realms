@@ -13,10 +13,10 @@ const { formatBedrockAuth, formatJavaAuth } = require('./util')
 
 module.exports = class Rest {
   constructor (authflow, platform) {
-    this.authflow = authflow
     this.platform = platform
     this.host = (platform === 'bedrock') ? BedrockHost : JavaHost
     this.userAgent = (platform === 'bedrock') ? BedrockUserAgent : JavaUserAgent
+    this.getAuth = (platform === 'bedrock') ? () => authflow.getXboxToken(BedrockRealmsRelyingParty).then(formatBedrockAuth) :  () => authflow.getMinecraftJavaToken({ fetchProfile: true }).then(formatJavaAuth);
   }
 
   get (route, options) {
@@ -43,7 +43,7 @@ module.exports = class Rest {
       'User-Agent': this.userAgent
     }
 
-    const [key, value] = await this.getAuth(this.platform)
+    const [key, value] = await this.getAuth()
     headers[key] = value
 
     let body
@@ -74,15 +74,6 @@ module.exports = class Rest {
       debug('Request fail', response)
       const body = await response.text()
       throw new Error(`${response.status} ${response.statusText} ${body}`)
-    }
-  }
-
-  getAuth (platform) {
-    switch (platform) {
-      case 'java':
-        return this.authflow.getMinecraftJavaToken({ fetchProfile: true }).then(formatJavaAuth)
-      case 'bedrock':
-        return this.authflow.getXboxToken(BedrockRealmsRelyingParty).then(formatBedrockAuth)
     }
   }
 }

@@ -68,3 +68,13 @@ const realm = await api.getRealm('1234567')
 
 await realm.getAddress()
 ```
+
+#### invitePlayer(uuid: string, name: string): Promise<Realm>
+
+Invites a player to the Realm
+
+```js
+const realm = await api.getRealm('1234567')
+
+await realm.invitePlayer('a8005260a332457097a50bdbe48a9a21', 'Steve')
+```

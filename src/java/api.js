@@ -1,4 +1,5 @@
 const RealmAPI = require('../index')
+const Realm = require('../structures/Realm')
 
 module.exports = class JavaRealmAPI extends RealmAPI {
   async getRealmAddress (realmId) {
@@ -7,11 +8,12 @@ module.exports = class JavaRealmAPI extends RealmAPI {
   }
 
   async invitePlayer (realmId, uuid, name) {
-    return await this.rest.post(`/invites/${realmId}`, {
+    const data = await this.rest.post(`/invites/${realmId}`, {
       body: {
         uuid,
         name
       }
     })
+    return new Realm(this, data)
   }
 }

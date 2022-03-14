@@ -11,7 +11,7 @@ declare module 'prismarine-realms' {
     static from(authflow: Authflow, platform: 'bedrock' | 'java'): BedrockRealmAPI | JavaRealmAPI 
 
     getRealms(): Promise<Realm[]>
-    
+
     getRealm(realmId?: string): Promise<Realm>
 
   }
@@ -28,7 +28,7 @@ declare module 'prismarine-realms' {
 
   export interface Realm {
     getAddress(): Promise<Address>
-    invitePlayer(): Promise<void>
+    invitePlayer(uuid: string, name: string): Promise<Realm>
     id: number
     remoteSubscriptionId: string
     owner: null

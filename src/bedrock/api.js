@@ -1,4 +1,5 @@
 const RealmAPI = require('../index')
+const Realm = require('../structures/Realm')
 
 module.exports = class BedrockRealmAPI extends RealmAPI {
   async getRealmAddress (realmId) {
@@ -7,10 +8,13 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
   }
 
   async invitePlayer (realmId, uuid) {
-    return await this.rest.post(`/invites/${realmId}/invite/update`, {
+    const data = await this.rest.put(`/invites/${realmId}/invite/update`, {
       body: {
-        [uuid]: 'ADD'
+        invites: {
+          [uuid]: 'ADD'
+        }
       }
     })
+    return new Realm(this, data)
   }
 }

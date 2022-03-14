@@ -1,13 +1,22 @@
 const debug = require('debug')('prismarine-realms')
 const fetch = require('node-fetch')
 
-const { PlatformConstants, BedrockRealmsRelyingParty } = require('./constants')
+const {
+  BedrockRealmsRelyingParty,
+  BedrockUserAgent,
+  BedrockHost,
+  JavaHost,
+  JavaUserAgent
+} = require('./constants')
+
 const { formatBedrockAuth, formatJavaAuth } = require('./util')
 
 module.exports = class Rest {
   constructor (authflow, platform) {
     this.authflow = authflow
     this.platform = platform
+    this.host = (platform === 'bedrock') ? BedrockHost : JavaHost
+    this.userAgent = (platform === 'bedrock') ? BedrockUserAgent : JavaUserAgent
   }
 
   get (route, options) {
@@ -27,13 +36,11 @@ module.exports = class Rest {
   }
 
   async prepareRequest (request) {
-    const { Host, UserAgent } = PlatformConstants(this.platform)
-
-    const url = `${Host}${request.route}`
+    const url = `${this.host}${request.route}`
 
     const headers = {
       'Client-Version': '0.0.0',
-      'User-Agent': UserAgent
+      'User-Agent': this.userAgent
     }
 
     const [key, value] = await this.getAuth(this.platform)

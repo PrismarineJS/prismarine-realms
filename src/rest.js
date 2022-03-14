@@ -16,7 +16,7 @@ module.exports = class Rest {
     this.platform = platform
     this.host = (platform === 'bedrock') ? BedrockHost : JavaHost
     this.userAgent = (platform === 'bedrock') ? BedrockUserAgent : JavaUserAgent
-    this.getAuth = (platform === 'bedrock') ? () => authflow.getXboxToken(BedrockRealmsRelyingParty).then(formatBedrockAuth) :  () => authflow.getMinecraftJavaToken({ fetchProfile: true }).then(formatJavaAuth);
+    this.getAuth = (platform === 'bedrock') ? () => authflow.getXboxToken(BedrockRealmsRelyingParty).then(formatBedrockAuth) : () => authflow.getMinecraftJavaToken({ fetchProfile: true }).then(formatJavaAuth)
   }
 
   get (route, options) {

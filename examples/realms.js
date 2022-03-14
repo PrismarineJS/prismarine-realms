@@ -1,3 +1,4 @@
+const { Authflow } = require('prismarine-auth')
 const { RealmAPI } = require('prismarine-realms')
 
 const [, , platform] = process.argv
@@ -7,6 +8,8 @@ if (!platform) {
   process.exit(1)
 }
 
-const api = new RealmAPI(undefined, platform)
+const authflow = new Authflow()
+
+const api = new RealmAPI(authflow, platform)
 
 api.getRealms().then(console.log)

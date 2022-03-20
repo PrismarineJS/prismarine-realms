@@ -17,4 +17,8 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     })
     return new Realm(this, data)
   }
+
+  async changeRealmState (realmId, state) {
+    return await this.rest.put(`/worlds/${realmId}/${state}`)
+  }
 }

@@ -35,4 +35,12 @@ module.exports = class Realm {
   async invitePlayer (uuid, name) {
     return this.api.invitePlayer(this.id, uuid, name)
   }
+
+  async open () {
+    return this.api.changeRealmState(this.id, 'open')
+  }
+
+  async close () {
+    return this.api.changeRealmState(this.id, 'close')
+  }
 }

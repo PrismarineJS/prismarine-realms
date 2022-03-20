@@ -18,17 +18,21 @@ declare module 'prismarine-realms' {
 
   export class BedrockRealmAPI extends RealmAPI {
     getRealmAddress(realmId: string): Promise<Address>
-    invitePlayer(realmId: string, uuid: string): Promise<void>
+    invitePlayer(realmId: string, uuid: string): Promise<Realm>
+    changeRealmState(realmId: string, state: 'open' | 'close'): Pomise<void>
   }
 
   export class JavaRealmAPI extends RealmAPI {
     getRealmAddress(realmId: string): Promise<Address>
-    invitePlayer(realmId: string, uuid: string, name: string): Promise<void>
+    invitePlayer(realmId: string, uuid: string, name: string): Promise<Realm>
+    changeRealmState(realmId: string, state: 'open' | 'close'): Pomise<void>
   }
 
   export interface Realm {
     getAddress(): Promise<Address>
     invitePlayer(uuid: string, name: string): Promise<Realm>
+    open(): Promise<void>
+    close(): Promise<void>
     id: number
     remoteSubscriptionId: string
     owner: null
@@ -42,7 +46,7 @@ declare module 'prismarine-realms' {
     expiredTrial: boolean
     gracePeriod: boolean
     worldType: string
-    players: []
+    players: RealmPlayer[]
     maxPlayers: number
     minigameName: string
     minigameId: number
@@ -52,6 +56,15 @@ declare module 'prismarine-realms' {
     member: boolean
     clubId: number
     subscriptionRefreshStatus: null
+  }
+
+  export interface RealmPlayer {
+      uuid: string,
+      name: string,
+      operator: boolean,
+      accepted: boolean,
+      online: boolean,
+      permission: string
   }
 
   export interface Slot {

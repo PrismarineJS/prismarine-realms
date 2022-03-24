@@ -1,0 +1,31 @@
+{
+    "World": {
+        "id": 1112223,
+        "remoteSubscriptionId": "02ea6dec4d446c5b123dde157920453",
+        "owner": "",
+        "ownerUUID": "1111222233334444",
+        "name": "Test Realm",
+        "motd": "Test description",
+        "defaultPermission": "VISITOR",
+        "state": "OPEN",
+        "daysLeft": -826,
+        "expired": true,
+        "expiredTrial": true,
+        "gracePeriod": false,
+        "worldType": "NORMAL",
+        "players": null,
+        "maxPlayers": 10,
+        "minigameName": null,
+        "minigameId": null,
+        "minigameImage": null,
+        "activeSlot": 1,
+        "slots": null,
+        "member": false,
+        "clubId": 111222333444555,
+        "subscriptionRefreshStatus": null
+    },
+    "Join": {
+        "address": "0.0.0.0:19132",
+        "pendingUpdate": false
+    }
+}

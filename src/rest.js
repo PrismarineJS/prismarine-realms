@@ -12,7 +12,8 @@ const {
 const { formatBedrockAuth, formatJavaAuth } = require('./util')
 
 module.exports = class Rest {
-  constructor (authflow, platform) {
+  constructor (authflow, platform, options) {
+    this.options = options
     this.platform = platform
     this.host = (platform === 'bedrock') ? BedrockHost : JavaHost
     this.userAgent = (platform === 'bedrock') ? BedrockUserAgent : JavaUserAgent
@@ -43,8 +44,10 @@ module.exports = class Rest {
       'User-Agent': this.userAgent
     }
 
-    const [key, value] = await this.getAuth()
-    headers[key] = value
+    if (!this.options.skipAuth) {
+      const [key, value] = await this.getAuth()
+      headers[key] = value
+    }
 
     let body
 

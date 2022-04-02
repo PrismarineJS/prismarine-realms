@@ -1,6 +1,5 @@
 const debug = require('debug')('prismarine-realms')
 const fetch = require('node-fetch')
-const { setTimeout: sleep } = require('timers/promises')
 
 const {
   BedrockRealmsRelyingParty,
@@ -78,7 +77,7 @@ module.exports = class Rest {
       debug('Request fail', response)
       if (response.status >= 500 && response.status < 600 && retries !== 0) {
         debug('retry', retries)
-        await sleep(1000)
+        await new Promise((resolve) => { setTimeout(resolve, 1000) })
         return this.execRequest(url, options, --retries)
       }
       const body = await response.text()

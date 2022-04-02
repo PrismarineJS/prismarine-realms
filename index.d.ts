@@ -18,6 +18,7 @@ declare module 'prismarine-realms' {
 
   export class BedrockRealmAPI extends RealmAPI {
     getRealmAddress(realmId: string): Promise<Address>
+    getRealmFromInvite(realmInviteCode: string): Promise<Realm>
     invitePlayer(realmId: string, uuid: string): Promise<Realm>
     changeRealmState(realmId: string, state: 'open' | 'close'): Pomise<void>
   }

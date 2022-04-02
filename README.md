@@ -59,6 +59,14 @@ Gets detailed information about a Realm if owned
 await api.getRealm('1234567')
 ```
 
+#### getRealmFromInvite(realmInviteCode: string)
+
+*(Bedrock Only)* Gets detailed information about a Realm from the invite code
+
+```js
+await api.getRealmFromInvite('AB1CD2EFA3B') // https://realms.gg/AB1CD2EFA3B will work as well
+```
+
 #### getAddress()
 
 Gets the address for the Realm

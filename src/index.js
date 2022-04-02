@@ -8,7 +8,7 @@ class RealmAPI {
     if (!Authflow) throw new Error('Need to proive an Authflow instance to use the Realm API https://github.com/PrismarineJS/prismarine-auth')
     if (!PlatformTypes.includes(platform?.toLowerCase())) throw new Error(`Platform provided is not valid. Must be ${PlatformTypes.join(' | ')}`)
 
-    this.rest = new Rest(Authflow, platform, options)
+    this.rest = new Rest(Authflow, platform, { maxRetries: 5, ...options })
   }
 
   static from (authflow, platform, options) {

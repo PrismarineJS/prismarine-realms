@@ -15,6 +15,8 @@ const { Authflow } = require('prismarine-auth')
 
 const config = {
   realmId: '1112223',
+  realmInviteCode: 'AB1CD2EFA3B',
+  realmInviteLink: 'https://realms.gg/AB1CD2EFA3B',
   xuid: '1111222233334444'
 }
 
@@ -27,6 +29,9 @@ nock('https://pocket.realms.minecraft.net')
   .reply(200, { servers: [World] })
   .get(`/worlds/${config.realmId}`)
   .times(5)
+  .reply(200, World)
+  .get(`/worlds/v1/link/${config.realmInviteCode}`)
+  .times(2)
   .reply(200, World)
   .get(`/worlds/${config.realmId}/join`)
   .reply(200, Join)
@@ -46,6 +51,16 @@ describe('Bedrock', () => {
   describe('getRealm', () => {
     it('should return a Realm object', async () => {
       const realm = await api.getRealm(config.realmId)
+      expect(realm).excluding('api').to.deep.equal(World)
+    })
+  })
+  describe('getRealmFromInvite', () => {
+    it('should return a Realm object', async () => {
+      const realm = await api.getRealmFromInvite(config.realmInviteCode)
+      expect(realm).excluding('api').to.deep.equal(World)
+    })
+    it('should return a Realm object when using an invite link', async () => {
+      const realm = await api.getRealmFromInvite(config.realmInviteLink)
       expect(realm).excluding('api').to.deep.equal(World)
     })
   })

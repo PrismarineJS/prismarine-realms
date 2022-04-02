@@ -63,7 +63,7 @@ module.exports = class Rest {
       headers: { ...headers, ...request.headers }
     }
 
-    return this.execRequest(url, fetchOptions)
+    return this.execRequest(url, fetchOptions, request.retryCount)
   }
 
   async execRequest (url, options, retries = 0) {
@@ -76,10 +76,10 @@ module.exports = class Rest {
       return response.arrayBuffer()
     } else {
       debug('Request fail', response)
-      if (response.status >= 500 && response.status < 600 && retries !== this.options.maxRetries) {
+      if (response.status >= 500 && response.status < 600 && retries !== 0) {
         debug('retry', retries)
         await sleep(1000)
-        return await this.execRequest(url, options, ++retries)
+        return this.execRequest(url, options, --retries)
       }
       const body = await response.text()
       throw new Error(`${response.status} ${response.statusText} ${body}`)

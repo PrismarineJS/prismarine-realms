@@ -3,7 +3,9 @@ const Realm = require('../structures/Realm')
 
 module.exports = class BedrockRealmAPI extends RealmAPI {
   async getRealmAddress (realmId) {
-    const data = await this.rest.get(`/worlds/${realmId}/join`)
+    const data = await this.rest.get(`/worlds/${realmId}/join`, {
+      retryCount: 5
+    })
     const [host, port] = data.address.split(':')
     return { host, port: Number(port) }
   }

@@ -74,7 +74,8 @@ declare module 'prismarine-realms' {
   }
 
   export interface Address {
-    address: string
+    host: string
+    port: number
   }
 
 }

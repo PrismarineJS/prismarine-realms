@@ -1,7 +1,7 @@
 {
   "name": "prismarine-realms",
   "version": "1.0.0",
-  "description": "Node.JS Wrapper around both the Java & Bedrock Realms API",
+  "description": "Library to manage and interact with Minecraft Realms for Java/Bedrock edition",
   "main": "index.js",
   "scripts": {
     "test": "mocha --recursive --reporter spec --exit",

@@ -1,18 +1,16 @@
 const Rest = require('./rest')
 const Realm = require('./structures/Realm')
 
-const PlatformTypes = ['java', 'bedrock']
-
 class RealmAPI {
-  constructor (Authflow, platform, options = {}) {
-    if (!Authflow) throw new Error('Need to proive an Authflow instance to use the Realm API https://github.com/PrismarineJS/prismarine-auth')
-    if (!PlatformTypes.includes(platform?.toLowerCase())) throw new Error(`Platform provided is not valid. Must be ${PlatformTypes.join(' | ')}`)
-
-    this.rest = new Rest(Authflow, platform, options)
+  constructor (authflow, platform, options = {}) {
+    this.rest = new Rest(authflow, platform, options)
   }
 
   static from (authflow, platform, options) {
-    return (platform === 'bedrock') ? new (require('./bedrock/api'))(authflow, platform, options) : new (require('./java/api'))(authflow, platform, options)
+    return new {
+      java: require('./java/api'),
+      bedrock: require('./bedrock/api')
+    }[platform](authflow, platform, options)
   }
 
   async getRealm (realmId) {

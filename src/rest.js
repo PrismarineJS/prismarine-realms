@@ -13,7 +13,7 @@ module.exports = class Rest {
     this.userAgent = constants[platform].userAgent
     if (platform === 'bedrock') {
       this.getAuth = authflow.getXboxToken(constants.bedrock.relyingParty).then(formatBedrockAuth)
-    } else if (platform === 'pc') {
+    } else if (platform === 'java') {
       this.getAuth = authflow.getMinecraftJavaToken({ fetchProfile: true }).then(formatJavaAuth)
     }
   }

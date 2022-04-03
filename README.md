@@ -69,7 +69,7 @@ await api.getRealmFromInvite('AB1CD2EFA3B') // https://realms.gg/AB1CD2EFA3B wil
 
 #### getAddress()
 
-Gets the address for the Realm
+Gets the address for the Realm. *This endpoint on the Realms API can be very intermittent and may fail with error code 503. We retry the request maximum 5 times to help mitigate this*
 
 ```js
 const realm = await api.getRealm('1234567')

@@ -67,7 +67,7 @@ describe('Bedrock', () => {
   describe('Realm getAddress', () => {
     it('should return an object containing the Realms address', async () => {
       const realm = await api.getRealm(config.realmId)
-      expect(await realm.getAddress()).to.deep.equal({ address: '0.0.0.0:19132' })
+      expect(await realm.getAddress()).to.deep.equal({ host: '0.0.0.0', port: 19132 })
     })
   })
   describe('Realm InvitePayer', () => {

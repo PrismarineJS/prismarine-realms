@@ -1,7 +1,11 @@
 module.exports = {
-  BedrockHost: 'https://pocket.realms.minecraft.net',
-  JavaHost: 'https://pc.realms.minecraft.net',
-  BedrockUserAgent: 'MCPE/UWP',
-  JavaUserAgent: 'MinecraftLauncher/2.2.10675',
-  BedrockRealmsRelyingParty: 'https://pocket.realms.minecraft.net/'
+  bedrock: {
+    host: 'https://pocket.realms.minecraft.net',
+    userAgent: 'MCPE/UWP',
+    relyingParty: 'https://pocket.realms.minecraft.net/'
+  },
+  java: {
+    host: 'https://pc.realms.minecraft.net',
+    userAgent: 'MinecraftLauncher/2.2.10675'
+  }
 }

@@ -1,13 +1,7 @@
 const debug = require('debug')('prismarine-realms')
 const fetch = require('node-fetch')
 
-const {
-  BedrockRealmsRelyingParty,
-  BedrockUserAgent,
-  BedrockHost,
-  JavaHost,
-  JavaUserAgent
-} = require('./constants')
+const constants = require('./constants')
 
 const { formatBedrockAuth, formatJavaAuth } = require('./util')
 
@@ -15,9 +9,13 @@ module.exports = class Rest {
   constructor (authflow, platform, options) {
     this.options = options
     this.platform = platform
-    this.host = (platform === 'bedrock') ? BedrockHost : JavaHost
-    this.userAgent = (platform === 'bedrock') ? BedrockUserAgent : JavaUserAgent
-    this.getAuth = (platform === 'bedrock') ? () => authflow.getXboxToken(BedrockRealmsRelyingParty).then(formatBedrockAuth) : () => authflow.getMinecraftJavaToken({ fetchProfile: true }).then(formatJavaAuth)
+    this.host = constants[platform].host
+    this.userAgent = constants[platform].userAgent
+    if (platform === 'bedrock') {
+      this.getAuth = authflow.getXboxToken(constants.bedrock.relyingParty).then(formatBedrockAuth)
+    } else if (platform === 'pc') {
+      this.getAuth = authflow.getMinecraftJavaToken({ fetchProfile: true }).then(formatJavaAuth)
+    }
   }
 
   get (route, options) {

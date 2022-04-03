@@ -4,7 +4,9 @@
 [![Discord](https://img.shields.io/badge/chat-on%20discord-brightgreen.svg)](https://discord.gg/GsEFRM8)
 [![Try it on gitpod](https://img.shields.io/badge/try-on%20gitpod-brightgreen.svg)](https://gitpod.io/#https://github.com/PrismarineJS/prismarine-realms)
 
-Node.JS Wrapper around both the Java & Bedrock Realms API. Minecraft Realms is a subscription based service provided by Mojang where users can create/manage their own private server. The intention of this package is to provide easy access to the internal API used to manage Realms such as opening/closing a Realm, managing players, getting host information and much more. 
+Minecraft Realm interface for Minecraft Java and Bedrock editions, providing a stable API to start/stop Realms, and obtain Realm information such as connection addresses.
+
+Minecraft Realms is a subscription based service provided by Mojang where users can host, create and manage their own private Minecraft servers.
 
 ## Installation
 ```shell
@@ -109,6 +111,7 @@ await realm.close()
 
 ---
 
+<!-- 
 ### Using prismarine-realms with Mineflayer, Node Minecraft Protocol and Bedrock Protocol
 
 Prismarine-auth is used in Mineflayer to allow quick connection to owned/joined Realms by providing a `pickRealm` function which should return a single Realm instance. It will then handle getting the host information and connect your bot to that Realm. The process of getting the Realms connection is handled in the protocol libraries meaning the same options can be passed there as well.
@@ -152,4 +155,5 @@ const client = protocol.createClient({
     pickRealm: (realms) => realms.find(realm => realm.name === 'My Realm')
   }
 });
-```
+``` 
+-->

@@ -30,7 +30,7 @@ Takes an **Authflow** instance from [prismarine-auth](https://github.com/Prismar
 | realmId         | `string`             | The ID of the Realm                                                   |
 | realmInviteCode | `string`             | The invite code for the Realm (Only on Bedrock)                       |
 | username        | `string`             | The username of player                                                |
-| uuid            | `string`             | The unique ID of the player, w/o hyphens                              |
+| uuid            | `string`             | The unique ID of the player, without hyphens                          |
 | xuid            | `string`             | The Xbox User ID of the targeted player                               |
 
 ---
@@ -44,16 +44,16 @@ const authflow = new Authflow()
 const api = RealmAPI.from(authflow, 'bedrock')
 ```
 
-#### getRealms()
+#### getRealms(): Promise<Realm[]>
 
-Gets a list of Realms the authenticating account has joined or owns
+Returns a list of Realms the authenticating account has joined or owns.
 
 ```js
 await api.getRealms()
 ```
 
 
-#### getRealm(realmId: string)
+#### getRealm(realmId: string): Promise<Realm>
 
 Gets detailed information about a Realm if owned
 
@@ -61,17 +61,17 @@ Gets detailed information about a Realm if owned
 await api.getRealm('1234567')
 ```
 
-#### getRealmFromInvite(realmInviteCode: string)
+#### getRealmFromInvite(realmInviteCode: string): Promise<Realm>
 
-*(Bedrock Only)* Gets detailed information about a Realm from the invite code
+*(Bedrock Edition Only)* Gets detailed information about a Realm from the invite code
 
 ```js
 await api.getRealmFromInvite('AB1CD2EFA3B') // https://realms.gg/AB1CD2EFA3B will work as well
 ```
 
-#### getAddress()
+#### getAddress(): Promise<{ host, port }>
 
-Gets the address for the Realm. *This endpoint on the Realms API can be very intermittent and may fail with error code 503. We retry the request maximum 5 times to help mitigate this*
+Gets the address for the Realm.
 
 ```js
 const realm = await api.getRealm('1234567')
@@ -79,7 +79,7 @@ const realm = await api.getRealm('1234567')
 await realm.getAddress()
 ```
 
-#### invitePlayer(uuid: string, name: string)
+#### invitePlayer(uuid: string, name: string): Promise<void>
 
 Invites a player to the Realm
 
@@ -89,7 +89,7 @@ const realm = await api.getRealm('1234567')
 await realm.invitePlayer('a8005260a332457097a50bdbe48a9a21', 'Steve')
 ```
 
-#### open()
+#### open(): Promise<void>
 
 Opens a Realm. Allows players to join
 
@@ -99,7 +99,7 @@ const realm = await api.getRealm('1234567')
 await realm.open()
 ```
 
-#### close()
+#### close(): Promise<void>
 
 Closes a Realm. Removes all current players and restricts joining
 
@@ -110,50 +110,3 @@ await realm.close()
 ```
 
 ---
-
-<!-- 
-### Using prismarine-realms with Mineflayer, Node Minecraft Protocol and Bedrock Protocol
-
-Prismarine-auth is used in Mineflayer to allow quick connection to owned/joined Realms by providing a `pickRealm` function which should return a single Realm instance. It will then handle getting the host information and connect your bot to that Realm. The process of getting the Realms connection is handled in the protocol libraries meaning the same options can be passed there as well.
-
-#### Mineflayer 
-
-```js
-const mineflayer = require('mineflayer')
-
-const bot = mineflayer.createBot({
-  username: 'example',
-  auth: 'microsoft',
-  realms: {
-    pickRealm: (realms) => realms.find(realm => realm.name === 'My Realm')
-  }
-})
-```
-
-#### Node Minecraft Protocol
-
-```js
-const protocol = require('minecraft-protocol');
-
-const client = protocol.createClient({
-  username: 'example',
-  auth: 'microsoft',
-  realms: {
-    pickRealm: (realms) => realms.find(realm => realm.name === 'My Realm')
-  }
-});
-```
-
-#### Bedrock Protocol
-
-```js
-const protocol = require('bedrock-protocol');
-
-const client = protocol.createClient({
-  username: 'example',
-  realms: {
-    pickRealm: (realms) => realms.find(realm => realm.name === 'My Realm')
-  }
-});
-``` 
--->

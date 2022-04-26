@@ -3,9 +3,7 @@ const nock = require('nock')
 
 const { expect, use } = require('chai')
 const chaiAsPromised = require('chai-as-promised')
-const chaiExclude = require('chai-exclude')
 
-use(chaiExclude)
 use(chaiAsPromised)
 
 const { World, Join } = require('./common/responses.json')
@@ -45,23 +43,23 @@ nock('https://pocket.realms.minecraft.net')
 describe('Bedrock', () => {
   describe('getRealms', () => {
     it('should return an array of Realm objects', async () => {
-      expect(await api.getRealms()).excluding('api').to.deep.equal([World])
+      expect(await api.getRealms()).to.deep.equal([World])
     })
   })
   describe('getRealm', () => {
     it('should return a Realm object', async () => {
       const realm = await api.getRealm(config.realmId)
-      expect(realm).excluding('api').to.deep.equal(World)
+      expect(realm).to.deep.equal(World)
     })
   })
   describe('getRealmFromInvite', () => {
     it('should return a Realm object', async () => {
       const realm = await api.getRealmFromInvite(config.realmInviteCode)
-      expect(realm).excluding('api').to.deep.equal(World)
+      expect(realm).to.deep.equal(World)
     })
     it('should return a Realm object when using an invite link', async () => {
       const realm = await api.getRealmFromInvite(config.realmInviteLink)
-      expect(realm).excluding('api').to.deep.equal(World)
+      expect(realm).to.deep.equal(World)
     })
   })
   describe('Realm getAddress', () => {
@@ -73,7 +71,7 @@ describe('Bedrock', () => {
   describe('Realm InvitePayer', () => {
     it('should contain the player uuid and realmId included in the request', async () => {
       const realm = await api.getRealm(config.realmId)
-      expect(await realm.invitePlayer(config.xuid)).excluding('api').to.deep.equal({ ...World, players: [{ uuid: config.xuid }] })
+      expect(await realm.invitePlayer(config.xuid)).to.deep.equal({ ...World, players: [{ uuid: config.xuid }] })
     })
   })
   describe('Realm Open', () => {

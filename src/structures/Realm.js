@@ -1,6 +1,7 @@
 module.exports = class Realm {
+  #api
   constructor (api, data) {
-    this.api = api
+    this.#api = api
     Object.assign(this, {
       id: data.id,
       remoteSubscriptionId: data.remoteSubscriptionId,
@@ -29,18 +30,18 @@ module.exports = class Realm {
   }
 
   async getAddress () {
-    return this.api.getRealmAddress(this.id)
+    return this.#api.getRealmAddress(this.id)
   }
 
   async invitePlayer (uuid, name) {
-    return this.api.invitePlayer(this.id, uuid, name)
+    return this.#api.invitePlayer(this.id, uuid, name)
   }
 
   async open () {
-    return this.api.changeRealmState(this.id, 'open')
+    return this.#api.changeRealmState(this.id, 'open')
   }
 
   async close () {
-    return this.api.changeRealmState(this.id, 'close')
+    return this.#api.changeRealmState(this.id, 'close')
   }
 }

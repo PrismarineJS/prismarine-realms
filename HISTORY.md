@@ -1,5 +1,8 @@
 ## History
 
+### 1.1.1
+* Fix missing debug dependency
+
 ### 1.1.0
 
 * Add getRealmFromInvite endpoint

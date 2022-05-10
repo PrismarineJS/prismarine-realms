@@ -21,6 +21,13 @@ declare module 'prismarine-realms' {
     getRealmFromInvite(realmInviteCode: string): Promise<Realm>
     invitePlayer(realmId: string, uuid: string): Promise<Realm>
     changeRealmState(realmId: string, state: 'open' | 'close'): Pomise<void>
+    getRealmInvite(realmId: string): Promise<RealmInvite>
+    refreshRealmInvite(realmId: string): Promise<RealmInvite>
+    getPendingInviteCount(): Promise<number>
+    getPendingInvites(): Promise<RealmPlayerInvite[]>
+    acceptRealmInvitation(invitationId: string): Promise<void>
+    rejectRealmInvitation(invitationId: string): Promise<void>
+    acceptRealmInviteFromCode(realmInviteCode: string): Promise<void>
   }
 
   export class JavaRealmAPI extends RealmAPI {
@@ -57,6 +64,24 @@ declare module 'prismarine-realms' {
     member: boolean
     clubId: number
     subscriptionRefreshStatus: null
+  }
+
+  export interface RealmPlayerInvite {
+    invitationId: string
+    worldName: string
+    worldDescription: string
+    worldOwnerName: string
+    worldOwnerXUID: string
+    createdOn: number
+  }
+
+  export interface RealmInvite {
+    inviteCode: string,
+    ownerXUID: string,
+    type: string,
+    createdOn: number,
+    inviteLink: string,
+    deepLinkUrl: string,
   }
 
   export interface RealmPlayer {

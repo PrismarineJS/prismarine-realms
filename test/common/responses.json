@@ -27,5 +27,46 @@
     "Join": {
         "address": "0.0.0.0:19132",
         "pendingUpdate": false
-    }
+    },
+    "RealmInvite": [
+        {
+            "linkId": "AB1CD2EFA3B",
+            "profileUuid": "1111222233334444",
+            "type": "INFINITE",
+            "ts": 1652129181690,
+            "url": "https://realms.gg/AB1CD2EFA3B",
+            "deepLinkUrl": "minecraft://acceptRealmInvite?inviteID=AB1CD2EFA3B"
+        }
+    ],
+    "RealmInviteModified": {
+        "inviteCode": "AB1CD2EFA3B",
+        "ownerXUID": "1111222233334444",
+        "type": "INFINITE",
+        "createdOn": 1652129181690,
+        "inviteLink": "https://realms.gg/AB1CD2EFA3B",
+        "deepLinkUrl": "minecraft://acceptRealmInvite?inviteID=AB1CD2EFA3B"
+    },
+    "PendingInvites": {
+        "invites": [
+            {
+                "invitationId": "11223344",
+                "worldName": "Test Realm",
+                "worldDescription": "Test description",
+                "worldOwnerName": null,
+                "worldOwnerUuid": "1111222233334444",
+                "date": 1652129181690
+            }
+        ]
+    },
+    "PendingInvitesModified": [
+        {
+            "invitationId": "11223344",
+            "worldName": "Test Realm",
+            "worldDescription": "Test description",
+            "worldOwnerName": null,
+            "worldOwnerXUID": "1111222233334444",
+            "createdOn": 1652129181690
+        }
+    ],
+    "PendingInvitesCount": 1
 }

@@ -62,20 +62,12 @@ Gets detailed information about a Realm if owned
 await api.getRealm('1234567')
 ```
 
-#### getRealmFromInvite(realmInviteCode: string): Promise<Realm>
+#### getRealmFromInvite(realmInviteCode: string, skipAccept: boolean): Promise<Realm>
 
-*(Bedrock Edition Only)* Gets detailed information about a Realm from the invite code
+*(Bedrock Edition Only)* Gets detailed information about a Realm from the invite code and adds it to the authenticating accounts Realms list if not present. If skipAccept is true, the Realm will not be added to the authenticating accounts Realms list.
 
 ```js
 await api.getRealmFromInvite('AB1CD2EFA3B') // https://realms.gg/AB1CD2EFA3B will work as well
-```
-
-#### acceptRealmInvitationFromCode(realmInviteCode: string): Promise<void>
-
-*(Bedrock Edition Only)* Adds a Realm to the authenticating account's Realm list from an invite code
-
-```js
-await api.acceptRealmInviteFromCode('AB1CD2EFA3B') // https://realms.gg/AB1CD2EFA3B will work as well
 ```
 
 #### getRealmInvite(realmId: string): Promise<RealmInivte>

@@ -11,10 +11,11 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     return { host, port: Number(port) }
   }
 
-  async getRealmFromInvite (realmInviteCode) {
+  async getRealmFromInvite (realmInviteCode, skipAccept = false) {
     if (!realmInviteCode) throw new Error('Need to provide a realm invite code/link')
     const clean = realmInviteCode.replace(/https:\/\/realms.gg\//g, '')
     const data = await this.rest.get(`/worlds/v1/link/${clean}`)
+    if (!data.member && !skipAccept) await this.acceptRealmInviteFromCode(realmInviteCode) // If the player isn't a member, accept the invite
     return new Realm(this, data)
   }
 

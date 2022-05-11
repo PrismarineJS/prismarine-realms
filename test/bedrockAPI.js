@@ -53,6 +53,7 @@ nock('https://pocket.realms.minecraft.net')
   .put(`/invites/reject/${config.realmInvitationId}`)
   .reply(204)
   .post(`/invites/v1/link/accept/${config.realmInviteCode}`)
+  .times(3)
   .reply(200)
 
 describe('Bedrock', () => {

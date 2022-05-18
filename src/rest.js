@@ -70,7 +70,7 @@ module.exports = class Rest {
       if (response.headers.get('Content-Type')?.startsWith('application/json')) {
         return response.json()
       }
-      return response.arrayBuffer()
+      return response.text()
     } else {
       debug('Request fail', response)
       if (response.status >= 500 && response.status < 600 && retries !== 0) {

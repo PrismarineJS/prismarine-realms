@@ -20,7 +20,7 @@ declare module 'prismarine-realms' {
     getRealmAddress(realmId: string): Promise<Address>
     getRealmFromInvite(realmInviteCode: string, invite: boolean): Promise<Realm>
     invitePlayer(realmId: string, uuid: string): Promise<Realm>
-    changeRealmState(realmId: string, state: 'open' | 'close'): Pomise<void>
+    changeRealmState(realmId: string, state: 'open' | 'close'): Promise<void>
     getRealmInvite(realmId: string): Promise<RealmInvite>
     refreshRealmInvite(realmId: string): Promise<RealmInvite>
     getPendingInviteCount(): Promise<number>
@@ -33,7 +33,7 @@ declare module 'prismarine-realms' {
   export class JavaRealmAPI extends RealmAPI {
     getRealmAddress(realmId: string): Promise<Address>
     invitePlayer(realmId: string, uuid: string, name: string): Promise<Realm>
-    changeRealmState(realmId: string, state: 'open' | 'close'): Pomise<void>
+    changeRealmState(realmId: string, state: 'open' | 'close'): Promise<void>
   }
 
   export interface Realm {

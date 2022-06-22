@@ -43,7 +43,7 @@ declare module 'prismarine-realms' {
     close(): Promise<void>
     id: number
     remoteSubscriptionId: string
-    owner: null
+    owner: string | null
     ownerUUID: string
     name: string
     motd: string
@@ -54,13 +54,13 @@ declare module 'prismarine-realms' {
     expiredTrial: boolean
     gracePeriod: boolean
     worldType: string
-    players: RealmPlayer[]
+    players: RealmPlayer[] | null
     maxPlayers: number
     minigameName: string
     minigameId: number
     minigameImage: string
     activeSlot: number
-    slots: Slot[]
+    slots: Slot[] | null
     member: boolean
     clubId: number
     subscriptionRefreshStatus: null

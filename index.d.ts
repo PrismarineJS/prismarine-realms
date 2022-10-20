@@ -11,16 +11,18 @@ declare module 'prismarine-realms' {
     static from(authflow: Authflow, platform: 'bedrock' | 'java'): BedrockRealmAPI | JavaRealmAPI 
 
     getRealms(): Promise<Realm[]>
-
-    getRealm(realmId?: string): Promise<Realm>
+    getRealm(realmId: string): Promise<Realm>
+    getRealmAddress(realmId: string): Promise<Address>
+    getRealmBackups(realmId: string, slotId: string): Promise<Backup[]>
+    getRealmWorldDownload(realmId: string, slotId: string, backupId?: string | 'latest'): Promise<Download>
+    restoreRealmFromBackup(realmId: string, slotId: string, backupId: string): Promise<void>
+    changeRealmState(realmId: string, state: 'open' | 'close'): Promise<void>
 
   }
 
   export class BedrockRealmAPI extends RealmAPI {
-    getRealmAddress(realmId: string): Promise<Address>
     getRealmFromInvite(realmInviteCode: string, invite: boolean): Promise<Realm>
     invitePlayer(realmId: string, uuid: string): Promise<Realm>
-    changeRealmState(realmId: string, state: 'open' | 'close'): Promise<void>
     getRealmInvite(realmId: string): Promise<RealmInvite>
     refreshRealmInvite(realmId: string): Promise<RealmInvite>
     getPendingInviteCount(): Promise<number>
@@ -31,9 +33,7 @@ declare module 'prismarine-realms' {
   }
 
   export class JavaRealmAPI extends RealmAPI {
-    getRealmAddress(realmId: string): Promise<Address>
     invitePlayer(realmId: string, uuid: string, name: string): Promise<Realm>
-    changeRealmState(realmId: string, state: 'open' | 'close'): Promise<void>
   }
 
   export interface Realm {
@@ -41,6 +41,8 @@ declare module 'prismarine-realms' {
     invitePlayer(uuid: string, name: string): Promise<Realm>
     open(): Promise<void>
     close(): Promise<void>
+    getBackups(): Promise<Backup[]>
+    getWorldDownload(): Promise<Download>
     id: number
     remoteSubscriptionId: string
     owner: string | null
@@ -64,6 +66,34 @@ declare module 'prismarine-realms' {
     member: boolean
     clubId: number
     subscriptionRefreshStatus: null
+  }
+
+  export interface Backup {
+    getDownload(): Promise<Download>
+    restore(): Promise<void>
+    id: string
+    lastModifiedDate: number
+    size: number
+    metadata: {
+        gameDifficulty: string
+        name: string
+        gameServerVersion: string
+        enabledPacks: string
+        description: string | null
+        gamemode: string
+        worldType: string
+    }
+  }
+
+  export interface Download {
+    toDirectory(directory: string): Promise<void>
+    toBuffer(): Promise<Buffer>
+    downloadUrl: string
+    fileExtension: '.mcworld' | '.tar.gz'
+    resourcePackUrl?: string // Java only
+    resourcePackHash?: string // Java only
+    size?: number // Bedrock only
+    token?: string // Bedrock only
   }
 
   export interface RealmPlayerInvite {

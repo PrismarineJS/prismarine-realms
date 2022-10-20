@@ -44,4 +44,12 @@ module.exports = class Realm {
   async close () {
     return this.#api.changeRealmState(this.id, 'close')
   }
+
+  async getWorldDownload () {
+    return this.#api.getRealmWorldDownload(this.id, this.activeSlot, 'latest')
+  }
+
+  async getBackups () {
+    return this.#api.getRealmBackups(this.id, this.activeSlot)
+  }
 }

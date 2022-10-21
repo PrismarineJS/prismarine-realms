@@ -78,7 +78,10 @@ declare module 'prismarine-realms' {
         gameDifficulty: string
         name: string
         gameServerVersion: string
-        enabledPacks: string
+        enabledPacks: { 
+          resourcePack: string
+          behaviorPack: string
+        }
         description: string | null
         gamemode: string
         worldType: string

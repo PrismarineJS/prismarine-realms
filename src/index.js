@@ -32,7 +32,7 @@ class RealmAPI {
   }
 
   async restoreRealmFromBackup (realmId, backupId) {
-    return await this.rest.put(`/worlds/${realmId}/backups?backupId=${backupId}&clientSupportsRetries`, { retryCount: 5 })
+    return await this.rest.put(`/worlds/${realmId}/backups?backupId=${encodeURIComponent(backupId)}&clientSupportsRetries`, { retryCount: 5 })
   }
 }
 

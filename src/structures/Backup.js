@@ -12,7 +12,7 @@ module.exports = class Backup {
         gameDifficulty: data.metadata.game_difficulty,
         name: data.metadata.name,
         gameServerVersion: data.metadata.game_server_version,
-        enabledPacks: data.metadata.enabled_packs,
+        enabledPacks: JSON.parse(data.metadata.enabled_packs),
         description: data.metadata.description,
         gamemode: data.metadata.game_mode,
         worldType: data.metadata.world_type

@@ -86,8 +86,8 @@ declare module 'prismarine-realms' {
   }
 
   export interface Download {
-    toDirectory(directory: string): Promise<void>
-    toBuffer(): Promise<Buffer>
+    writeToDirectory(directory: string): Promise<void>
+    getBuffer(): Promise<Buffer>
     downloadUrl: string
     fileExtension: '.mcworld' | '.tar.gz'
     resourcePackUrl?: string // Java only

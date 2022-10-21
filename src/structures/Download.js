@@ -17,11 +17,11 @@ module.exports = class Download {
     }
   }
 
-  async toDirectory (directory) {
+  async writeToDirectory (directory) {
     return this.#downloadWorld().then(buffer => fs.writeFile(`${directory}/world${this.fileExtension}`, buffer))
   }
 
-  async toBuffer () {
+  async getBuffer () {
     return this.#downloadWorld()
   }
 

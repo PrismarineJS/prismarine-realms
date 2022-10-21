@@ -38,8 +38,8 @@
       - [getDownload](#getDownload)
       - [restore](#restore)
     - [Download](#download)
-      - [toDirectory](#todirectory)
-      - [toBuffer](#tobuffer)
+      - [writeToDirectory](#writeToDirectory)
+      - [getBuffer](#getBuffer)
 
 ---
 
@@ -535,8 +535,8 @@ No output
 
 ```js
 {
-    toDirectory(directory: string): Promise<void>
-    toBuffer(): Promise<Buffer>
+    writeToDirectory(directory: string): Promise<void>
+    getBuffer(): Promise<Buffer>
     downloadUrl: string
     fileExtension: '.mcworld' | '.tar.gz'
     resourcePackUrl?: string // Java only
@@ -548,28 +548,28 @@ No output
 
 ---
 
-#### toDirectory
+#### writeToDirectory
 
 (directory: string) => Promise\<void>
 
 Downloads the world to the specified directory.
 
 ```js
-await download.toDirectory()
+await download.writeToDirectory()
 ```
 
 No output
 
 ---
 
-#### toBuffer
+#### getBuffer
 
 () => Promise\<Buffer>
 
 Downloads the world and returns it as a Buffer
 
 ```js
-await download.toBuffer()
+await download.getBuffer()
 ```
 
 <details>

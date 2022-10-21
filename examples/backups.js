@@ -17,7 +17,7 @@ const main = async () => {
 
   const [latestBackup] = await realm.getBackups()
 
-  latestBackup.getDownload().then(e => e.toDirectory('./examples'))
+  latestBackup.getDownload().then(e => e.writeToDirectory('./examples'))
 }
 
 main()

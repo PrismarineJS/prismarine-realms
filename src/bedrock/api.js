@@ -1,5 +1,7 @@
 const RealmAPI = require('../index')
+
 const Realm = require('../structures/Realm')
+const Download = require('../structures/Download')
 
 module.exports = class BedrockRealmAPI extends RealmAPI {
   async getRealmAddress (realmId) {
@@ -93,5 +95,10 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
 
   async changeRealmState (realmId, state) {
     return await this.rest.put(`/worlds/${realmId}/${state}`)
+  }
+
+  async getRealmWorldDownload (realmId, slotId, backupId = 'latest') {
+    const data = await this.rest.get(`/archive/download/world/${realmId}/${slotId}/${backupId}`) // if backupId = latest will get the world as it is now not the most recent backup
+    return new Download(this, data)
   }
 }

@@ -6,13 +6,18 @@ const chaiAsPromised = require('chai-as-promised')
 
 use(chaiAsPromised)
 
-const { World, Join, RealmInvite, RealmInviteModified, PendingInvites, PendingInvitesModified, PendingInvitesCount } = require('./common/responses.json')
+const { World, Join, RealmInvite, RealmInviteModified, PendingInvites, PendingInvitesModified, PendingInvitesCount, BedrockWorldDownload, Backups } = require('./common/responses.json')
 
 const { RealmAPI } = require('prismarine-realms')
 const { Authflow } = require('prismarine-auth')
 
+const Backup = require('../src/structures/Backup')
+const Download = require('../src/structures/Download')
+
 const config = {
   realmId: '1112223',
+  slotId: '1',
+  backupId: '1970-01-01T00:00:00.000Z',
   realmInviteCode: 'AB1CD2EFA3B',
   realmInviteLink: 'https://realms.gg/AB1CD2EFA3B',
   realmInvitationId: '11223344',
@@ -27,7 +32,7 @@ nock('https://pocket.realms.minecraft.net')
   .get('/worlds')
   .reply(200, { servers: [World] })
   .get(`/worlds/${config.realmId}`)
-  .times(5)
+  .times(9)
   .reply(200, World)
   .get(`/worlds/v1/link/${config.realmInviteCode}`)
   .times(2)
@@ -55,6 +60,17 @@ nock('https://pocket.realms.minecraft.net')
   .post(`/invites/v1/link/accept/${config.realmInviteCode}`)
   .times(3)
   .reply(200)
+  .get(`/archive/download/world/${config.realmId}/${config.slotId}/${config.backupId}`)
+  .times(2)
+  .reply(200, BedrockWorldDownload)
+  .get(`/archive/download/world/${config.realmId}/${config.slotId}/latest`)
+  .reply(200, BedrockWorldDownload)
+  .get(`/worlds/${config.realmId}/backups`)
+  .times(3)
+  .reply(200, Backups)
+  .put(`/worlds/${config.realmId}/backups?backupId=${config.backupId}&clientSupportsRetries`)
+  .times(2)
+  .reply(204)
 
 describe('Bedrock', () => {
   describe('getRealms', () => {
@@ -117,6 +133,11 @@ describe('Bedrock', () => {
       await api.acceptRealmInviteFromCode(config.realmInviteCode)
     })
   })
+  describe('restoreRealmFromBackup', () => {
+    it('should return void', async () => {
+      await api.restoreRealmFromBackup(config.realmId, config.backupId)
+    })
+  })
   describe('Realm getAddress', () => {
     it('should return an object containing the Realms address', async () => {
       const realm = await api.getRealm(config.realmId)
@@ -139,6 +160,28 @@ describe('Bedrock', () => {
     it('should return true indicating Realm is now closed', async () => {
       const realm = await api.getRealm(config.realmId)
       expect(await realm.close()).to.deep.equal(true)
+    })
+  })
+  describe('Realm getBackups', () => {
+    it('should return an array of backup objects', async () => {
+      const realm = await api.getRealm(config.realmId)
+      expect(await realm.getBackups()).to.deep.equal(Backups.backups.map(e => new Backup(null, null, e)))
+    })
+    it('downloading a backup should return a world download object', async () => {
+      const realm = await api.getRealm(config.realmId)
+      const [backup] = await realm.getBackups()
+      expect(await backup.getDownload()).to.deep.equal(new Download({ platform: 'bedrock' }, BedrockWorldDownload))
+    })
+    it('restoring a backup should return void', async () => {
+      const realm = await api.getRealm(config.realmId)
+      const [backup] = await realm.getBackups()
+      await backup.restore()
+    })
+  })
+  describe('Realm getWorldDownload', () => {
+    it('should return a world download object', async () => {
+      const realm = await api.getRealm(config.realmId)
+      expect(await realm.getWorldDownload()).to.deep.equal(new Download({ platform: 'bedrock' }, BedrockWorldDownload))
     })
   })
 })

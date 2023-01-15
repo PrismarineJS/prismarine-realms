@@ -1,5 +1,7 @@
 const RealmAPI = require('../index')
+
 const Realm = require('../structures/Realm')
+const Download = require('../structures/Download')
 
 module.exports = class JavaRealmAPI extends RealmAPI {
   async getRealmAddress (realmId) {
@@ -20,5 +22,10 @@ module.exports = class JavaRealmAPI extends RealmAPI {
 
   async changeRealmState (realmId, state) {
     return await this.rest.put(`/worlds/${realmId}/${state}`)
+  }
+
+  async getRealmWorldDownload (realmId, slotId) {
+    const data = await this.rest.get(`/worlds/${realmId}/slot/${slotId}/download`)
+    return new Download(this, data)
   }
 }

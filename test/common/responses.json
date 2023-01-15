@@ -68,5 +68,33 @@
             "createdOn": 1652129181690
         }
     ],
-    "PendingInvitesCount": 1
+    "PendingInvitesCount": 1,
+    "Backups": {
+        "backups": [
+            {
+                "backupId": "1970-01-01T00:00:00.000Z",
+                "lastModifiedDate": 1652129181690,
+                "size": 10000,
+                "metadata": {
+                    "game_difficulty": "0",
+                    "name":"Test Realm",
+                    "game_server_version": "1.19.0",
+                    "enabled_packs": "{\"resourcePacks\":[],\"behaviorPacks\":[\"4b45f411-9ca2-4d12-a2a8-4d2de8746538\"]}",
+                    "description": null,
+                    "game_mode": "0",
+                    "world_type": "NORMAL"
+                }
+            }
+        ]
+    },
+    "BedrockWorldDownload": {
+        "downloadUrl": "https://archive-pocket-production-eu-west-1.realms.minecraft.net/worlds",
+        "token": "1111222233334444555566667777888899990000",
+        "size": 10000
+    },
+    "JavaWorldDownload": {
+        "downloadLink": "https://wsjavaprodeus.blob.core.windows.net/worlds/1112223/mcr_world_3.tar.gz?snapshot=1970-01-01T00:00:00.000Z",
+        "resourcePackUrl": null,
+        "resourcePackHash": null
+    }
 }

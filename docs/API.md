@@ -15,6 +15,9 @@
   - [Bedrock & Java](#bedrock--java)
     - [getRealms](#getrealms)
     - [getRealm](#getrealm)
+    - [getRealmBackups](#getrealmbackups)
+    - [restoreRealmFromBackup](#restorerealmfrombackup)
+    - [getRealmWorldDownload](#getrealmworlddownload)
   - [Bedrock Only](#bedrock-only)
     - [getRealmFromInvite](#getrealmfrominvite)
     - [getRealmInvite](#getrealminvite)
@@ -29,6 +32,14 @@
       - [invitePlayer](#inviteplayer)
       - [open](#open)
       - [close](#close)
+      - [getBackups](#getbackups)
+      - [getWorldDownload](#getworlddownload)
+    - [Backup](#backup)
+      - [getDownload](#getDownload)
+      - [restore](#restore)
+    - [Download](#download)
+      - [writeToDirectory](#writeToDirectory)
+      - [getBuffer](#getBuffer)
 
 ---
 
@@ -79,6 +90,60 @@ await api.getRealm('1234567')
 <summary>Output</summary>
 
 [Realm](#Realm)
+
+</details>
+
+---
+
+### getRealmBackups
+
+(realmId: string, slotId: string) => Promise\<Backup[]>
+
+Gets a list of backups for a Realm
+
+```js
+await api.getRealmBackups('1234567', '1')
+```
+
+<details>
+<summary>Output</summary>
+
+[Backup](#Backup)[]
+
+</details>
+
+---
+
+### restoreRealmFromBackup
+
+(realmId: string, slotId: string, backupId: string) => Promise\<void>
+
+Restores a Realm from a backup
+
+```js
+await api.restoreRealmFromBackup('1234567', '1', '1970-01-01T00:00:00.000Z')
+```
+
+No output
+
+---
+
+### getRealmWorldDownload
+
+(realmId: string, slotId: string, backupId?: string) => Promise\<object>
+
+*Java will always return the latest state of the world*
+
+Gets the download for a Realm world. If no backup is specified or "latest" is specified, the latest state of the world is returned.
+
+```js
+await api.getRealmWorldDownload('1234567', '1', '1970-01-01T00:00:00.000Z')
+```
+
+<details>
+<summary>Output</summary>
+
+[Download](#Download)
 
 </details>
 
@@ -250,6 +315,8 @@ No output
     invitePlayer(uuid: string, name: string): Promise<Realm>
     open(): Promise<void>
     close(): Promise<void>
+    getBackups(): Promise<Backup[]>
+    getWorldDownload(): Promise<Download>
     id: number
     remoteSubscriptionId: string
     owner: string | null
@@ -363,3 +430,156 @@ await realm.close()
 ```
 
 No output
+
+---
+
+#### getBackups
+
+() => Promise\<Backup[]>
+
+Gets a list of backups for the Realm
+
+```js
+await realm.getBackups()
+```
+
+<details>
+<summary>Output</summary>
+
+[Backup](#Backup)[]
+
+</details>
+
+---
+
+#### getWorldDownload
+
+() => Promise\<Download>
+
+Gets the most recent download for the Realm's world
+
+```js
+await realm.getWorldDownload()
+```
+
+<details>
+<summary>Output</summary>
+
+[Download](#Download)
+
+</details>
+
+---
+
+### Backup
+
+```js
+{
+    getDownload(): Promise<Download>
+    restore(): Promise<void>
+    id: string
+    lastModifiedDate: number
+    size: number
+    metadata: {
+        gameDifficulty: string
+        name: string
+        gameServerVersion: string
+        enabledPacks: { 
+          resourcePack: string
+          behaviorPack: string
+        }
+        description: string | null
+        gamemode: string
+        worldType: string
+    }
+}
+```
+
+---
+
+#### getDownload
+
+() => Promise\<Download>
+
+*Not available on Java*
+
+Gets the download information for the backup
+
+```js
+await backup.getDownload()
+```
+
+<details>
+<summary>Output</summary>
+
+```ts
+Buffer
+```
+
+</details>
+
+---
+
+#### restore
+
+() => Promise\<void>
+
+Restores the Realm back to this backup
+
+```js
+await backup.restore()
+```
+
+No output
+
+---
+
+### Download
+
+```js
+{
+    writeToDirectory(directory: string): Promise<void>
+    getBuffer(): Promise<Buffer>
+    downloadUrl: string
+    fileExtension: '.mcworld' | '.tar.gz'
+    resourcePackUrl?: string // Java only
+    resourcePackHash?: string // Java only
+    size?: number // Bedrock only
+    token?: string // Bedrock only
+}
+```
+
+---
+
+#### writeToDirectory
+
+(directory: string) => Promise\<void>
+
+Downloads the world to the specified directory.
+
+```js
+await download.writeToDirectory()
+```
+
+No output
+
+---
+
+#### getBuffer
+
+() => Promise\<Buffer>
+
+Downloads the world and returns it as a Buffer
+
+```js
+await download.getBuffer()
+```
+
+<details>
+<summary>Output</summary>
+
+```ts
+Buffer
+```
+
+</details>

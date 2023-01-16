@@ -1,5 +1,10 @@
 ## History
 
+### 1.3.0
+* import Authflow into index.d.ts (@jojomatik) [#35](https://github.com/PrismarineJS/prismarine-realms/pull/35)
+* Add Realm backup & world download endpoints (@LucienHH) [#30](https://github.com/PrismarineJS/prismarine-realms/pull/30)
+* Move docs to API.md (@LucienHH) [#24](https://github.com/PrismarineJS/prismarine-realms/pull/24)
+
 ### 1.2.0
 * Fix typo in index.d.ts
 * Add invite endpoints

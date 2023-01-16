@@ -1,4 +1,6 @@
 /// <reference types="node" />
+import { Authflow } from "prismarine-auth";
+
 declare module 'prismarine-realms' {
   export class RealmAPI {
     /**

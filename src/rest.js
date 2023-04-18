@@ -16,7 +16,7 @@ module.exports = class Rest {
     } else if (platform === 'java') {
       this.getAuth = () => authflow.getMinecraftJavaToken({ fetchProfile: true }).then(formatJavaAuth)
     }
-    this.maxRetries = options.maxRetries ?? 5
+    this.maxRetries = options.maxRetries ?? 4
   }
 
   get (route, options) {

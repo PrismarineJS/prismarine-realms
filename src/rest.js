@@ -16,6 +16,7 @@ module.exports = class Rest {
     } else if (platform === 'java') {
       this.getAuth = () => authflow.getMinecraftJavaToken({ fetchProfile: true }).then(formatJavaAuth)
     }
+    this.maxRetries = options.maxRetries ?? 5
   }
 
   get (route, options) {
@@ -60,7 +61,7 @@ module.exports = class Rest {
       headers: { ...headers, ...request.headers }
     }
 
-    return this.execRequest(url, fetchOptions, request.retryCount)
+    return this.execRequest(url, fetchOptions)
   }
 
   async execRequest (url, options, retries = 0) {
@@ -73,10 +74,12 @@ module.exports = class Rest {
       return response.text()
     } else {
       debug('Request fail', response)
-      if (response.status >= 500 && response.status < 600 && retries !== 0) {
-        debug('retry', retries)
-        await new Promise((resolve) => { setTimeout(resolve, 1000) })
-        return this.execRequest(url, options, --retries)
+      // Some endpoints on the Realms API can be very intermittent and may fail with error code 503. We retry 5xx errors a maximum of 5 times to help mitigate this
+      if (response.status >= 500 && response.status < 600 && retries < this.maxRetries) {
+        const delay = Math.pow(2, retries) * 1000
+        debug('retry', retries, 'in', delay, 'ms')
+        await new Promise(resolve => setTimeout(resolve, delay))
+        return this.execRequest(url, options, ++retries)
       }
       const body = await response.text()
       throw new Error(`${response.status} ${response.statusText} ${body}`)

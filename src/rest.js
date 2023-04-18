@@ -74,7 +74,7 @@ module.exports = class Rest {
       return response.text()
     } else {
       debug('Request fail', response)
-      // Some endpoints on the Realms API can be very intermittent and may fail with error code 503. We retry 5xx errors a maximum of 5 times to help mitigate this
+      // Some endpoints on the Realms API can be very intermittent and may fail with error code 503. We retry 5xx errors a maximum of 4 times to help mitigate this
       if (response.status >= 500 && response.status < 600 && retries < this.maxRetries) {
         const delay = Math.pow(2, retries) * 1000
         debug('retry', retries, 'in', delay, 'ms')

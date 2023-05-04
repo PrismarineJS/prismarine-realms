@@ -1,5 +1,11 @@
 ## History
 
+### 1.3.2
+* Retry 5xx errors with exponential backoff (@LucienHH)
+
+### 1.3.1
+* Use fs.promises over fs/promises (@extremeheat)
+
 ### 1.3.0
 * import Authflow into index.d.ts (@jojomatik) [#35](https://github.com/PrismarineJS/prismarine-realms/pull/35)
 * Add Realm backup & world download endpoints (@LucienHH) [#30](https://github.com/PrismarineJS/prismarine-realms/pull/30)

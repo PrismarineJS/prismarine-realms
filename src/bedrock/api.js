@@ -5,10 +5,7 @@ const Download = require('../structures/Download')
 
 module.exports = class BedrockRealmAPI extends RealmAPI {
   async getRealmAddress (realmId) {
-    // This endpoint on the Realms API can be very intermittent and may fail with error code 503. We retry the request maximum 5 times to help mitigate this
-    const data = await this.rest.get(`/worlds/${realmId}/join`, {
-      retryCount: 5
-    })
+    const data = await this.rest.get(`/worlds/${realmId}/join`)
     const [host, port] = data.address.split(':')
     return { host, port: Number(port) }
   }

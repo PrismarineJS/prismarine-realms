@@ -98,4 +98,123 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     const data = await this.rest.get(`/archive/download/world/${realmId}/${slotId}/${backupId}`) // if backupId = latest will get the world as it is now not the most recent backup
     return new Download(this, data)
   }
+
+  async getRealmSubscriptionInfo (realmId) {
+    return await this.rest.get(`/subscriptions/${realmId}`)
+  }
+
+  async getRealmSubscriptionInfoDetailed (realmId) {
+    return await this.rest.get(`/subscriptions/${realmId}/details`)
+  }
+
+  async changeRealmActiveSlot (realmId, slotId) {
+    return await this.rest.put(`/worlds/${realmId}/slot/${slotId}`)
+  }
+
+  // TODO: Make it so that they don't have to provide a both parameters and can only provide one
+  async changeRealmNameAndDescription (realmId, name, description) {
+    return await this.rest.put(`/worlds/${realmId}`, {
+      body: {
+        name,
+        description
+      }
+    })
+  }
+
+  async deleteRealm (realmId) {
+    return await this.rest.delete(`/worlds/${realmId}`)
+  }
+
+  async resetRealm (realmId) {
+    return await this.rest.put(`/worlds/${realmId}/reset`)
+  }
+
+  // TODO: Switch the code to use a custom strure for the configuration
+  // Reference https://github.com/PrismarineJS/prismarine-realms/issues/34 for configuration structure
+  async changeRealmConfiguration (realmId, configuration) {
+    return await this.rest.put(`/worlds/${realmId}/configuration`, {
+      body: configuration
+    })
+  }
+
+  async removeRealmInvite (realmId, uuid) {
+    const data = await this.rest.put(`/invites/${realmId}/invite/update`, {
+      body: {
+        invites: {
+          [uuid]: 'REMOVE'
+        }
+      }
+    })
+    return new Realm(this, data)
+  }
+
+  async opRealmPlayer (realmId, uuid) {
+    const data = await this.rest.put(`/invites/${realmId}/invite/update`, {
+      body: {
+        invites: {
+          [uuid]: 'OP'
+        }
+      }
+    })
+    return new Realm(this, data)
+  }
+
+  async deopRealmPlayer (realmId, uuid) {
+    const data = await this.rest.put(`/invites/${realmId}/invite/update`, {
+      body: {
+        invites: {
+          [uuid]: 'DEOP'
+        }
+      }
+    })
+    return new Realm(this, data)
+  }
+
+  async removeAllRealmPlayers (realmId) {
+    const data = await this.rest.put(`/invites/${realmId}/invite/update`, {
+      body: {
+        invites: null
+      }
+    })
+    return new Realm(this, data)
+  }
+
+  async banPlayerFromRealm (realmId, uuid) {
+    return await this.rest.post(`/worlds/${realmId}/blocklist/${uuid}`)
+  }
+
+  async unbanPlayerFromRealm (realmId, uuid) {
+    return await this.rest.delete(`/worlds/${realmId}/blocklist/${uuid}`)
+  }
+
+  async removeRealmFromJoinedList (realmId) {
+    return await this.rest.delete(`/invites/${realmId}`)
+  }
+
+  async changeForcedTexturePack (realmId, forced) {
+    if (forced) {
+      return await this.rest.put(`/worlds/${realmId}/content/texturePacksRequired`)
+    } else {
+      return await this.rest.delete(`/worlds/${realmId}/content/texturePacksRequired`)
+    }
+  }
+
+  async changeRealmDefaultPermission (realmId, permission) {
+    const data = await this.rest.put(`/world/${realmId}/defaultPermission`, {
+      body: {
+        permission: permission.toUpperCase()
+      }
+    })
+    return new Realm(this, data)
+  }
+
+  async changeRealmPlayersPermission (realmId, permission, uuid) {
+    const data = await this.rest.put(`/world/${realmId}/userPermission`, {
+      body: {
+        permission: permission.toUpperCase(),
+        uuid: uuid
+      }
+    })
+    return new Realm(this, data)
+  }
 }

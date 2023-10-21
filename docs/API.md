@@ -34,7 +34,6 @@
     - [changeRealmConfiguration](#changerealmconfiguration)
     - [opRealmPlayer](#oprealmplayer)
     - [deopRealmPlayer](#deoprealmplayer)
-    - [removeAllRealmPlayers](#removeallrealmplayers)
     - [banPlayerFromRealm](#banplayerfromrealm)
     - [unbanPlayerFromRealm](#unbanplayerfromrealm)
     - [removeRealmFromJoinedList](#removerealmfromjoinedlist)

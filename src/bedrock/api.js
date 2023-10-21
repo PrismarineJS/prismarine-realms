@@ -4,6 +4,7 @@ const Realm = require('../structures/Realm')
 const Download = require('../structures/Download')
 
 module.exports = class BedrockRealmAPI extends RealmAPI {
+
   async getRealmAddress (realmId) {
     const data = await this.rest.get(`/worlds/${realmId}/join`)
     const [host, port] = data.address.split(':')
@@ -94,6 +95,10 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     return await this.rest.put(`/worlds/${realmId}/${state}`)
   }
 
+  async deleteRealm (realmId) {
+    return await this.rest.delete(`/worlds/${realmId}`)
+  }
+
   async getRealmWorldDownload (realmId, slotId, backupId = 'latest') {
     const data = await this.rest.get(`/archive/download/world/${realmId}/${slotId}/${backupId}`) // if backupId = latest will get the world as it is now not the most recent backup
     return new Download(this, data)
@@ -111,7 +116,6 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     return await this.rest.put(`/worlds/${realmId}/slot/${slotId}`)
   }
 
-  // TODO: Make it so that they don't have to provide a both parameters and can only provide one
   async changeRealmNameAndDescription (realmId, name, description) {
     return await this.rest.put(`/worlds/${realmId}`, {
       body: {
@@ -121,15 +125,10 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     })
   }
 
-  async deleteRealm (realmId) {
-    return await this.rest.delete(`/worlds/${realmId}`)
-  }
-
   async resetRealm (realmId) {
     return await this.rest.put(`/worlds/${realmId}/reset`)
   }
 
-  // TODO: Switch the code to use a custom strure for the configuration
   // Reference https://github.com/PrismarineJS/prismarine-realms/issues/34 for configuration structure
   async changeRealmConfiguration (realmId, configuration) {
     return await this.rest.put(`/worlds/${realmId}/configuration`, {
@@ -149,25 +148,23 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
   }
 
   async opRealmPlayer (realmId, uuid) {
-    const data = await this.rest.put(`/invites/${realmId}/invite/update`, {
+    return await this.rest.put(`/invites/${realmId}/invite/update`, {
       body: {
         invites: {
           [uuid]: 'OP'
         }
       }
     })
-    return new Realm(this, data)
   }
 
   async deopRealmPlayer (realmId, uuid) {
-    const data = await this.rest.put(`/invites/${realmId}/invite/update`, {
+    return await this.rest.put(`/invites/${realmId}/invite/update`, {
       body: {
         invites: {
           [uuid]: 'DEOP'
         }
       }
     })
-    return new Realm(this, data)
   }
 
   async removeAllRealmPlayers (realmId) {
@@ -209,12 +206,11 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
   }
 
   async changeRealmPlayersPermission (realmId, permission, uuid) {
-    const data = await this.rest.put(`/world/${realmId}/userPermission`, {
+    return await this.rest.put(`/world/${realmId}/userPermission`, {
       body: {
         permission: permission.toUpperCase(),
         uuid: uuid
       }
     })
-    return new Realm(this, data)
   }
 }

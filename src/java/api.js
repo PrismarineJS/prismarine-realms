@@ -24,8 +24,33 @@ module.exports = class JavaRealmAPI extends RealmAPI {
     return await this.rest.put(`/worlds/${realmId}/${state}`)
   }
 
+  async deleteRealm (realmId) {
+    return await this.rest.delete(`/worlds/${realmId}`)
+  }
+
   async getRealmWorldDownload (realmId, slotId) {
     const data = await this.rest.get(`/worlds/${realmId}/slot/${slotId}/download`)
     return new Download(this, data)
+  }
+
+  async getRealmSubscriptionInfo (realmId) {
+    return await this.rest.get(`/subscriptions/${realmId}`)
+  }
+
+  async getRealmSubscriptionInfoDetailed (realmId) {
+    return await this.rest.get(`/subscriptions/${realmId}/details`)
+  }
+
+  async changeRealmActiveSlot (realmId, slotId) {
+    return await this.rest.put(`/worlds/${realmId}/slot/${slotId}`)
+  }
+
+  async changeRealmNameAndDescription (realmId, name, description) {
+    return await this.rest.put(`/worlds/${realmId}`, {
+      body: {
+        name,
+        description
+      }
+    })
   }
 }

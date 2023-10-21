@@ -45,11 +45,31 @@ module.exports = class Realm {
     return this.#api.changeRealmState(this.id, 'close')
   }
 
+  async delete () {
+    return this.#api.deleteRealm(this.id)
+  }
+
   async getWorldDownload () {
     return this.#api.getRealmWorldDownload(this.id, this.activeSlot, 'latest')
   }
 
   async getBackups () {
     return this.#api.getRealmBackups(this.id, this.activeSlot)
+  }
+
+  async getSubscriptionInfo () {
+    return this.#api.getRealmSubscriptionInfo(this.id)
+  }
+
+  async getSubscriptionInfoDetailed () {
+    return this.#api.getRealmSubscriptionInfoDetailed(this.id)
+  }
+
+  async changeActiveSlot () {
+    return this.#api.changeRealmActiveSlot(this.id, this.activeSlot)
+  }
+
+  async changeNameAndDescription () {
+    return this.#api.changeRealmNameAndDescription(this.id, this.name, this.motd)
   }
 }

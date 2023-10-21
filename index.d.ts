@@ -19,6 +19,11 @@ declare module 'prismarine-realms' {
     getRealmWorldDownload(realmId: string, slotId: string, backupId?: string | 'latest'): Promise<Download>
     restoreRealmFromBackup(realmId: string, slotId: string, backupId: string): Promise<void>
     changeRealmState(realmId: string, state: 'open' | 'close'): Promise<void>
+    getRealmSubscriptionInfo(realmId: string): Promise<void>
+    getRealmSubscriptionInfoDetailed(realmId: string): Promise<void>
+    changeRealmActiveSlot(realmId: string, slotId: number): Promise<void>
+    changeRealmNameAndDescription(realmId: string, name: string, description: string): Promise<void>
+    deleteRealm(realmId: string): Promise<void>
 
   }
 
@@ -32,6 +37,18 @@ declare module 'prismarine-realms' {
     acceptRealmInvitation(invitationId: string): Promise<void>
     rejectRealmInvitation(invitationId: string): Promise<void>
     acceptRealmInviteFromCode(realmInviteCode: string): Promise<void>
+    resetRealm(realmId: string): Promise<void>
+    changeRealmConfiguration(realmId: string, configuration: any): Promise<void>
+    removeRealmInvite(realmId: string, uuid: string): Promise<Realm>
+    opRealmPlayer(realmId: string, uuid: string): Promise<void>
+    deopRealmPlayer(realmId: string, uuid: string): Promise<void>
+    removeAllRealmPlayers(realmId: string): Promise<Realm>
+    banPlayerFromRealm(realmId: string, uuid: string): Promise<void>
+    unbanPlayerFromRealm(realmId: string, uuid: string): Promise<void>
+    removeRealmFromJoinedList(realmId: string): Promise<void>
+    changeForcedTexturePack(realmId: string, forced: boolean): Promise<Realm>
+    changeRealmDefaultPermission(realmId: string, permission: string): Promise<Realm>
+    changeRealmPlayerPermission(realmId: string, permission: string, uuid: string): Promise<void>
   }
 
   export class JavaRealmAPI extends RealmAPI {
@@ -43,8 +60,13 @@ declare module 'prismarine-realms' {
     invitePlayer(uuid: string, name: string): Promise<Realm>
     open(): Promise<void>
     close(): Promise<void>
+    delete(): Promise<void>
     getBackups(): Promise<Backup[]>
     getWorldDownload(): Promise<Download>
+    getSubscriptionInfo(): Promise<void>
+    getSubscriptionInfoDetailed(): Promise<void>
+    changeActiveSlot(): Promise<void>
+    changeNameAndDescription(): Promise<void>
     id: number
     remoteSubscriptionId: string
     owner: string | null

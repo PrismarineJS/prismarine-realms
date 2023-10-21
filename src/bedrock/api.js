@@ -4,7 +4,6 @@ const Realm = require('../structures/Realm')
 const Download = require('../structures/Download')
 
 module.exports = class BedrockRealmAPI extends RealmAPI {
-
   async getRealmAddress (realmId) {
     const data = await this.rest.get(`/worlds/${realmId}/join`)
     const [host, port] = data.address.split(':')
@@ -209,7 +208,7 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     return await this.rest.put(`/world/${realmId}/userPermission`, {
       body: {
         permission: permission.toUpperCase(),
-        uuid: uuid
+        uuid
       }
     })
   }

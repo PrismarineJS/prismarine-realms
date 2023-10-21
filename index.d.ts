@@ -12,46 +12,53 @@ declare module 'prismarine-realms' {
 
     static from(authflow: Authflow, platform: 'bedrock' | 'java'): BedrockRealmAPI | JavaRealmAPI 
 
-    getRealms(): Promise<Realm[]>
     getRealm(realmId: string): Promise<Realm>
-    getRealmAddress(realmId: string): Promise<Address>
-    getRealmBackups(realmId: string, slotId: string): Promise<Backup[]>
-    getRealmWorldDownload(realmId: string, slotId: string, backupId?: string | 'latest'): Promise<Download>
-    restoreRealmFromBackup(realmId: string, slotId: string, backupId: string): Promise<void>
-    changeRealmState(realmId: string, state: 'open' | 'close'): Promise<void>
+    getRealms(): Promise<Realm[]>
     getRealmSubscriptionInfo(realmId: string): Promise<RealmSubscriptionInfo>
     getRealmSubscriptionInfoDetailed(realmId: string): Promise<RealmSubscriptionInfoDetailed>
+    getRealmAddress(realmId: string): Promise<Address>
+    changeRealmState(realmId: string, state: 'open' | 'close'): Promise<void>
     changeRealmActiveSlot(realmId: string, slotId: number): Promise<void>
     changeRealmNameAndDescription(realmId: string, name: string, description: string): Promise<void>
     deleteRealm(realmId: string): Promise<void>
-
+    resetRealm(realmId: string): Promise<void>
+    changeRealmConfiguration(realmId: string, configuration: any): Promise<void>
+    restoreRealmFromBackup(realmId: string, slotId: string, backupId: string): Promise<void>
+    getRealmBackups(realmId: string, slotId: string): Promise<Backup[]>
+    getRealmWorldDownload(realmId: string, slotId: string, backupId?: string | 'latest'): Promise<Download>
+    opRealmPlayer(realmId: string, uuid: string): Promise<void>
+    deopRealmPlayer(realmId: string, uuid: string): Promise<void>
+    getRecentRealmNews(): Promise<void>
+    getStageCompatibility(): Promise<void>
+    getVersionCompatibility(): Promise<void>
+    getTrialEligibility(): Promise<void>
   }
 
   export class BedrockRealmAPI extends RealmAPI {
-    getRealmFromInvite(realmInviteCode: string, invite: boolean): Promise<Realm>
-    invitePlayer(realmId: string, uuid: string): Promise<Realm>
-    getRealmInvite(realmId: string): Promise<RealmInvite>
-    refreshRealmInvite(realmId: string): Promise<RealmInvite>
-    getPendingInviteCount(): Promise<number>
     getPendingInvites(): Promise<RealmPlayerInvite[]>
+    getPendingInviteCount(): Promise<number>
     acceptRealmInvitation(invitationId: string): Promise<void>
-    rejectRealmInvitation(invitationId: string): Promise<void>
     acceptRealmInviteFromCode(realmInviteCode: string): Promise<void>
-    resetRealm(realmId: string): Promise<void>
-    changeRealmConfiguration(realmId: string, configuration: any): Promise<void>
-    removeRealmInvite(realmId: string, uuid: string): Promise<Realm>
-    opRealmPlayer(realmId: string, uuid: string): Promise<void>
-    deopRealmPlayer(realmId: string, uuid: string): Promise<void>
+    rejectRealmInvitation(invitationId: string): Promise<void>
+    getRealmFromInvite(realmInviteCode: string, invite: boolean): Promise<Realm>
+    getRealmBannedPlayers(realmId: string): Promise<void>
     banPlayerFromRealm(realmId: string, uuid: string): Promise<void>
     unbanPlayerFromRealm(realmId: string, uuid: string): Promise<void>
     removeRealmFromJoinedList(realmId: string): Promise<void>
     changeIsTexturePackRequired(realmId: string, forced: boolean): Promise<Realm>
-    changeRealmDefaultPermission(realmId: string, permission: string): Promise<Realm>
-    changeRealmPlayerPermission(realmId: string, permission: string, uuid: string): Promise<void>
+    changeRealmDefaultPermission(realmId: string, permission: 'VISITOR' | 'MEMBER' | 'OPERATOR'): Promise<Realm>
+    changeRealmPlayerPermission(realmId: string, permission: 'VISITOR' | 'MEMBER' | 'OPERATOR', uuid: string): Promise<void>
+    getRealmInvite(realmId: string): Promise<RealmInvite>
+    refreshRealmInvite(realmId: string): Promise<RealmInvite>
+    invitePlayer(realmId: string, uuid: string): Promise<Realm>
+    removeRealmInvite(realmId: string, uuid: string): Promise<Realm>
   }
 
   export class JavaRealmAPI extends RealmAPI {
     invitePlayer(realmId: string, uuid: string, name: string): Promise<Realm>
+    removeRealmInvite(realmId: string, uuid: string): Promise<void>
+    changeRealmToMinigate(realmId: string, minigameId: number): Promise<void>
+    getRealmStatus(): Promise<void>
   }
 
   export interface Realm {

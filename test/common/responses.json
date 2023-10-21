@@ -96,5 +96,19 @@
         "downloadLink": "https://wsjavaprodeus.blob.core.windows.net/worlds/1112223/mcr_world_3.tar.gz?snapshot=1970-01-01T00:00:00.000Z",
         "resourcePackUrl": null,
         "resourcePackHash": null
-    }
+    },
+    "SubscriptionInfoDetailed": {
+        "type": "SUBSCRIPTION",
+        "store": "xbox1.store",
+        "startDate": 1623908801932,
+        "endDate": 1626428175000,
+        "renewalPeriod": 30,
+        "daysLeft": 2,
+        "subscriptionId": "02ea6dec4d446c5b123dde157920453"
+    },
+    "SubscriptionInfo": {
+        "startDate": 1623908801932,
+        "daysLeft": 2,
+        "subscriptionType": "RECURRING"
+    } 
 }

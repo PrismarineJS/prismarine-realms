@@ -19,8 +19,8 @@ declare module 'prismarine-realms' {
     getRealmWorldDownload(realmId: string, slotId: string, backupId?: string | 'latest'): Promise<Download>
     restoreRealmFromBackup(realmId: string, slotId: string, backupId: string): Promise<void>
     changeRealmState(realmId: string, state: 'open' | 'close'): Promise<void>
-    getRealmSubscriptionInfo(realmId: string): Promise<void>
-    getRealmSubscriptionInfoDetailed(realmId: string): Promise<void>
+    getRealmSubscriptionInfo(realmId: string): Promise<RealmSubscriptionInfo>
+    getRealmSubscriptionInfoDetailed(realmId: string): Promise<RealmSubscriptionInfoDetailed>
     changeRealmActiveSlot(realmId: string, slotId: number): Promise<void>
     changeRealmNameAndDescription(realmId: string, name: string, description: string): Promise<void>
     deleteRealm(realmId: string): Promise<void>
@@ -42,11 +42,10 @@ declare module 'prismarine-realms' {
     removeRealmInvite(realmId: string, uuid: string): Promise<Realm>
     opRealmPlayer(realmId: string, uuid: string): Promise<void>
     deopRealmPlayer(realmId: string, uuid: string): Promise<void>
-    removeAllRealmPlayers(realmId: string): Promise<Realm>
     banPlayerFromRealm(realmId: string, uuid: string): Promise<void>
     unbanPlayerFromRealm(realmId: string, uuid: string): Promise<void>
     removeRealmFromJoinedList(realmId: string): Promise<void>
-    changeForcedTexturePack(realmId: string, forced: boolean): Promise<Realm>
+    changeIsTexturePackRequired(realmId: string, forced: boolean): Promise<Realm>
     changeRealmDefaultPermission(realmId: string, permission: string): Promise<Realm>
     changeRealmPlayerPermission(realmId: string, permission: string, uuid: string): Promise<void>
   }
@@ -121,6 +120,22 @@ declare module 'prismarine-realms' {
     resourcePackHash?: string // Java only
     size?: number // Bedrock only
     token?: string // Bedrock only
+  }
+
+  export interface RealmSubscriptionInfo {
+    startDate: number
+    daysLeft: number
+    subscriptionType: string
+  }
+
+  export interface RealmSubscriptionInfoDetailed {
+    type: string
+    store: string
+    startDate: number
+    endDate: number
+    renewalPeriod: number
+    daysLeft: number
+    subscriptionId: string
   }
 
   export interface RealmPlayerInvite {

@@ -6,7 +6,7 @@ const chaiAsPromised = require('chai-as-promised')
 
 use(chaiAsPromised)
 
-const { World, Join, RealmInvite, RealmInviteModified, PendingInvites, PendingInvitesModified, PendingInvitesCount, BedrockWorldDownload, Backups } = require('./common/responses.json')
+const { World, Join, RealmInvite, RealmInviteModified, PendingInvites, PendingInvitesModified, PendingInvitesCount, BedrockWorldDownload, Backups, SubscriptionInfoDetailed, SubscriptionInfo } = require('./common/responses.json')
 
 const { RealmAPI } = require('prismarine-realms')
 const { Authflow } = require('prismarine-auth')
@@ -70,6 +70,33 @@ nock('https://pocket.realms.minecraft.net')
   .reply(200, Backups)
   .put(`/worlds/${config.realmId}/backups?backupId=${config.backupId}&clientSupportsRetries`)
   .times(2)
+  .reply(204)
+  .persist()
+  .delete(`/worlds/${config.realmId}`)
+  .reply(204)
+  .get(`/subscriptions/${config.realmId}/details`)
+  .reply(200, SubscriptionInfoDetailed)
+  .get(`/subscriptions/${config.realmId}`)
+  .reply(200, SubscriptionInfo)
+  .put(`/worlds/${config.realmId}/slot/2`)
+  .reply(200, true)
+  .put(`/worlds/${config.realmId}`)
+  .reply(200, World)
+  .put(`/worlds/${config.realmId}/reset`)
+  .reply(200, true)
+  .put(`/worlds/${config.realmId}/configuration`)
+  .reply(204)
+  .post(`/worlds/${config.realmId}/blocklist/${config.xuid}`)
+  .reply(204)
+  .delete(`/worlds/${config.realmId}/blocklist/${config.xuid}`)
+  .reply(204)
+  .delete(`/invites/${config.realmId}`)
+  .reply(204)
+  .put(`/worlds/${config.realmId}/content/texturePacksRequired`)
+  .reply(204)
+  .put(`/world/${config.realmId}/defaultPermission`)
+  .reply(204)
+  .put(`/world/${config.realmId}/userPermission`)
   .reply(204)
 
 describe('Bedrock', () => {
@@ -182,6 +209,95 @@ describe('Bedrock', () => {
     it('should return a world download object', async () => {
       const realm = await api.getRealm(config.realmId)
       expect(await realm.getWorldDownload()).to.deep.equal(new Download({ platform: 'bedrock' }, BedrockWorldDownload))
+    })
+  })
+  describe('Realm Delete', () => {
+    it('should return void indicating Realm is successfully deleted', async () => {
+      const realm = await api.getRealm(config.realmId)
+      await realm.delete()
+    })
+  })
+  describe('Realm getSubscriptionInfo', () => {
+    it('should return an array of basic subscription info', async () => {
+      const realm = await api.getRealm(config.realmId)
+      expect(await realm.getSubscriptionInfo()).to.deep.equal(SubscriptionInfo)
+    })
+  })
+  describe('Realm getSubscriptionInfoDetailed', () => {
+    it('should return an array of detailed subscription info', async () => {
+      const realm = await api.getRealm(config.realmId)
+      expect(await realm.getSubscriptionInfoDetailed()).to.deep.equal(SubscriptionInfoDetailed)
+    })
+  })
+  describe('Realm changeActiveRealmSlot', () => {
+    it('should return true to indicate the change has been made', async () => {
+      const realm = await api.getRealm(config.realmId)
+      expect(await realm.changeActiveSlot(2)).to.deep.equal(true)
+    })
+  })
+  describe('Realm changeNameAndDescription', () => {
+    it('should return a Realm object', async () => {
+      const realm = await api.getRealm(config.realmId)
+      expect(await realm.changeNameAndDescription('Hello', 'World!')).to.deep.equal(World)
+    })
+  })
+  describe('Realm reset', () => {
+    it('should return true to indicate it reset the Realm', async () => {
+      const reset = await api.resetRealm(config.realmId)
+      expect(reset).to.deep.equal(true)
+    })
+  })
+  describe('Realm changeConfiguration', () => {
+    it('should return void', async () => {
+      await api.changeRealmConfiguration(config.realmId, '{ "description":{"description": "","name": ""options":{"slotName":"Test","pvp":true,"spawnAnimals":true,"spawnMonsters":true,"spawnNPCs":true,"spawnProtection":0,"commandBlocks":false,"forceGameMode":false,"gameMode":0,"difficulty":2,"worldTemplateId":-1,"worldTemplateImage":"","adventureMap":false,"resourcePackHash":null,"incompatibilities":[],"versionRef":"","versionLock":false,"cheatsAllowed":true,"texturePacksRequired":true,"timeRequest":null,"enabledPacks":{"resourcePacks":[""],"behaviorPacks":[""]},"customGameServerGlobalProperties":null,"worldSettings":{"sendcommandfeedback":{"type":0,"value":true},"commandblocksenabled":{"type":0,"value":true},"dodaylightcycle":{"type":0,"value":true},"randomtickspeed":{"type":1,"value":3},"naturalregeneration":{"type":0,"value":true},"showtags":{"type":0,"value":true},"commandblockoutput":{"type":0,"value":true},"dofiretick":{"type":0,"value":false},"maxcommandchainlength":{"type":1,"value":65535},"falldamage":{"type":0,"value":true},"tntexplodes":{"type":0,"value":true},"drowningdamage":{"type":0,"value":true},"domobloot":{"type":0,"value":true},"domobspawning":{"type":0,"value":true},"showbordereffect":{"type":0,"value":true},"showdeathmessages":{"type":0,"value":true},"respawnblocksexplode":{"type":0,"value":true},"doweathercycle":{"type":0,"value":true},"doentitydrops":{"type":0,"value":true},"doimmediaterespawn":{"type":0,"value":true},"freezedamage":{"type":0,"value":true},"pvp":{"type":0,"value":true},"keepinventory":{"type":0,"value":false},"doinsomnia":{"type":0,"value":true},"mobgriefing":{"type":0,"value":true},"dotiledrops":{"type":0,"value":true},"firedamage":{"type":0,"value":true},"functioncommandlimit":{"type":1,"value":10000},"spawnradius":{"type":1,"value":25},"showcoordinates":{"type":0,"value":true}}}}')
+    })
+  })
+  describe('Realm removeInvite', () => {
+    it('should return a Realm object', async () => {
+      const removedInvite = await api.removeRealmInvite(config.realmId, config.xuid)
+      expect(removedInvite).to.deep.equal({ ...World, players: [{ uuid: config.xuid }] })
+    })
+  })
+  describe('Realm opRealmPlayer', () => {
+    it('should return a Realm object', async () => {
+      const op = await api.opRealmPlayer(config.realmId, config.xuid)
+      expect(op).to.deep.equal({ ...World, players: [{ uuid: config.xuid }] })
+    })
+  })
+  describe('Realm deopRealmPlayer', () => {
+    it('should return a Realm object', async () => {
+      const deop = await api.deopRealmPlayer(config.realmId, config.xuid)
+      expect(deop).to.deep.equal({ ...World, players: [{ uuid: config.xuid }] })
+    })
+  })
+  describe('Realm banPlayerFromRealm', () => {
+    it('should return void', async () => {
+      await api.banPlayerFromRealm(config.realmId, config.xuid)
+    })
+  })
+  describe('Realm unbanPlayerFromRealm', () => {
+    it('should return void', async () => {
+      await api.unbanPlayerFromRealm(config.realmId, config.xuid)
+    })
+  })
+  describe('Realm removeRealmFromJoinedList', () => {
+    it('should return void', async () => {
+      await api.removeRealmFromJoinedList(config.realmId)
+    })
+  })
+  describe('Realm changeIsTexturePackRequired', () => {
+    it('should return void', async () => {
+      await api.changeIsTexturePackRequired(config.realmId, true)
+    })
+  })
+  describe('Realm changeRealmDefaultPermission', () => {
+    it('should return void', async () => {
+      await api.changeRealmDefaultPermission(config.realmId, 'MEMBER')
+    })
+  })
+  describe('Realm changeRealmPlayerPermission', () => {
+    it('should return void', async () => {
+      await api.changeRealmPlayerPermission(config.realmId, 'MEMBER', config.xuid)
     })
   })
 })

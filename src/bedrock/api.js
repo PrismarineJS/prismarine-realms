@@ -166,15 +166,6 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     })
   }
 
-  async removeAllRealmPlayers (realmId) {
-    const data = await this.rest.put(`/invites/${realmId}/invite/update`, {
-      body: {
-        invites: null
-      }
-    })
-    return new Realm(this, data)
-  }
-
   async banPlayerFromRealm (realmId, uuid) {
     return await this.rest.post(`/worlds/${realmId}/blocklist/${uuid}`)
   }
@@ -187,7 +178,7 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     return await this.rest.delete(`/invites/${realmId}`)
   }
 
-  async changeForcedTexturePack (realmId, forced) {
+  async changeIsTexturePackRequired (realmId, forced) {
     if (forced) {
       return await this.rest.put(`/worlds/${realmId}/content/texturePacksRequired`)
     } else {
@@ -204,7 +195,7 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     return new Realm(this, data)
   }
 
-  async changeRealmPlayersPermission (realmId, permission, uuid) {
+  async changeRealmPlayerPermission (realmId, permission, uuid) {
     return await this.rest.put(`/world/${realmId}/userPermission`, {
       body: {
         permission: permission.toUpperCase(),

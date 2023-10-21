@@ -65,11 +65,11 @@ module.exports = class Realm {
     return this.#api.getRealmSubscriptionInfoDetailed(this.id)
   }
 
-  async changeActiveSlot () {
-    return this.#api.changeRealmActiveSlot(this.id, this.activeSlot)
+  async changeActiveSlot (slotId) {
+    return this.#api.changeRealmActiveSlot(this.id, slotId)
   }
 
-  async changeNameAndDescription () {
-    return this.#api.changeRealmNameAndDescription(this.id, this.name, this.motd)
+  async changeNameAndDescription (name, description) {
+    return this.#api.changeRealmNameAndDescription(this.id, name, description)
   }
 }

@@ -804,6 +804,20 @@ No output
 
 ---
 
+#### reset
+
+() => Promise\<void>
+
+Resets a Realm to its default world and settings
+
+```js
+await realm.delete()
+```
+
+True if it successfully reset the Realm. False if it failed to reset the Realm (403 if you are not the owner)
+
+---
+
 ### opPlayer
 
 (uuid: string) => Promise\<void>
@@ -931,8 +945,6 @@ await realm.getSubscriptionInfoDetailed()
 ```
 
 </details>
-
----
 
 ---
 

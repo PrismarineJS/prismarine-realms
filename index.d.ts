@@ -63,17 +63,20 @@ declare module 'prismarine-realms' {
   }
 
   export interface Realm {
-    getAddress(): Promise<Address>
-    invitePlayer(uuid: string, name: string): Promise<Realm>
-    open(): Promise<void>
-    close(): Promise<void>
-    delete(): Promise<void>
-    getBackups(): Promise<Backup[]>
-    getWorldDownload(): Promise<Download>
     getSubscriptionInfo(): Promise<void>
     getSubscriptionInfoDetailed(): Promise<void>
-    changeActiveSlot(): Promise<void>
-    changeNameAndDescription(): Promise<void>
+    getAddress(): Promise<Address>
+    open(): Promise<void>
+    close(): Promise<void>
+    changeActiveSlot(slotId: string): Promise<void>
+    changeNameAndDescription(name: string, description: string): Promise<void>
+    delete(): Promise<void>
+    reset(): Promise<void>
+    getBackups(): Promise<Backup[]>
+    getWorldDownload(): Promise<Download>
+    opPlayer(uuid: string): Promise<void>
+    deopPlayer(uuid: string): Promise<void>
+    invitePlayer(uuid: string, name: string): Promise<Realm>
     id: number
     remoteSubscriptionId: string
     owner: string | null

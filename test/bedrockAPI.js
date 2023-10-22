@@ -30,7 +30,7 @@ const api = RealmAPI.from(authflow, 'bedrock', { skipAuth: true })
 
 nock('https://pocket.realms.minecraft.net')
   .get(`/worlds/${config.realmId}`) // Get Realm
-  .times(14)
+  .times(16)
   .reply(200, World)
   .get(`/subscriptions/${config.realmId}`) // Subscription info
   .reply(200, SubscriptionInfo)
@@ -193,18 +193,18 @@ describe('Bedrock', () => {
   })
   describe('Realm opRealmPlayer', () => {
     it('should return a Realm object', async () => {
-      const op = await api.opRealmPlayer(config.realmId, config.xuid)
-      expect(op).to.deep.equal(World)
+      const realm = await api.getRealm(config.realmId)
+      expect(await realm.opPlayer(config.realmId, config.xuid)).to.deep.equal(World)
     })
   })
   describe('Realm deopRealmPlayer', () => {
     it('should return a Realm object', async () => {
-      const deop = await api.deopRealmPlayer(config.realmId, config.xuid)
-      expect(deop).to.deep.equal(World)
+      const realm = await api.getRealm(config.realmId)
+      expect(await realm.deopPlayer(config.realmId, config.xuid)).to.deep.equal(World)
     })
   })
   describe('Realm InvitePayer', () => {
-    it('should contain the player uuid and realmId included in the request', async () => {
+    it('should contain the player xuid and realmId included in the request', async () => {
       const realm = await api.getRealm(config.realmId)
       expect(await realm.invitePlayer(config.xuid)).to.deep.equal(World)
     })

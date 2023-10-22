@@ -59,7 +59,7 @@ declare module 'prismarine-realms' {
     invitePlayer(realmId: string, uuid: string, name: string): Promise<Realm>
     removePlayerFromRealm(realmId: string, uuid: string): Promise<void>
     changeRealmConfiguration(realmId: string, configuration: Array, slotId: number): Promise<void>
-    changeRealmToMinigate(realmId: string, minigameId: number): Promise<void>
+    changeRealmToMinigame(realmId: string, minigameId: number): Promise<void>
     getRealmStatus(): Promise<void>
   }
 

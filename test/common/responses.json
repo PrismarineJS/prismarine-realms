@@ -110,5 +110,10 @@
         "startDate": 1623908801932,
         "daysLeft": 2,
         "subscriptionType": "RECURRING"
+    },
+    "Operators": {
+        "ops": [
+            "Steve"
+        ]
     } 
 }

@@ -12,19 +12,30 @@ declare module 'prismarine-realms' {
 
     static from(authflow: Authflow, platform: 'bedrock' | 'java'): BedrockRealmAPI | JavaRealmAPI 
 
-    getRealms(): Promise<Realm[]>
     getRealm(realmId: string): Promise<Realm>
-    getRealmAddress(realmId: string): Promise<Address>
+    getRealms(): Promise<Realm[]>
     getRealmBackups(realmId: string, slotId: string): Promise<Backup[]>
-    getRealmWorldDownload(realmId: string, slotId: string, backupId?: string | 'latest'): Promise<Download>
     restoreRealmFromBackup(realmId: string, slotId: string, backupId: string): Promise<void>
+    getRealmSubscriptionInfo(realmId: string): Promise<RealmSubscriptionInfo>
+    getRealmSubscriptionInfoDetailed(realmId: string): Promise<RealmSubscriptionInfoDetailed>
+    deleteRealm(realmId: string): Promise<void>
     changeRealmState(realmId: string, state: 'open' | 'close'): Promise<void>
-
+    changeRealmActiveSlot(realmId: string, slotId: number): Promise<void>
+    changeRealmNameAndDescription(realmId: string, name: string, description: string): Promise<void>
+    getRecentRealmNews(): Promise<void>
+    getStageCompatibility(): Promise<void>
+    getVersionCompatibility(): Promise<void>
+    // All functions below are names in the same in both Bedrock and Java but hit different endpoints
+    getRealmAddress(realmId: string): Promise<Address>
+    resetRealm(realmId: string): Promise<void>
+    getRealmWorldDownload(realmId: string, slotId: string, backupId?: string | 'latest'): Promise<Download>
+    opRealmPlayer(realmId: string, uuid: string): Promise<void>
+    deopRealmPlayer(realmId: string, uuid: string): Promise<void>
+    getTrialEligibility(): Promise<void>
   }
 
   export class BedrockRealmAPI extends RealmAPI {
     getRealmFromInvite(realmInviteCode: string, invite: boolean): Promise<Realm>
-    invitePlayer(realmId: string, uuid: string): Promise<Realm>
     getRealmInvite(realmId: string): Promise<RealmInvite>
     refreshRealmInvite(realmId: string): Promise<RealmInvite>
     getPendingInviteCount(): Promise<number>
@@ -32,19 +43,41 @@ declare module 'prismarine-realms' {
     acceptRealmInvitation(invitationId: string): Promise<void>
     rejectRealmInvitation(invitationId: string): Promise<void>
     acceptRealmInviteFromCode(realmInviteCode: string): Promise<void>
+    invitePlayer(realmId: string, xuid: string): Promise<Realm> // This is also in Java Edition but this doesn't take the name param
+    removePlayerFromRealm(realmId: string, xuid: string): Promise<Realm>
+    banPlayerFromRealm(realmId: string, xuid: string): Promise<void>
+    unbanPlayerFromRealm(realmId: string, xuid: string): Promise<void>
+    getRealmBannedPlayers(realmId: string): Promise<void>
+    removeRealmFromJoinedList(realmId: string): Promise<void>
+    changeIsTexturePackRequired(realmId: string, forced: boolean): Promise<Realm>
+    changeRealmDefaultPermission(realmId: string, permission: 'VISITOR' | 'MEMBER' | 'OPERATOR'): Promise<Realm>
+    changeRealmPlayerPermission(realmId: string, permission: 'VISITOR' | 'MEMBER' | 'OPERATOR', xuid: string): Promise<void>
+    changeRealmConfiguration(realmId: string, configuration: Array): Promise<void> // This is also in Java Edition but this doesn't take the slotId param
   }
 
   export class JavaRealmAPI extends RealmAPI {
     invitePlayer(realmId: string, uuid: string, name: string): Promise<Realm>
+    removePlayerFromRealm(realmId: string, uuid: string): Promise<void>
+    changeRealmConfiguration(realmId: string, configuration: Array, slotId: number): Promise<void>
+    changeRealmToMinigame(realmId: string, minigameId: number): Promise<void>
+    getRealmStatus(): Promise<void>
   }
 
   export interface Realm {
+    getSubscriptionInfo(): Promise<void>
+    getSubscriptionInfoDetailed(): Promise<void>
     getAddress(): Promise<Address>
-    invitePlayer(uuid: string, name: string): Promise<Realm>
     open(): Promise<void>
     close(): Promise<void>
+    changeActiveSlot(slotId: string): Promise<void>
+    changeNameAndDescription(name: string, description: string): Promise<void>
+    delete(): Promise<void>
+    reset(): Promise<void>
     getBackups(): Promise<Backup[]>
     getWorldDownload(): Promise<Download>
+    opPlayer(uuid: string): Promise<void>
+    deopPlayer(uuid: string): Promise<void>
+    invitePlayer(uuid: string, name: string): Promise<Realm>
     id: number
     remoteSubscriptionId: string
     owner: string | null
@@ -99,6 +132,22 @@ declare module 'prismarine-realms' {
     resourcePackHash?: string // Java only
     size?: number // Bedrock only
     token?: string // Bedrock only
+  }
+
+  export interface RealmSubscriptionInfo {
+    startDate: number
+    daysLeft: number
+    subscriptionType: string
+  }
+
+  export interface RealmSubscriptionInfoDetailed {
+    type: string
+    store: string
+    startDate: number
+    endDate: number
+    renewalPeriod: number
+    daysLeft: number
+    subscriptionId: string
   }
 
   export interface RealmPlayerInvite {

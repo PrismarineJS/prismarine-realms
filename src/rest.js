@@ -19,22 +19,51 @@ module.exports = class Rest {
     this.maxRetries = options.maxRetries ?? 4
   }
 
+  /**
+   * Sends a GET request to the specified route with the specified options
+   * @param {string} route The route to send the request to. This can also be the URL with parameters
+   * @param {Array} options The body or options of the request
+   * @returns The response that is given from the request
+   */
   get (route, options) {
     return this.prepareRequest({ ...options, route, method: 'get' })
   }
 
+  /**
+   * Sends a POST request to the specified route with the specified options
+   * @param {string} route The route to send the request to. This can also be the URL with parameters
+   * @param {Array} options The body or options of the request
+   * @returns The response that is given from the request
+   */
   post (route, options) {
     return this.prepareRequest({ ...options, route, method: 'post' })
   }
 
+  /**
+   * Sends a PUT request to the specified route with the specified options
+   * @param {string} route The route to send the request to. This can also be the URL with parameters
+   * @param {Array} options The body or options of the request
+   * @returns The response that is given from the request
+   */
   put (route, options) {
     return this.prepareRequest({ ...options, route, method: 'put' })
   }
 
+  /**
+   * Sends a DELETE request to the specified route with the specified options
+   * @param {string} route The route to send the request to. This can also be the URL with parameters
+   * @param {Array} options The body or options of the request
+   * @returns The response that is given from the request
+   */
   delete (route, options) {
     return this.prepareRequest({ ...options, route, method: 'delete' })
   }
 
+  /**
+   * Prepares a request with the necessary headers, body, and other options
+   * @param {Array} request The options, route, and method that is in the request
+   * @returns The response that is given from the request
+   */
   async prepareRequest (request) {
     const url = `${this.host}${request.route}`
 
@@ -64,6 +93,13 @@ module.exports = class Rest {
     return this.execRequest(url, fetchOptions)
   }
 
+  /**
+   *
+   * @param {string} url The URL to send the request to
+   * @param {Array} options The method, body, and headers of the request
+   * @param {number} retries The number of retries that should be made if the request fails
+   * @returns The response that is given from the request
+   */
   async execRequest (url, options, retries = 0) {
     const response = await fetch(url, options)
 

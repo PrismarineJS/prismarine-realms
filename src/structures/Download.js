@@ -17,14 +17,27 @@ module.exports = class Download {
     }
   }
 
+  /**
+   * Writes the buffer of a Realms world to a directory
+   * @param {string} directory The directory to write the world download to
+   * @returns The downloaded world in buffer form and written to the specified directory
+   */
   async writeToDirectory (directory) {
     return this.#downloadWorld().then(buffer => fs.writeFile(`${directory}/world${this.fileExtension}`, buffer))
   }
 
+  /**
+   * Retrieves the buffer of a Realms world
+   * @returns The buffer form of the Realms world
+   */
   async getBuffer () {
     return this.#downloadWorld()
   }
 
+  /**
+   * Downloads the world for the Realm in mcworld format for Bedrock Edition or tar.gz format for Java Edition
+   * @returns A promise that resolves to a buffer of the world
+   */
   async #downloadWorld () {
     const res = await fetch(this.downloadUrl, {
       headers: (this.token) ? { Authorization: `Bearer ${this.token}` } : {}

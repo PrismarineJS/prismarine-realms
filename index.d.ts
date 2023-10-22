@@ -26,12 +26,12 @@ declare module 'prismarine-realms' {
     getStageCompatibility(): Promise<void>
     getVersionCompatibility(): Promise<void>
     // All functions below are names in the same in both Bedrock and Java but hit different endpoints
-    getTrialEligibility(): Promise<void>
     getRealmAddress(realmId: string): Promise<Address>
     resetRealm(realmId: string): Promise<void>
     getRealmWorldDownload(realmId: string, slotId: string, backupId?: string | 'latest'): Promise<Download>
     opRealmPlayer(realmId: string, uuid: string): Promise<void>
     deopRealmPlayer(realmId: string, uuid: string): Promise<void>
+    getTrialEligibility(): Promise<void>
   }
 
   export class BedrockRealmAPI extends RealmAPI {

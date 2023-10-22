@@ -5,6 +5,10 @@ const Download = require('../structures/Download')
 
 module.exports = class BedrockRealmAPI extends RealmAPI {
   /**
+   * The following 6 functions below are in both Java Edition Minecraft and Bedrock. They just hit different endpoints
+   */
+
+  /**
    * Retrieves the IP and port of a Realm
    * @param {string} realmId The ID of the Realm to get the address of
    * @returns The IP and port of the Realm separated by a comma
@@ -14,6 +18,71 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     const [host, port] = data.address.split(':')
     return { host, port: Number(port) }
   }
+
+  /**
+   * Resets a Realm to its default world and settings
+   * @param {string} realmId The ID of the Realm to reset
+   * @returns True if it successfully reset the Realm. False if it failed to reset the Realm (403 if you are not the owner)
+   */
+  async resetRealm (realmId) {
+    return await this.rest.put(`/worlds/${realmId}/reset`)
+  }
+
+  /**
+   * Retrieves and downloads a Realms world backup
+   * @param {string} realmId The ID of a Realm to retrieve the backup of
+   * @param {number} slotId The slot, or world ID to retrieve the backup of. This can be 1, 2, or 3
+   * @param {string|number} backupId The ID of the backup to download. This can be 'latest' or a number
+   * @returns The download URL, token, and size of the backup
+   */
+  async getRealmWorldDownload (realmId, slotId, backupId = 'latest') {
+    const data = await this.rest.get(`/archive/download/world/${realmId}/${slotId}/${backupId}`) // if backupId = latest will get the world as it is now not the most recent backup
+    return new Download(this, data)
+  }
+
+  /**
+   * Sets a player as an operator in the Realm
+   * @param {string} realmId The ID of the Realm to set them as an operator in
+   * @param {string} uuid The UUID of the player to set as an operator
+   * @returns All of the Realms information
+   */
+  async opRealmPlayer (realmId, uuid) {
+    return await this.rest.put(`/invites/${realmId}/invite/update`, {
+      body: {
+        invites: {
+          [uuid]: 'OP'
+        }
+      }
+    })
+  }
+
+  /**
+     * Removes a player as an operator in the Realm
+     * @param {string} realmId The ID of the Realm to remove operator in
+     * @param {string} uuid The UUID of the player to remove operator from
+     * @returns All of the Realms information
+     */
+  async deopRealmPlayer (realmId, uuid) {
+    return await this.rest.put(`/invites/${realmId}/invite/update`, {
+      body: {
+        invites: {
+          [uuid]: 'DEOP'
+        }
+      }
+    })
+  }
+
+  /**
+   * Checks wether or not you can still use the Realms free trial
+   * @returns True if you have a free 1 month trial available. False if you already used your free trial
+   */
+  async getTrialEligibility () {
+    return await this.rest.get('/trial/new')
+  }
+
+  /**
+   * All of the functions below are only in Bedrock Edition Minecraft unless stated otherwise in index.d.ts
+   */
 
   /**
    * Retrieves a Realms data from an invite code or link. If the player isn't a member, it will accept the invite by default
@@ -138,59 +207,6 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
   }
 
   /**
-   * Resets a Realm to its default world and settings
-   * @param {string} realmId The ID of the Realm to reset
-   * @returns True if it successfully reset the Realm. False if it failed to reset the Realm (403 if you are not the owner)
-   */
-  async resetRealm (realmId) {
-    return await this.rest.put(`/worlds/${realmId}/reset`)
-  }
-
-  /**
-   * Retrieves and downloads a Realms world backup
-   * @param {string} realmId The ID of a Realm to retrieve the backup of
-   * @param {number} slotId The slot, or world ID to retrieve the backup of. This can be 1, 2, or 3
-   * @param {string|number} backupId The ID of the backup to download. This can be 'latest' or a number
-   * @returns The download URL, token, and size of the backup
-   */
-  async getRealmWorldDownload (realmId, slotId, backupId = 'latest') {
-    const data = await this.rest.get(`/archive/download/world/${realmId}/${slotId}/${backupId}`) // if backupId = latest will get the world as it is now not the most recent backup
-    return new Download(this, data)
-  }
-
-  /**
-   * Sets a player as an operator in the Realm
-   * @param {string} realmId The ID of the Realm to set them as an operator in
-   * @param {string} uuid The UUID of the player to set as an operator
-   * @returns All of the Realms information
-   */
-  async opRealmPlayer (realmId, uuid) {
-    return await this.rest.put(`/invites/${realmId}/invite/update`, {
-      body: {
-        invites: {
-          [uuid]: 'OP'
-        }
-      }
-    })
-  }
-
-  /**
-   * Removes a player as an operator in the Realm
-   * @param {string} realmId The ID of the Realm to remove operator in
-   * @param {string} uuid The UUID of the player to remove operator from
-   * @returns All of the Realms information
-   */
-  async deopRealmPlayer (realmId, uuid) {
-    return await this.rest.put(`/invites/${realmId}/invite/update`, {
-      body: {
-        invites: {
-          [uuid]: 'DEOP'
-        }
-      }
-    })
-  }
-
-  /**
    * Removed a player from the Realm. This isn't like banning and only removes the Realm from the players joined list and kicks them if they're logged in
    * @param {string} realmId The ID of the Realm to remove the player from
    * @param {string} xuid The XUID of the player to remove from the Realm
@@ -300,13 +316,5 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     return await this.rest.post(`/worlds/${realmId}/configuration`, {
       body: configuration
     })
-  }
-
-  /**
-   * Checks wether or not you can still use the Realms free trial
-   * @returns True if you have a free 1 month trial available. False if you already used your free trial
-   */
-  async getTrialEligibility () {
-    return await this.rest.get('/trial/new')
   }
 }

@@ -57,12 +57,8 @@ module.exports = class Realm {
     return this.#api.getRealmBackups(this.id, this.activeSlot)
   }
 
-  async getSubscriptionInfo () {
-    return this.#api.getRealmSubscriptionInfo(this.id)
-  }
-
-  async getSubscriptionInfoDetailed () {
-    return this.#api.getRealmSubscriptionInfoDetailed(this.id)
+  async getSubscriptionInfo (detailed = false) {
+    return this.#api.getRealmSubscriptionInfo(this.id, detailed)
   }
 
   async changeActiveSlot (slotId) {

@@ -35,12 +35,12 @@ class RealmAPI {
     return await this.rest.put(`/worlds/${realmId}/backups?backupId=${encodeURIComponent(backupId)}&clientSupportsRetries`)
   }
 
-  async getRealmSubscriptionInfo (realmId) {
-    return await this.rest.get(`/subscriptions/${realmId}`)
-  }
-
-  async getRealmSubscriptionInfoDetailed (realmId) {
-    return await this.rest.get(`/subscriptions/${realmId}/details`)
+  async getRealmSubscriptionInfo (realmId, detailed = false) {
+    if (detailed) {
+      return await this.rest.get(`/subscriptions/${realmId}/details`)
+    } else {
+      return await this.rest.get(`/subscriptions/${realmId}`)
+    }
   }
 
   async changeRealmState (realmId, state) {

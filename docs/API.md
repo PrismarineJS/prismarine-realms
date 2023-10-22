@@ -373,12 +373,13 @@ No output
 
 ### changeRealmConfiguration
 
-(realmId: string, configuration: string) => Promise\<void>
+(realmId: string, configuration: object) => Promise\<void>
 
 Updates a Realms configuration. This can be gamerules or general Realm settings
 
 ```js
-await api.changeRealmConfiguration('1234567', '{ "description":{"description": "","name": ""options":{"slotName":"Test","pvp":true,"spawnAnimals":true,"spawnMonsters":true,"spawnNPCs":true,"spawnProtection":0,"commandBlocks":false,"forceGameMode":false,"gameMode":0,"difficulty":2,"worldTemplateId":-1,"worldTemplateImage":"","adventureMap":false,"resourcePackHash":null,"incompatibilities":[],"versionRef":"","versionLock":false,"cheatsAllowed":true,"texturePacksRequired":true,"timeRequest":null,"enabledPacks":{"resourcePacks":[""],"behaviorPacks":[""]},"customGameServerGlobalProperties":null,"worldSettings":{"sendcommandfeedback":{"type":0,"value":true},"commandblocksenabled":{"type":0,"value":true},"dodaylightcycle":{"type":0,"value":true},"randomtickspeed":{"type":1,"value":3},"naturalregeneration":{"type":0,"value":true},"showtags":{"type":0,"value":true},"commandblockoutput":{"type":0,"value":true},"dofiretick":{"type":0,"value":false},"maxcommandchainlength":{"type":1,"value":65535},"falldamage":{"type":0,"value":true},"tntexplodes":{"type":0,"value":true},"drowningdamage":{"type":0,"value":true},"domobloot":{"type":0,"value":true},"domobspawning":{"type":0,"value":true},"showbordereffect":{"type":0,"value":true},"showdeathmessages":{"type":0,"value":true},"respawnblocksexplode":{"type":0,"value":true},"doweathercycle":{"type":0,"value":true},"doentitydrops":{"type":0,"value":true},"doimmediaterespawn":{"type":0,"value":true},"freezedamage":{"type":0,"value":true},"pvp":{"type":0,"value":true},"keepinventory":{"type":0,"value":false},"doinsomnia":{"type":0,"value":true},"mobgriefing":{"type":0,"value":true},"dotiledrops":{"type":0,"value":true},"firedamage":{"type":0,"value":true},"functioncommandlimit":{"type":1,"value":10000},"spawnradius":{"type":1,"value":25},"showcoordinates":{"type":0,"value":true}}}}')
+const configuration = { description:{description: "",name: option:{slotName:"Test",pvp:true,spawnAnimals:true,spawnMonster:true,spawnNPCs:true,spawnProtection:0,commandBlocks:false,forceGameMode:false,gameMode:0,difficulty:2,worldTemplateId:-1,worldTemplateImage:"",adventureMap:false,resourcePackHash:null,incompatibilities:[],versionRef:"",versionLock:false,cheatsAllowed:true,texturePacksRequired:true,timeRequest:null,enabledPacks:{resourcePacks:[""],behaviorPacks:[""]},customGameServerGlobalProperties:null,worldSettings:{sendcommandfeedback:{type:0,value:true}commandblocksenabled:{type:0,value:true},dodaylightcycle:{type:0,value:true},randomtickspeed:{type:1,value:3},naturalregeneration:{type:0,value:true},showtags:{type:0,value:true},commandblockoutput:{type:0,value:true},dofiretick:{type:0,value:false},maxcommandchainlength:{type:1,value:65535},falldamage:{type:0,value:true},tntexplodes:{type:0,value:true},drowningdamage:{type:0,value:true},domobloot:{type:0,value:true},domobspawning:{type:0,value:true},showbordereffect:{type:0,value,:true},showdeathmessages:{type:0,value:true},respawnblocksexplode:{type:0,value:true},doweathercycle:{type:0,value:true},doentitydrops:{type:0,value:true},doimmediaterespawn:{type:0,value:true},freezedamage:{type:0,value:true},pvp:{type:0,value:true},keepinventory:{type:0,value:false},doinsomnia:{type:0,value:true},mobgriefing:{type:0,value:true},dotiledrops:{type:0,value:true},firedamage:{type:0,value:true},functioncommandlimit:{type:1,value:10000},spawnradius:{type:1,value:25},showcoordinates:{type:0,value:true}}}}}
+await api.changeRealmConfiguration('1234567', new Configuration({ platform: 'bedrock'}, configuration))
 ```
 
 <details>
@@ -724,43 +725,26 @@ await realm.getWorldDownload()
 
 #### getSubscriptionInfo
 
-() => Promise\<RealmSubscriptionInfo>
+(detailed: boolean) => Promise\<RealmSubscriptionInfo>
 
-Gets the basic subscription
+Gets the subscription info of the Realm
 
 ```js
-await realm.getSubscriptionInfo()
+await realm.getSubscriptionInfo(true)
 ```
 
 <details>
 <summary>Output</summary>
 
 ```ts
+Basic Subscription Info:
 {
   startDate: number
   daysLeft: number
   subscriptionType: string
 }
-```
 
-</details>
-
----
-
-#### getSubscriptionInfoDetailed
-
-() => Promise\<RealmSubscriptionInfoDetailed>
-
-Gets the detailed subscription info
-
-```js
-await realm.getSubscriptionInfoDetailed()
-```
-
-<details>
-<summary>Output</summary>
-
-```ts
+Detailed Subscription Info:
 {
   type: string
   store: string
@@ -773,8 +757,6 @@ await realm.getSubscriptionInfoDetailed()
 ```
 
 </details>
-
----
 
 ---
 

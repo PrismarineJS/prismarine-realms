@@ -10,7 +10,7 @@ declare module 'prismarine-realms' {
      */
     constructor(authflow: Authflow, platform: 'bedrock' | 'java')
 
-    static from(authflow: Authflow, platform: 'bedrock' | 'java'): BedrockRealmAPI | JavaRealmAPI 
+    static from(authflow: Authflow, platform: 'bedrock' | 'java'): BedrockRealmAPI | JavaRealmAPI
 
     getRealms(): Promise<Realm[]>
     getRealm(realmId: string): Promise<Realm>
@@ -19,8 +19,7 @@ declare module 'prismarine-realms' {
     getRealmWorldDownload(realmId: string, slotId: string, backupId?: string | 'latest'): Promise<Download>
     restoreRealmFromBackup(realmId: string, slotId: string, backupId: string): Promise<void>
     changeRealmState(realmId: string, state: 'open' | 'close'): Promise<void>
-    getRealmSubscriptionInfo(realmId: string): Promise<RealmSubscriptionInfo>
-    getRealmSubscriptionInfoDetailed(realmId: string): Promise<RealmSubscriptionInfoDetailed>
+    getRealmSubscriptionInfo(realmId: string, detailed: boolean): Promise<RealmSubscriptionInfo | RealmSubscriptionInfoDetailed>
     changeRealmActiveSlot(realmId: string, slotId: number): Promise<void>
     changeRealmNameAndDescription(realmId: string, name: string, description: string): Promise<void>
     deleteRealm(realmId: string): Promise<void>
@@ -63,7 +62,6 @@ declare module 'prismarine-realms' {
     getBackups(): Promise<Backup[]>
     getWorldDownload(): Promise<Download>
     getSubscriptionInfo(): Promise<void>
-    getSubscriptionInfoDetailed(): Promise<void>
     changeActiveSlot(): Promise<void>
     changeNameAndDescription(): Promise<void>
     id: number
@@ -98,16 +96,16 @@ declare module 'prismarine-realms' {
     lastModifiedDate: number
     size: number
     metadata: {
-        gameDifficulty: string
-        name: string
-        gameServerVersion: string
-        enabledPacks: { 
-          resourcePack: string
-          behaviorPack: string
-        }
-        description: string | null
-        gamemode: string
-        worldType: string
+      gameDifficulty: string
+      name: string
+      gameServerVersion: string
+      enabledPacks: {
+        resourcePack: string
+        behaviorPack: string
+      }
+      description: string | null
+      gamemode: string
+      worldType: string
     }
   }
 
@@ -157,22 +155,21 @@ declare module 'prismarine-realms' {
   }
 
   export interface RealmPlayer {
-      uuid: string,
-      name: string,
-      operator: boolean,
-      accepted: boolean,
-      online: boolean,
-      permission: string
+    uuid: string,
+    name: string,
+    operator: boolean,
+    accepted: boolean,
+    online: boolean,
+    permission: string
   }
 
   export interface Slot {
-      options: string
-      slotId: number
+    options: string
+    slotId: number
   }
 
   export interface Address {
     host: string
     port: number
   }
-
 }

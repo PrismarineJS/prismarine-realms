@@ -77,7 +77,7 @@
                 "size": 10000,
                 "metadata": {
                     "game_difficulty": "0",
-                    "name":"Test Realm",
+                    "name": "Test Realm",
                     "game_server_version": "1.19.0",
                     "enabled_packs": "{\"resourcePacks\":[],\"behaviorPacks\":[\"4b45f411-9ca2-4d12-a2a8-4d2de8746538\"]}",
                     "description": null,
@@ -86,6 +86,175 @@
                 }
             }
         ]
+    },
+    "BedrockConfiguration": {
+        "description": {
+            "description": "Test description",
+            "name": "Test Realm"
+        },
+        "options": {
+            "adventureMap": false,
+            "cheatsAllowed": false,
+            "commandBlocks": false,
+            "customGameServerGlobalProperties": null,
+            "difficulty": 3,
+            "enabledPacks": {
+                "behaviorPacks": [],
+                "resourcePacks": []
+            },
+            "forceGameMode": false,
+            "gameMode": 0,
+            "incompatibilities": [],
+            "pvp": true,
+            "resourcePackHash": null,
+            "slotName": "My World",
+            "spawnAnimals": true,
+            "spawnMonsters": true,
+            "spawnNPCs": true,
+            "spawnProtection": 0,
+            "texturePacksRequired": false,
+            "timeRequest": null,
+            "versionLock": true,
+            "versionRef": "5a7c1bcb9b95ebce0b42e7684a0c8f95f0e0c9d0",
+            "worldTemplateId": -1,
+            "worldTemplateImage": null,
+            "worldSettings": {
+                "sendcommandfeedback": {
+                    "type": 0,
+                    "value": false
+                },
+                "commandblocksenabled": {
+                    "type": 0,
+                    "value": true
+                },
+                "dodaylightcycle": {
+                    "type": 0,
+                    "value": true
+                },
+                "randomtickspeed": {
+                    "type": 1,
+                    "value": 1
+                },
+                "naturalregeneration": {
+                    "type": 0,
+                    "value": true
+                },
+                "showtags": {
+                    "type": 0,
+                    "value": true
+                },
+                "commandblockoutput": {
+                    "type": 0,
+                    "value": false
+                },
+                "dofiretick": {
+                    "type": 0,
+                    "value": true
+                },
+                "maxcommandchainlength": {
+                    "type": 1,
+                    "value": 65535
+                },
+                "falldamage": {
+                    "type": 0,
+                    "value": true
+                },
+                "tntexplodes": {
+                    "type": 0,
+                    "value": true
+                },
+                "drowningdamage": {
+                    "type": 0,
+                    "value": true
+                },
+                "domobloot": {
+                    "type": 0,
+                    "value": true
+                },
+                "domobspawning": {
+                    "type": 0,
+                    "value": true
+                },
+                "showbordereffect": {
+                    "type": 0,
+                    "value": true
+                },
+                "showdeathmessages": {
+                    "type": 0,
+                    "value": true
+                },
+                "respawnblocksexplode": {
+                    "type": 0,
+                    "value": true
+                },
+                "doweathercycle": {
+                    "type": 0,
+                    "value": true
+                },
+                "doentitydrops": {
+                    "type": 0,
+                    "value": true
+                },
+                "doimmediaterespawn": {
+                    "type": 0,
+                    "value": false
+                },
+                "freezedamage": {
+                    "type": 0,
+                    "value": true
+                },
+                "pvp": {
+                    "type": 0,
+                    "value": true
+                },
+                "keepinventory": {
+                    "type": 0,
+                    "value": false
+                },
+                "doinsomnia": {
+                    "type": 0,
+                    "value": true
+                },
+                "mobgriefing": {
+                    "type": 0,
+                    "value": true
+                },
+                "dotiledrops": {
+                    "type": 0,
+                    "value": true
+                },
+                "firedamage": {
+                    "type": 0,
+                    "value": true
+                },
+                "functioncommandlimit": {
+                    "type": 1,
+                    "value": 10000
+                },
+                "spawnradius": {
+                    "type": 1,
+                    "value": 1
+                },
+                "showcoordinates": {
+                    "type": 0,
+                    "value": false
+                }
+            }
+        }
+    },
+    "JavaConfiguration": {
+        "pvp": true,
+        "spawnAnimals": true,
+        "spawnMonsters": true,
+        "spawnNPCs": true,
+        "spawnProtection": 0,
+        "commandBlocks": false,
+        "difficulty": 2,
+        "gameMode": 0,
+        "forceGameMode": false,
+        "slotName": "",
+        "worldTemplateId": -1,
+        "worldTemplateImage": null
     },
     "BedrockWorldDownload": {
         "downloadUrl": "https://archive-pocket-production-eu-west-1.realms.minecraft.net/worlds",
@@ -110,5 +279,5 @@
         "startDate": 1623908801932,
         "daysLeft": 2,
         "subscriptionType": "RECURRING"
-    } 
+    }
 }

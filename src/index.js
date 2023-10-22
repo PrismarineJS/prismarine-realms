@@ -34,6 +34,35 @@ class RealmAPI {
   async restoreRealmFromBackup (realmId, backupId) {
     return await this.rest.put(`/worlds/${realmId}/backups?backupId=${encodeURIComponent(backupId)}&clientSupportsRetries`)
   }
+
+  async getRealmSubscriptionInfo (realmId) {
+    return await this.rest.get(`/subscriptions/${realmId}`)
+  }
+
+  async getRealmSubscriptionInfoDetailed (realmId) {
+    return await this.rest.get(`/subscriptions/${realmId}/details`)
+  }
+
+  async changeRealmState (realmId, state) {
+    return await this.rest.put(`/worlds/${realmId}/${state}`)
+  }
+
+  async changeRealmActiveSlot (realmId, slotId) {
+    return await this.rest.put(`/worlds/${realmId}/slot/${slotId}`)
+  }
+
+  async changeRealmNameAndDescription (realmId, name, description) {
+    return await this.rest.put(`/worlds/${realmId}`, {
+      body: {
+        name,
+        description
+      }
+    })
+  }
+
+  async deleteRealm (realmId) {
+    return await this.rest.delete(`/worlds/${realmId}`)
+  }
 }
 
 module.exports = RealmAPI

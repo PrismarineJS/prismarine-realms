@@ -90,38 +90,9 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     return new Realm(this, data)
   }
 
-  async changeRealmState (realmId, state) {
-    return await this.rest.put(`/worlds/${realmId}/${state}`)
-  }
-
-  async deleteRealm (realmId) {
-    return await this.rest.delete(`/worlds/${realmId}`)
-  }
-
   async getRealmWorldDownload (realmId, slotId, backupId = 'latest') {
     const data = await this.rest.get(`/archive/download/world/${realmId}/${slotId}/${backupId}`) // if backupId = latest will get the world as it is now not the most recent backup
     return new Download(this, data)
-  }
-
-  async getRealmSubscriptionInfo (realmId) {
-    return await this.rest.get(`/subscriptions/${realmId}`)
-  }
-
-  async getRealmSubscriptionInfoDetailed (realmId) {
-    return await this.rest.get(`/subscriptions/${realmId}/details`)
-  }
-
-  async changeRealmActiveSlot (realmId, slotId) {
-    return await this.rest.put(`/worlds/${realmId}/slot/${slotId}`)
-  }
-
-  async changeRealmNameAndDescription (realmId, name, description) {
-    return await this.rest.put(`/worlds/${realmId}`, {
-      body: {
-        name,
-        description
-      }
-    })
   }
 
   async resetRealm (realmId) {
@@ -135,11 +106,11 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     })
   }
 
-  async removeRealmInvite (realmId, uuid) {
+  async removePlayerFromRealm (realmId, xuid) {
     const data = await this.rest.put(`/invites/${realmId}/invite/update`, {
       body: {
         invites: {
-          [uuid]: 'REMOVE'
+          [xuid]: 'REMOVE'
         }
       }
     })
@@ -199,7 +170,7 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     return await this.rest.put(`/world/${realmId}/userPermission`, {
       body: {
         permission: permission.toUpperCase(),
-        uuid
+        xuid: uuid
       }
     })
   }

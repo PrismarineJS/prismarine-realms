@@ -29,7 +29,7 @@
     - [getPendingInvites](#getpendinginvites)
     - [acceptRealmInvitation](#acceptrealminvitation)
     - [rejectRealmInvitation](#rejectrealminvitation)
-    - [removeRealmInvite](#removerealminvite)
+    - [removePlayerFromRealm](#removeplayerfromrealm)
     - [resetRealm](#resetrealm)
     - [changeRealmConfiguration](#changerealmconfiguration)
     - [opRealmPlayer](#oprealmplayer)
@@ -333,14 +333,14 @@ No output
 
 ---
 
-### removeRealmInvite
+### removePlayerFromRealm
 
-(realmId: string, uuid: string) => Promise\<Realm>
+(realmId: string, xuid: string) => Promise\<Realm>
 
 Removes a player from the Realm
 
 ```js
-await api.removeRealmInvite('1234567', 'a8005260a332457097a50bdbe48a9a21')
+await api.removePlayerFromRealm('1234567', 'a8005260a332457097a50bdbe48a9a21')
 ```
 
 <details>

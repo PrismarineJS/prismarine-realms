@@ -130,7 +130,7 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     const data = await this.rest.put(`/invites/${realmId}/invite/update`, {
       body: {
         invites: {
-          [zuid]: 'ADD'
+          [xuid]: 'ADD'
         }
       }
     })

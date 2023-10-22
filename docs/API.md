@@ -24,7 +24,7 @@
     - [getRealmWorldDownload](#getrealmworlddownload)
     - [changeRealmConfiguration](#changerealmconfiguration)
     - [resetRealm](#resetrealm)
-    - [removeRealmInvite](#removerealminvite)
+    - [removePlayerFromRealm](#removeplayerfromrealm)
     - [getRecentRealmNews](#getrecentrealmnews)
     - [getStageCompatibility](#getstagecompatibility)
     - [getVersionCompatibility](#getversioncompatibility)
@@ -220,14 +220,14 @@ True if it successfully reset the Realm. False if it failed to reset the Realm (
 
 ---
 
-### removeRealmInvite
+### removePlayerFromRealm
 
 (realmId: string, uuid: string) => Promise\<Realm>
 
 Removed a player from the Realm. This isn't like banning and only removes the Realm from the players joined list and kicks them if they're logged in
 
 ```js
-await api.removeRealmInvite('1234567', 'a8005260a332457097a50bdbe48a9a21')
+await api.removePlayerFromRealm('1234567', 'a8005260a332457097a50bdbe48a9a21')
 ```
 
 <details>

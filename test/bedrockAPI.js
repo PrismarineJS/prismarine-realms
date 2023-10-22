@@ -254,7 +254,7 @@ describe('Bedrock', () => {
   })
   describe('Realm removeInvite', () => {
     it('should return a Realm object', async () => {
-      const removedInvite = await api.removeRealmInvite(config.realmId, config.xuid)
+      const removedInvite = await api.removePlayerFromRealm(config.realmId, config.xuid)
       expect(removedInvite).to.deep.equal({ ...World, players: [{ uuid: config.xuid }] })
     })
   })

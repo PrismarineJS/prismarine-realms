@@ -101,7 +101,7 @@ module.exports = class Realm {
    * Resets a Realm to its default world and settings
    * @returns True if it successfully reset the Realm. False if it failed to reset the Realm (403 if you are not the owner)
    */
-  async reset() {
+  async reset () {
     return this.#api.resetRealm(this.id)
   }
 

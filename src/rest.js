@@ -22,7 +22,7 @@ module.exports = class Rest {
   /**
    * Sends a GET request to the specified route with the specified options
    * @param {string} route The route to send the request to. This can also be the URL with parameters
-   * @param {Array} options The body or options of the request 
+   * @param {Array} options The body or options of the request
    * @returns The response that is given from the request
    */
   get (route, options) {
@@ -32,7 +32,7 @@ module.exports = class Rest {
   /**
    * Sends a POST request to the specified route with the specified options
    * @param {string} route The route to send the request to. This can also be the URL with parameters
-   * @param {Array} options The body or options of the request 
+   * @param {Array} options The body or options of the request
    * @returns The response that is given from the request
    */
   post (route, options) {
@@ -42,7 +42,7 @@ module.exports = class Rest {
   /**
    * Sends a PUT request to the specified route with the specified options
    * @param {string} route The route to send the request to. This can also be the URL with parameters
-   * @param {Array} options The body or options of the request 
+   * @param {Array} options The body or options of the request
    * @returns The response that is given from the request
    */
   put (route, options) {
@@ -52,7 +52,7 @@ module.exports = class Rest {
   /**
    * Sends a DELETE request to the specified route with the specified options
    * @param {string} route The route to send the request to. This can also be the URL with parameters
-   * @param {Array} options The body or options of the request 
+   * @param {Array} options The body or options of the request
    * @returns The response that is given from the request
    */
   delete (route, options) {
@@ -94,7 +94,7 @@ module.exports = class Rest {
   }
 
   /**
-   * 
+   *
    * @param {string} url The URL to send the request to
    * @param {Array} options The method, body, and headers of the request
    * @param {number} retries The number of retries that should be made if the request fails

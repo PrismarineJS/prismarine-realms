@@ -246,7 +246,7 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
   /**
    * Retrieves a list of UUID's of all the banned players of the Realm
    * @param {string} realmId The ID of the Realm to get the banned players of
-   * @returns An array of UUID's of all the banned players of the Realm
+   * @returns An array of XUID's of all the banned players of the Realm
    */
   async getRealmBannedPlayers (realmId) {
     return await this.rest.get(`/worlds/${realmId}/blocklist`)

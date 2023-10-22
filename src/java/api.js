@@ -4,7 +4,6 @@ const Realm = require('../structures/Realm')
 const Download = require('../structures/Download')
 
 module.exports = class JavaRealmAPI extends RealmAPI {
-
   /**
    * The following 6 functions below are in both Java Edition Minecraft and Bedrock. They just hit different endpoints
    */
@@ -56,7 +55,7 @@ module.exports = class JavaRealmAPI extends RealmAPI {
   async opRealmPlayer (realmId, uuid) {
     return await this.rest.post(`/ops/${realmId}/${uuid}`)
   }
-  
+
   /**
    * Removes a player as an operator in the Realm
    * @param {string} realmId The ID of the Realm to remove operator in

@@ -28,6 +28,7 @@
     - [getPendingInviteCount](#getpendinginvitecount)
     - [getPendingInvites](#getpendinginvites)
     - [acceptRealmInvitation](#acceptrealminvitation)
+    - [acceptRealmInviteFromCode](#acceptrealminvitefromcode)
     - [rejectRealmInvitation](#rejectrealminvitation)
     - [removePlayerFromRealm](#removeplayerfromrealm)
     - [resetRealm](#resetrealm)
@@ -50,7 +51,6 @@
       - [getBackups](#getbackups)
       - [getWorldDownload](#getworlddownload)
       - [getSubscriptionInfo](#getsubscriptioninfo)
-      - [getSubscriptionInfoDetailed](#getsubscriptioninfodetailed)
       - [changeActiveSlot](#changeactiveslot)
       - [changeNameAndDescription](#changenameanddescription)
     - [Backup](#backup)
@@ -135,7 +135,7 @@ await api.getRealmBackups('1234567', '1')
 
 ### restoreRealmFromBackup
 
-(realmId: string, slotId: string, backupId: string) => Promise\<void>
+(realmId: string, slotId: string, backupId: string) => Promise\<string>
 
 Restores a Realm from a backup
 
@@ -143,7 +143,7 @@ Restores a Realm from a backup
 await api.restoreRealmFromBackup('1234567', '1', '1970-01-01T00:00:00.000Z')
 ```
 
-No output
+Either 'Retry again later' or 'true'. Always seems to return 'Retry again later' on the first try.
 
 ---
 
@@ -314,6 +314,23 @@ No output
 
 ---
 
+### acceptRealmInviteFromCode
+
+(realmInviteCode: string) => Promise\<Realm>
+
+Accepts a Realm invite from an invite link or code.
+```js
+await api.acceptRealmInviteFromCode('1234567')
+```
+
+<summary>Output</summary>
+
+[Realm](#realm)
+
+</details>
+
+---
+
 ### rejectRealmInvitation
 
 (invitationId: string) => Promise\<void>
@@ -393,7 +410,7 @@ No output
 
 ### opRealmPlayer
 
-(realmId: string, uuid: string) => Promise\<void>
+(realmId: string, uuid: string) => Promise\<Realm>
 
 OPs a player on the Realm
 
@@ -404,7 +421,7 @@ await api.opRealmPlayer('1234567', 'a8005260a332457097a50bdbe48a9a21')
 <details>
 <summary>Output</summary>
 
-No output
+[Realm](#realm)
 
 </details>
 
@@ -412,7 +429,7 @@ No output
 
 ### deopRealmPlayer
 
-(realmId: string, uuid: string) => Promise\<void>
+(realmId: string, uuid: string) => Promise\<Realm>
 
 DEOPs a player on the Realm
 
@@ -423,7 +440,7 @@ await api.deopRealmPlayer('1234567', 'a8005260a332457097a50bdbe48a9a21')
 <details>
 <summary>Output</summary>
 
-No output
+[Realm](#realm)
 
 </details>
 
@@ -488,7 +505,7 @@ No output
 
 ### changeIsTexturePackRequired
 
-(realmId: string, forced: boolean) => Promise\<Realm>
+(realmId: string, forced: boolean) => Promise\<void>
 
 Changes if a texture pack is required to be applied when joining
 
@@ -499,7 +516,7 @@ await api.changeIsTexturePackRequired('1234567', true)
 <details>
 <summary>Output</summary>
 
-[Realm](#realm)
+No output
 
 </details>
 
@@ -507,7 +524,7 @@ await api.changeIsTexturePackRequired('1234567', true)
 
 ### changeRealmDefaultPermission
 
-(realmId: string, permission: string) => Promise\<Realm>
+(realmId: string, permission: string) => Promise\<void>
 
 Changes the Realms default permission. Permission can be VISITOR, MEMBER, or OPERATOR
 
@@ -518,7 +535,7 @@ await api.changeRealmDefaultPermission('1234567', 'MEMBER')
 <details>
 <summary>Output</summary>
 
-[Realm](#realm)
+No output
 
 </details>
 
@@ -645,7 +662,7 @@ await realm.invitePlayer('a8005260a332457097a50bdbe48a9a21', 'Steve')
 
 #### open
 
-() => Promise\<void>
+() => Promise\<boolean>
 
 Opens a Realm. Allows players to join
 
@@ -653,13 +670,13 @@ Opens a Realm. Allows players to join
 await realm.open()
 ```
 
-No output
+True if the world has opened
 
 ---
 
 #### close
 
-() => Promise\<void>
+() => Promise\<boolean>
 
 Closes a Realm. Removes all current players and restricts joining
 
@@ -667,7 +684,7 @@ Closes a Realm. Removes all current players and restricts joining
 await realm.close()
 ```
 
-No output
+True if the world has closed
 
 ---
 
@@ -725,7 +742,7 @@ await realm.getWorldDownload()
 
 #### getSubscriptionInfo
 
-(detailed: boolean) => Promise\<RealmSubscriptionInfo>
+(detailed: boolean) => Promise\<RealmSubscriptionInfo|RealmSubscriptionInfoDetailed>
 
 Gets the subscription info of the Realm
 
@@ -762,9 +779,9 @@ Detailed Subscription Info:
 
 #### changeActiveSlot
 
-(realmId: string, slotId, number) => Promise\<void>
+(realmId: string, slotId, number) => Promise\<boolean>
 
-Changes the active world slot. Slot ID can be 1, 2, or 3
+Changes the active world slot. Slot ID can be 1, 2, or 3 (or 4 for Java Edition)
 
 ```js
 await realm.changeActiveSlot('1234567', 1)
@@ -773,7 +790,7 @@ await realm.changeActiveSlot('1234567', 1)
 <details>
 <summary>Output</summary>
 
-No output
+True if the active world is changed
 
 </details>
 

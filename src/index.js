@@ -37,9 +37,23 @@ class RealmAPI {
 
   async getRealmSubscriptionInfo (realmId, detailed = false) {
     if (detailed) {
-      return await this.rest.get(`/subscriptions/${realmId}/details`)
+      const data = await this.rest.get(`/subscriptions/${realmId}/details`)
+      return {
+        type: data.type,
+        store: data.store,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        renewalPeriod: data.renewalPeriod,
+        daysLeft: data.daysLeft,
+        subscriptionId: data.subscriptionId
+     }
     } else {
-      return await this.rest.get(`/subscriptions/${realmId}`)
+      const data = await this.rest.get(`/subscriptions/${realmId}`)
+      return {
+        startDate: data.startDate,
+        daysLeft: data.daysLeft,
+        subscriptionType: data.subscriptionType
+      }
     }
   }
 
@@ -52,7 +66,7 @@ class RealmAPI {
   }
 
   async changeRealmNameAndDescription (realmId, name, description) {
-    return await this.rest.put(`/worlds/${realmId}`, {
+    await this.rest.post(`/worlds/${realmId}`, {
       body: {
         name,
         description
@@ -61,7 +75,7 @@ class RealmAPI {
   }
 
   async deleteRealm (realmId) {
-    return await this.rest.delete(`/worlds/${realmId}`)
+    await this.rest.delete(`/worlds/${realmId}`)
   }
 }
 

@@ -17,10 +17,10 @@ declare module 'prismarine-realms' {
     getRealmAddress(realmId: string): Promise<Address>
     getRealmBackups(realmId: string, slotId: string): Promise<Backup[]>
     getRealmWorldDownload(realmId: string, slotId: string, backupId?: string | 'latest'): Promise<Download>
-    restoreRealmFromBackup(realmId: string, slotId: string, backupId: string): Promise<void>
-    changeRealmState(realmId: string, state: 'open' | 'close'): Promise<void>
+    restoreRealmFromBackup(realmId: string, slotId: string, backupId: string): Promise<string>
+    changeRealmState(realmId: string, state: 'open' | 'close'): Promise<boolean>
     getRealmSubscriptionInfo(realmId: string, detailed: boolean): Promise<RealmSubscriptionInfo | RealmSubscriptionInfoDetailed>
-    changeRealmActiveSlot(realmId: string, slotId: number): Promise<void>
+    changeRealmActiveSlot(realmId: string, slotId: number): Promise<boolean>
     changeRealmNameAndDescription(realmId: string, name: string, description: string): Promise<void>
     deleteRealm(realmId: string): Promise<void>
 
@@ -35,17 +35,17 @@ declare module 'prismarine-realms' {
     getPendingInvites(): Promise<RealmPlayerInvite[]>
     acceptRealmInvitation(invitationId: string): Promise<void>
     rejectRealmInvitation(invitationId: string): Promise<void>
-    acceptRealmInviteFromCode(realmInviteCode: string): Promise<void>
+    acceptRealmInviteFromCode(realmInviteCode: string): Promise<Realm>
     resetRealm(realmId: string): Promise<void>
     changeRealmConfiguration(realmId: string, configuration: any): Promise<void>
     removePlayerFromRealm(realmId: string, xuid: string): Promise<Realm>
-    opRealmPlayer(realmId: string, uuid: string): Promise<void>
-    deopRealmPlayer(realmId: string, uuid: string): Promise<void>
+    opRealmPlayer(realmId: string, uuid: string): Promise<Realm>
+    deopRealmPlayer(realmId: string, uuid: string): Promise<Realm>
     banPlayerFromRealm(realmId: string, uuid: string): Promise<void>
     unbanPlayerFromRealm(realmId: string, uuid: string): Promise<void>
     removeRealmFromJoinedList(realmId: string): Promise<void>
-    changeIsTexturePackRequired(realmId: string, forced: boolean): Promise<Realm>
-    changeRealmDefaultPermission(realmId: string, permission: string): Promise<Realm>
+    changeIsTexturePackRequired(realmId: string, forced: boolean): Promise<void>
+    changeRealmDefaultPermission(realmId: string, permission: string): Promise<void>
     changeRealmPlayerPermission(realmId: string, permission: string, uuid: string): Promise<void>
   }
 
@@ -56,13 +56,13 @@ declare module 'prismarine-realms' {
   export interface Realm {
     getAddress(): Promise<Address>
     invitePlayer(uuid: string, name: string): Promise<Realm>
-    open(): Promise<void>
-    close(): Promise<void>
+    open(): Promise<boolean>
+    close(): Promise<boolean>
     delete(): Promise<void>
     getBackups(): Promise<Backup[]>
     getWorldDownload(): Promise<Download>
-    getSubscriptionInfo(): Promise<void>
-    changeActiveSlot(): Promise<void>
+    getSubscriptionInfo(): Promise<RealmSubscriptionInfo | RealmSubscriptionInfoDetailed>
+    changeActiveSlot(): Promise<boolean>
     changeNameAndDescription(): Promise<void>
     id: number
     remoteSubscriptionId: string

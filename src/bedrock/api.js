@@ -296,7 +296,7 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
   /**
    * Removes the specified player from the Realms blocklist. This means that they can join the Realm again
    * @param {string} realmId The ID of the Realm to unban the player from
-   * @param {string} uuid Tje UUID of the player to remove from the blocklist
+   * @param {string} uuid Thee UUID of the player to remove from the blocklist
    * @returns 204 if the player was unbanned successfully. 403 if you are not the owner of the Realm
    */
   async unbanPlayerFromRealm (realmId, uuid) {
@@ -339,7 +339,7 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
    * Changes a Realms default permission when a player joins
    * @param {string} realmId The ID of the Realm to change the default permission of
    * @param {string} permission The permission to set player by default. Can be 'MEMBER', 'VISITOR', or 'OPERATOR'
-   * @returns 204 if the default permission was changed successfully. 403 if you are not the owner of the Realm
+   * @returns All the Realms information
    */
   async changeRealmDefaultPermission (realmId, permission) {
     const data = await this.rest.put(`/world/${realmId}/defaultPermission`, {

@@ -106,24 +106,6 @@ module.exports = class Realm {
   }
 
   /**
-   * Changes the configuration of a Realm. This can be the Realms settings and gamerules
-   * @param {string} configuration See https://github.com/PrismarineJS/prismarine-realms/issues/34 for the configuration array structure
-   * @returns 204 if the configuration was changed successfully 
-   */
-  async changeConfiguration(configuration) {
-    return this.#api.changeRealmConfiguration(this.id, configuration)
-  }
-
-  /**
-   * Restores a backup for the Realm
-   * @param {string} backupId The ID of the backup to restore. This can also be 'latest' ONLY on Bedrock Edition
-   * @returns 
-   */
-  async restoreBackup(backupId) {
-    return this.#api.restoreRealmFromBackup(this.id, backupId)
-  }
-
-  /**
    * Retrieves a list of the Realms backups and their metadata related to them
    * @param {number} slotId The slot of the world to get the backups of. This can be 1, 2, or 3
    * @returns An array of all the backups metadata and various other information such as size

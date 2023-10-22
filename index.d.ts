@@ -22,7 +22,6 @@ declare module 'prismarine-realms' {
     changeRealmNameAndDescription(realmId: string, name: string, description: string): Promise<void>
     deleteRealm(realmId: string): Promise<void>
     resetRealm(realmId: string): Promise<void>
-    changeRealmConfiguration(realmId: string, configuration: any): Promise<void>
     restoreRealmFromBackup(realmId: string, slotId: string, backupId: string): Promise<void>
     getRealmBackups(realmId: string, slotId: string): Promise<Backup[]>
     getRealmWorldDownload(realmId: string, slotId: string, backupId?: string | 'latest'): Promise<Download>
@@ -48,6 +47,7 @@ declare module 'prismarine-realms' {
     changeIsTexturePackRequired(realmId: string, forced: boolean): Promise<Realm>
     changeRealmDefaultPermission(realmId: string, permission: 'VISITOR' | 'MEMBER' | 'OPERATOR'): Promise<Realm>
     changeRealmPlayerPermission(realmId: string, permission: 'VISITOR' | 'MEMBER' | 'OPERATOR', uuid: string): Promise<void>
+    changeRealmConfiguration(realmId: string, configuration: Array): Promise<void>
     getRealmInvite(realmId: string): Promise<RealmInvite>
     refreshRealmInvite(realmId: string): Promise<RealmInvite>
     invitePlayer(realmId: string, uuid: string): Promise<Realm>
@@ -56,6 +56,7 @@ declare module 'prismarine-realms' {
 
   export class JavaRealmAPI extends RealmAPI {
     invitePlayer(realmId: string, uuid: string, name: string): Promise<Realm>
+    changeRealmConfiguration(realmId: string, configuration: Array, slotId: number): Promise<void>
     removeRealmInvite(realmId: string, uuid: string): Promise<void>
     changeRealmToMinigate(realmId: string, minigameId: number): Promise<void>
     getRealmStatus(): Promise<void>

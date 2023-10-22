@@ -13,33 +13,41 @@
 | configuration            | `string`             | The array of configurations that can change gamerules and Realm features                                |
 | slotId            | `string`             | The ID of one of the Realm world slots. This value can be either 1, 2, or 3                               |
 | permission            | `string`             | The permission that can be added to a players. This can resolve to VISITOR, MEMBER, or OPERATOR                               |
+| minigameId        | `string`             | Not confirmed, probably unique Id of Minigame map. Returns `null` for a Realm if not in a minigame                                                |
 
 ## Table of Contents
   - [Bedrock & Java](#bedrock--java)
-    - [getRealms](#getrealms)
     - [getRealm](#getrealm)
+    - [getRealms](#getrealms)
     - [getRealmBackups](#getrealmbackups)
     - [restoreRealmFromBackup](#restorerealmfrombackup)
     - [getRealmWorldDownload](#getrealmworlddownload)
-  - [Bedrock Only](#bedrock-only)
-    - [getRealmFromInvite](#getrealmfrominvite)
-    - [getRealmInvite](#getrealminvite)
-    - [refreshRealmInvite](#refreshrealminvite)
-    - [getPendingInviteCount](#getpendinginvitecount)
-    - [getPendingInvites](#getpendinginvites)
-    - [acceptRealmInvitation](#acceptrealminvitation)
-    - [rejectRealmInvitation](#rejectrealminvitation)
-    - [removeRealmInvite](#removerealminvite)
-    - [resetRealm](#resetrealm)
     - [changeRealmConfiguration](#changerealmconfiguration)
-    - [opRealmPlayer](#oprealmplayer)
-    - [deopRealmPlayer](#deoprealmplayer)
+    - [resetRealm](#resetrealm)
+    - [removeRealmInvite](#removerealminvite)
+    - [getRecentRealmNews](#getrecentrealmnews)
+    - [getStageCompatibility](#getstagecompatibility)
+    - [getVersionCompatibility](#getversioncompatibility)
+    - [getTrialEligibility](#gettrialeligibility)
+  - [Bedrock Only](#bedrock-only)
+    - [getPendingInvites](#getpendinginvites)
+    - [getPendingInviteCount](#getpendinginvitecount)
+    - [acceptRealmInvitation](#acceptrealminvitation)
+    - [acceptRealmInviteFromCode](#aceptrealminvitefromcode)
+    - [rejectRealmInvitation](#rejectrealminvitation)
+    - [getRealmFromInvite](#getrealmfrominvite)
+    - [getRealmBannedPlayers](#getrealmbannedplayers)
     - [banPlayerFromRealm](#banplayerfromrealm)
     - [unbanPlayerFromRealm](#unbanplayerfromrealm)
     - [removeRealmFromJoinedList](#removerealmfromjoinedlist)
     - [changeIsTexturePackRequired](#changeistexturepackrequired)
     - [changeRealmDefaultPermission](#changerealmdefaultpermission)
     - [changeRealmPlayerPermission](#changerealmplayerpermission)
+    - [getRealmInvite](#getrealminvite)
+    - [refreshRealmInvite](#refreshrealminvite)
+  - [Java Only](#java-only)
+    - [changeRealmToMinigame](#changerealmtominigame)
+    - [getRealmStatus](#getrealmstatus)
   - [Structures](#structures)
     - [Realm](#realm)
       - [getAddress](#getaddress)
@@ -47,6 +55,9 @@
       - [open](#open)
       - [close](#close)
       - [delete](#delete)
+      - [reset](#reset)
+      - [opPlayer](#opplayer)
+      - [deopPlayer](#deopplayer)
       - [getBackups](#getbackups)
       - [getWorldDownload](#getworlddownload)
       - [getSubscriptionInfo](#getsubscriptioninfo)
@@ -76,25 +87,6 @@ const api = RealmAPI.from(authflow, 'bedrock' | 'java')
 
 ## Bedrock & Java
 
-### getRealms
-
-() => Promise\<Realm[]>
-
-Returns a list of Realms the authenticating account has joined or owns.
-
-```js
-await api.getRealms()
-```
-
-<details>
-<summary>Output</summary>
-
-[Realm](#Realm)[]
-
-</details>
-
----
-
 ### getRealm
 
 (realmId: string) => Promise\<Realm>
@@ -109,6 +101,25 @@ await api.getRealm('1234567')
 <summary>Output</summary>
 
 [Realm](#Realm)
+
+</details>
+
+---
+
+### getRealms
+
+() => Promise\<Realm[]>
+
+Returns a list of Realms the authenticating account has joined or owns.
+
+```js
+await api.getRealms()
+```
+
+<details>
+<summary>Output</summary>
+
+[Realm](#Realm)[]
 
 </details>
 
@@ -168,7 +179,235 @@ await api.getRealmWorldDownload('1234567', '1', '1970-01-01T00:00:00.000Z')
 
 ---
 
+### changeRealmConfiguration
+
+(realmId: string, configuration: Array, slotId) => Promise\<object>
+
+Changes the configuration of a Realm. This can be the Realms settings and gamerules. Slot ID is only for Java Edition realms
+
+Where `configuration_array_here` is, you can find the configuration array for Java and Bedrock editition [here](https://github.com/PrismarineJS/prismarine-realms/issues/34)
+
+```js
+await api.changeRealmConfiguration('1234567', configuration_array_here, '1')
+```
+
+<details>
+<summary>Output</summary>
+
+Bedrock Edition: [Realm](#realm)
+Java Edition: No output
+
+</details>
+
+---
+
+### resetRealm
+
+(realmId: string) => Promise\<boolean>
+
+Resets a Realm to its default world and settings
+
+```js
+await api.resetRealm('1234567')
+```
+
+<details>
+<summary>Output</summary>
+
+True if it successfully reset the Realm. False if it failed to reset the Realm (403 if you are not the owner)
+
+</details>
+
+---
+
+### removeRealmInvite
+
+(realmId: string, uuid: string) => Promise\<Realm>
+
+Removed a player from the Realm. This isn't like banning and only removes the Realm from the players joined list and kicks them if they're logged in
+
+```js
+await api.removeRealmInvite('1234567', 'a8005260a332457097a50bdbe48a9a21')
+```
+
+<details>
+<summary>Output</summary>
+
+[Realm](#realm)
+
+</details>
+
+---
+
+### getRecentRealmNews
+
+() => Promise\<object>
+
+Retrieves the lastest new about Minecraft Realms
+
+```js
+await api.getRecentRealmNews()
+```
+
+<details>
+<summary>Output</summary>
+
+```ts
+{
+  newsLink: 'https://www.minecraft.net/article/new-realms--friday-map-fever?ref=pcrealmsclient'
+}
+```
+
+</details>
+
+---
+
+### getStageCompatibility
+
+() => Promise\<object>
+
+Currently the functionality is unknown.
+
+```js
+await api.getStageCompatibility()
+```
+
+<details>
+<summary>Output</summary>
+
+False
+
+</details>
+
+---
+
+### getVersionCompatibility
+
+() => Promise\<object>
+
+Returns the version compatibility of the client with Minecraft Realms
+
+```js
+await api.getVersionCompatibility()
+```
+
+<details>
+<summary>Output</summary>
+
+If the client is outdated, 'OUTDATED'. If the client running a snapshot, 'OTHER'. Else it returns 'COMPATIBLE'
+
+</details>
+
+---
+
+### getTrialEligibility
+
+() => Promise\<object>
+
+Checks wether or not you can still use the Realms free trial
+
+```js
+await api.getTrialEligibility()
+```
+
+<details>
+<summary>Output</summary>
+
+True if you have a free 1 month trial available. False if you already used your free trial
+
+</details>
+
+---
+
 ## Bedrock Only
+
+### getPendingInvites
+
+() => Promise\<RealmPlayerInvite[]>
+
+Gets a list of pending invites for the authenticating account
+
+```js
+await api.getPendingInvites()
+```
+
+<details>
+<summary>Output</summary>
+
+```ts
+[
+    {
+        invitationId: string
+        worldName: string
+        worldDescription: string
+        worldOwnerName: string
+        worldOwnerXUID: string
+        createdOn: number
+    }
+]
+```
+
+</details>
+
+---
+
+### getPendingInviteCount
+
+() => Promise\<number>
+
+Gets the number of pending invites for the authenticating account
+
+```js
+await api.getPendingInviteCount()
+```
+
+<details>
+<summary>Output</summary>
+
+```ts
+number
+```
+
+</details>
+
+---
+
+### acceptRealmInvitation
+
+(invitationId: string) => Promise\<void>
+
+Accepts a pending invite for the authenticating account
+
+```js
+await api.acceptRealmInvitation('1234567')
+```
+
+<summary>Output</summary>
+
+No output
+
+</details>
+
+---
+
+### rejectRealmInvitation
+
+(invitationId: string) => Promise\<void>
+
+Rejects a pending invite for the authenticating account
+
+```js
+await api.rejectRealmInvitation('1234567')
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
+
+---
 
 ### getRealmFromInvite
 
@@ -189,11 +428,149 @@ await api.getRealmFromInvite('AB1CD2EFA3B') // https://realms.gg/AB1CD2EFA3B wil
 
 ---
 
+### getRealmBannedPlayers
+
+(realmId: string, uuid: string) => Promise\<void>
+
+Retrieves a list of UUID's of all the banned players of the Realm
+
+```js
+await api.getRealmBannedPlayers('1234567')
+```
+
+<details>
+<summary>Output</summary>
+
+```ts
+{
+  "UUID1",
+  "UUID2"
+}
+```
+
+</details>
+
+---
+
+### banPlayerFromRealm
+
+(realmId: string, uuid: string) => Promise\<void>
+
+Includes the specified player in the Realms blocklist. This means that they cannot join the Realm
+
+```js
+await api.banPlayerFromRealm('1234567', 'a8005260a332457097a50bdbe48a9a21')
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
+
+---
+
+### unbanPlayerFromRealm
+
+(realmId: string, uuid: string) => Promise\<void>
+
+Removes the specified player from the Realms blocklist. This means that they can join the Realm again
+
+```js
+await api.unbanPlayerFromRealm('1234567', 'a8005260a332457097a50bdbe48a9a21')
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
+
+---
+
+### removeRealmFromJoinedList
+
+(realmId: string) => Promise\<void>
+
+Removes the specified Realm from your joined Realm list
+
+```js
+await api.removeRealmFromJoinedList('1234567')
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
+
+---
+
+### changeIsTexturePackRequired
+
+(realmId: string, forced: boolean) => Promise\<void>
+
+Changes if a texture pack is required to be applied when joining a Realm
+
+```js
+await api.changeIsTexturePackRequired('1234567', true)
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
+
+---
+
+### changeRealmDefaultPermission
+
+(realmId: string, permission: string) => Promise\<Realm>
+
+Changes a Realms default permission when a player joins. Permission can be VISITOR, MEMBER, or OPERATOR
+
+```js
+await api.changeRealmDefaultPermission('1234567', 'MEMBER')
+```
+
+<details>
+<summary>Output</summary>
+
+[Realm](#realm)
+
+</details>
+
+---
+
+### changeRealmPlayerPermission
+
+(realmId: string, permission: string, uuid: string) => Promise\<void>
+
+Sets the permission of a player in the Realm. Permission can be VISITOR, MEMBER, or OPERATOR
+
+```js
+await api.changeRealmPlayerPermission('1234567', 'MEMBER', 'a8005260a332457097a50bdbe48a9a21')
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
+
+---
+
 ### getRealmInvite
 
 (realmId: string) => Promise\<RealmInvite>
 
-Gets the invite code for a Realm
+Retrieves a Realms invite code and other invite related information from a Realm ID
 
 ```js
 await api.getRealmInvite('1234567')
@@ -245,298 +622,41 @@ await api.refreshRealmInvite('1234567')
 
 ---
 
-### getPendingInviteCount
+## Java Only
 
-() => Promise\<number>
+### changeRealmToMinigame
 
-Gets the number of pending invites for the authenticating account
+(realmId: string, minigameId: string) => Promise\<boolean>
+
+Sets a Realm to a minigame
 
 ```js
-await api.getPendingInviteCount()
+await api.changeRealmToMinigame('1234567', '1')
 ```
 
 <details>
 <summary>Output</summary>
 
-```ts
-number
-```
+True if successfully set the Realm to minigames
 
 </details>
 
 ---
 
-### getPendingInvites
+### getRealmStatus
 
-() => Promise\<RealmPlayerInvite[]>
+() => Promise\<RealmInvite>
 
-Gets a list of pending invites for the authenticating account
+Wether or not you can access the Minecraft Realms Service
 
 ```js
-await api.getPendingInvites()
+await api.getRealmStatus()
 ```
 
 <details>
 <summary>Output</summary>
 
-```ts
-[
-    {
-        invitationId: string
-        worldName: string
-        worldDescription: string
-        worldOwnerName: string
-        worldOwnerXUID: string
-        createdOn: number
-    }
-]
-```
-
-</details>
-
----
-
-### acceptRealmInvitation
-
-(invitationId: string) => Promise\<void>
-
-Accepts a pending invite for the authenticating account
-
-```js
-await api.acceptRealmInvitation('1234567')
-```
-
-<summary>Output</summary>
-
-No output
-
-</details>
-
----
-
-### rejectRealmInvitation
-
-(invitationId: string) => Promise\<void>
-
-Rejects a pending invite for the authenticating account
-
-```js
-await api.rejectRealmInvitation('1234567')
-```
-
-<details>
-<summary>Output</summary>
-
-No output
-
-</details>
-
----
-
-### removeRealmInvite
-
-(realmId: string, uuid: string) => Promise\<Realm>
-
-Removes a player from the Realm
-
-```js
-await api.removeRealmInvite('1234567', 'a8005260a332457097a50bdbe48a9a21')
-```
-
-<details>
-<summary>Output</summary>
-
-[Realm](#realm)
-
-</details>
-
----
-
-### resetRealm
-
-(realmId: string) => Promise\<void>
-
-Resets a Realm to its default, or brand new state
-
-```js
-await api.resetRealm('1234567')
-```
-
-<details>
-<summary>Output</summary>
-
-No output
-
-</details>
-
----
-
-### changeRealmConfiguration
-
-(realmId: string, configuration: string) => Promise\<void>
-
-Updates a Realms configuration. This can be gamerules or general Realm settings
-
-```js
-await api.changeRealmConfiguration('1234567', '{ "description":{"description": "","name": ""options":{"slotName":"Test","pvp":true,"spawnAnimals":true,"spawnMonsters":true,"spawnNPCs":true,"spawnProtection":0,"commandBlocks":false,"forceGameMode":false,"gameMode":0,"difficulty":2,"worldTemplateId":-1,"worldTemplateImage":"","adventureMap":false,"resourcePackHash":null,"incompatibilities":[],"versionRef":"","versionLock":false,"cheatsAllowed":true,"texturePacksRequired":true,"timeRequest":null,"enabledPacks":{"resourcePacks":[""],"behaviorPacks":[""]},"customGameServerGlobalProperties":null,"worldSettings":{"sendcommandfeedback":{"type":0,"value":true},"commandblocksenabled":{"type":0,"value":true},"dodaylightcycle":{"type":0,"value":true},"randomtickspeed":{"type":1,"value":3},"naturalregeneration":{"type":0,"value":true},"showtags":{"type":0,"value":true},"commandblockoutput":{"type":0,"value":true},"dofiretick":{"type":0,"value":false},"maxcommandchainlength":{"type":1,"value":65535},"falldamage":{"type":0,"value":true},"tntexplodes":{"type":0,"value":true},"drowningdamage":{"type":0,"value":true},"domobloot":{"type":0,"value":true},"domobspawning":{"type":0,"value":true},"showbordereffect":{"type":0,"value":true},"showdeathmessages":{"type":0,"value":true},"respawnblocksexplode":{"type":0,"value":true},"doweathercycle":{"type":0,"value":true},"doentitydrops":{"type":0,"value":true},"doimmediaterespawn":{"type":0,"value":true},"freezedamage":{"type":0,"value":true},"pvp":{"type":0,"value":true},"keepinventory":{"type":0,"value":false},"doinsomnia":{"type":0,"value":true},"mobgriefing":{"type":0,"value":true},"dotiledrops":{"type":0,"value":true},"firedamage":{"type":0,"value":true},"functioncommandlimit":{"type":1,"value":10000},"spawnradius":{"type":1,"value":25},"showcoordinates":{"type":0,"value":true}}}}')
-```
-
-<details>
-<summary>Output</summary>
-
-No output
-
-</details>
-
----
-
-### opRealmPlayer
-
-(realmId: string, uuid: string) => Promise\<void>
-
-OPs a player on the Realm
-
-```js
-await api.opRealmPlayer('1234567', 'a8005260a332457097a50bdbe48a9a21')
-```
-
-<details>
-<summary>Output</summary>
-
-No output
-
-</details>
-
----
-
-### deopRealmPlayer
-
-(realmId: string, uuid: string) => Promise\<void>
-
-DEOPs a player on the Realm
-
-```js
-await api.deopRealmPlayer('1234567', 'a8005260a332457097a50bdbe48a9a21')
-```
-
-<details>
-<summary>Output</summary>
-
-No output
-
-</details>
-
----
-
-### banPlayerFromRealm
-
-(realmId: string, uuid: string) => Promise\<void>
-
-Bans a player from the Realm
-
-```js
-await api.banPlayerFromRealm('1234567', 'a8005260a332457097a50bdbe48a9a21')
-```
-
-<details>
-<summary>Output</summary>
-
-No output
-
-</details>
-
----
-
-### unbanPlayerFromRealm
-
-(realmId: string, uuid: string) => Promise\<void>
-
-Unbans a player from the Realm
-
-```js
-await api.unbanPlayerFromRealm('1234567', 'a8005260a332457097a50bdbe48a9a21')
-```
-
-<details>
-<summary>Output</summary>
-
-No output
-
-</details>
-
----
-
-### removeRealmFromJoinedList
-
-(realmId: string) => Promise\<void>
-
-Removes the Realm from your joined list
-
-```js
-await api.removeRealmFromJoinedList('1234567')
-```
-
-<details>
-<summary>Output</summary>
-
-No output
-
-</details>
-
----
-
-### changeIsTexturePackRequired
-
-(realmId: string, forced: boolean) => Promise\<Realm>
-
-Changes if a texture pack is required to be applied when joining
-
-```js
-await api.changeIsTexturePackRequired('1234567', true)
-```
-
-<details>
-<summary>Output</summary>
-
-[Realm](#realm)
-
-</details>
-
----
-
-### changeRealmDefaultPermission
-
-(realmId: string, permission: string) => Promise\<Realm>
-
-Changes the Realms default permission. Permission can be VISITOR, MEMBER, or OPERATOR
-
-```js
-await api.changeRealmDefaultPermission('1234567', 'MEMBER')
-```
-
-<details>
-<summary>Output</summary>
-
-[Realm](#realm)
-
-</details>
-
----
-
-### changeRealmPlayerPermission
-
-(realmId: string, permission: string, uuid: string) => Promise\<void>
-
-Changes the a players permission. Permission can be VISITOR, MEMBER, or OPERATOR
-
-```js
-await api.changeRealmPlayerPermission('1234567', 'MEMBER', 'a8005260a332457097a50bdbe48a9a21')
-```
-
-<details>
-<summary>Output</summary>
-
-No output
+True if you can access the Minecraft Realms Service. False if you cannot access the Minecraft Realms Service
 
 </details>
 
@@ -681,6 +801,44 @@ await realm.delete()
 ```
 
 No output
+
+---
+
+### opPlayer
+
+(uuid: string) => Promise\<void>
+
+OPs a player on the Realm
+
+```js
+await realm.opPlayer('a8005260a332457097a50bdbe48a9a21')
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
+
+---
+
+### deopPlayer
+
+(uuid: string) => Promise\<void>
+
+DEOPs a player on the Realm
+
+```js
+await realm.deopPlayer('a8005260a332457097a50bdbe48a9a21')
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
 
 ---
 

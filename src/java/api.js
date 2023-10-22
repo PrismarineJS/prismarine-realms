@@ -81,7 +81,7 @@ module.exports = class JavaRealmAPI extends RealmAPI {
   /**
    * Retrieves and downloads a Realms latest backup
    * @param {string} realmId The ID of a Realm to retrieve the backup of
-   * @param {number} slotId The slot, or world ID to retrieve the backup of. This can be 1, 2, or 3
+   * @param {number} slotId The slot, or world ID to retrieve the backup of. This can be 1, 2, 3, or 4
    * @returns The download URL, resource pack URL, and resource pack hash of the backup
    */
   async getRealmWorldDownload (realmId, slotId) {
@@ -110,7 +110,7 @@ module.exports = class JavaRealmAPI extends RealmAPI {
   /**
    * Sets the realms active world slot
    * @param {string} realmId The ID of the Realm to change the world slot of
-   * @param {number} slotId The slot of the world to set as active. This can be 1, 2, or 3
+   * @param {number} slotId The slot of the world to set as active. This can be 1, 2, 3, or 4
    * @returns True if the slot was changed successfully. False if the slot was changed unsuccessfully (403 if you are not the owner)
    */
   async changeRealmActiveSlot (realmId, slotId) {
@@ -157,7 +157,7 @@ module.exports = class JavaRealmAPI extends RealmAPI {
    * Changes the configuration of a Realm. This can be the Realms settings and gamerules
    * @param {string} realmId The ID of the Realm to change the configuration of
    * @param {string} configuration See https://github.com/PrismarineJS/prismarine-realms/issues/34 for the configuration array structure
-   * @param {number} slotId The slot of the world to change the configuration of. This can be 1, 2, or 3
+   * @param {number} slotId The slot of the world to change the configuration of. This can be 1, 2, 3, or 4
    * @returns 204 if the configuration was changed successfully 
    */
   async changeRealmConfiguration (realmId, configuration, slotId) {

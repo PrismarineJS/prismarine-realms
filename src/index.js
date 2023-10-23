@@ -46,7 +46,7 @@ class RealmAPI {
         renewalPeriod: data.renewalPeriod,
         daysLeft: data.daysLeft,
         subscriptionId: data.subscriptionId
-     }
+      }
     } else {
       const data = await this.rest.get(`/subscriptions/${realmId}`)
       return {

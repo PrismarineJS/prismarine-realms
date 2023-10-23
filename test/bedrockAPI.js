@@ -32,8 +32,10 @@ nock('https://pocket.realms.minecraft.net')
   .get('/worlds')
   .reply(200, { servers: [World] })
   .get(`/worlds/${config.realmId}`)
-  .times(9)
+  .times(10)
   .reply(200, World)
+  .post(`/worlds/${config.realmId}`)
+  .reply(204)
   .get(`/worlds/v1/link/${config.realmInviteCode}`)
   .times(2)
   .reply(200, World)
@@ -92,7 +94,7 @@ nock('https://pocket.realms.minecraft.net')
   .reply(204)
   .delete(`/invites/${config.realmId}`)
   .reply(204)
-  .put(`/worlds/${config.realmId}/content/texturePacksRequired`)
+  .put(`/world/${config.realmId}/content/texturePacksRequired`)
   .reply(204)
   .put(`/world/${config.realmId}/defaultPermission`)
   .reply(204)
@@ -234,15 +236,14 @@ describe('Bedrock', () => {
     })
   })
   describe('Realm changeNameAndDescription', () => {
-    it('should return a Realm object', async () => {
+    it('should return void', async () => {
       const realm = await api.getRealm(config.realmId)
-      expect(await realm.changeNameAndDescription('Hello', 'World!')).to.deep.equal(World)
+      await realm.changeNameAndDescription(config.realmId, 'Hello', 'World!')
     })
   })
   describe('Realm reset', () => {
-    it('should return true to indicate it reset the Realm', async () => {
-      const reset = await api.resetRealm(config.realmId)
-      expect(reset).to.deep.equal(true)
+    it('should return void', async () => {
+      await api.resetRealm(config.realmId)
     })
   })
   describe('Realm changeConfiguration', () => {

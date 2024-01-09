@@ -101,11 +101,11 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
   }
 
   // Reference https://github.com/PrismarineJS/prismarine-realms/issues/34 for configuration structure
-  async changeRealmConfiguration (realmId, configuration) {
-    await this.rest.put(`/worlds/${realmId}/configuration`, {
-      body: configuration
-    })
-  }
+  // async changeRealmConfiguration (realmId, configuration) {
+  //   await this.rest.put(`/worlds/${realmId}/configuration`, {
+  //     body: configuration
+  //   })
+  // }
 
   async removePlayerFromRealm (realmId, xuid) {
     const data = await this.rest.put(`/invites/${realmId}/invite/update`, {

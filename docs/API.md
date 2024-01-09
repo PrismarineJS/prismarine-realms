@@ -32,7 +32,7 @@
     - [rejectRealmInvitation](#rejectrealminvitation)
     - [removePlayerFromRealm](#removeplayerfromrealm)
     - [resetRealm](#resetrealm)
-    - [changeRealmConfiguration](#changerealmconfiguration)
+    <!-- - [changeRealmConfiguration](#changerealmconfiguration) -->
     - [opRealmPlayer](#oprealmplayer)
     - [deopRealmPlayer](#deoprealmplayer)
     - [banPlayerFromRealm](#banplayerfromrealm)
@@ -387,7 +387,7 @@ No output
 </details>
 
 ---
-
+<!--
 ### changeRealmConfiguration
 
 (realmId: string, configuration: object) => Promise\<void>
@@ -405,7 +405,7 @@ await api.changeRealmConfiguration('1234567', coinfiguration)
 No output
 
 </details>
-
+-->
 ---
 
 ### opRealmPlayer

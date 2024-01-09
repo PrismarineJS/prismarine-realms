@@ -37,7 +37,7 @@ declare module 'prismarine-realms' {
     rejectRealmInvitation(invitationId: string): Promise<void>
     acceptRealmInviteFromCode(realmInviteCode: string): Promise<Realm>
     resetRealm(realmId: string): Promise<void>
-    changeRealmConfiguration(realmId: string, configuration: any): Promise<void>
+    // changeRealmConfiguration(realmId: string, configuration: any): Promise<void>
     removePlayerFromRealm(realmId: string, xuid: string): Promise<Realm>
     opRealmPlayer(realmId: string, uuid: string): Promise<Realm>
     deopRealmPlayer(realmId: string, uuid: string): Promise<Realm>

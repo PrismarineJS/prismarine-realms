@@ -10,6 +10,9 @@
 | username        | `string`             | The username of player                                                |
 | uuid            | `string`             | The unique ID of the player, without hyphens                          |
 | xuid            | `string`             | The Xbox User ID of the targeted player                               |
+| configuration            | `string`             | The array of configurations that can change gamerules and Realm features                                |
+| slotId            | `string`             | The ID of one of the Realm world slots. This value can be either 1, 2, or 3                               |
+| permission            | `string`             | The permission that can be added to a players. This can resolve to VISITOR, MEMBER, or OPERATOR                               |
 
 ## Table of Contents
   - [Bedrock & Java](#bedrock--java)
@@ -25,15 +28,31 @@
     - [getPendingInviteCount](#getpendinginvitecount)
     - [getPendingInvites](#getpendinginvites)
     - [acceptRealmInvitation](#acceptrealminvitation)
+    - [acceptRealmInviteFromCode](#acceptrealminvitefromcode)
     - [rejectRealmInvitation](#rejectrealminvitation)
+    - [removePlayerFromRealm](#removeplayerfromrealm)
+    - [resetRealm](#resetrealm)
+    <!-- - [changeRealmConfiguration](#changerealmconfiguration) -->
+    - [opRealmPlayer](#oprealmplayer)
+    - [deopRealmPlayer](#deoprealmplayer)
+    - [banPlayerFromRealm](#banplayerfromrealm)
+    - [unbanPlayerFromRealm](#unbanplayerfromrealm)
+    - [removeRealmFromJoinedList](#removerealmfromjoinedlist)
+    - [changeIsTexturePackRequired](#changeistexturepackrequired)
+    - [changeRealmDefaultPermission](#changerealmdefaultpermission)
+    - [changeRealmPlayerPermission](#changerealmplayerpermission)
   - [Structures](#structures)
     - [Realm](#realm)
       - [getAddress](#getaddress)
       - [invitePlayer](#inviteplayer)
       - [open](#open)
       - [close](#close)
+      - [delete](#delete)
       - [getBackups](#getbackups)
       - [getWorldDownload](#getworlddownload)
+      - [getSubscriptionInfo](#getsubscriptioninfo)
+      - [changeActiveSlot](#changeactiveslot)
+      - [changeNameAndDescription](#changenameanddescription)
     - [Backup](#backup)
       - [getDownload](#getDownload)
       - [restore](#restore)
@@ -121,7 +140,7 @@ await api.getRealmBackups('1234567', '1')
 
 ### restoreRealmFromBackup
 
-(realmId: string, slotId: string, backupId: string) => Promise\<void>
+(realmId: string, slotId: string, backupId: string) => Promise\<string>
 
 Restores a Realm from a backup
 
@@ -129,7 +148,7 @@ Restores a Realm from a backup
 await api.restoreRealmFromBackup('1234567', '1', '1970-01-01T00:00:00.000Z')
 ```
 
-No output
+Either 'Retry again later' or 'true'. Always seems to return 'Retry again later' on the first try.
 
 ---
 
@@ -292,7 +311,28 @@ Accepts a pending invite for the authenticating account
 await api.acceptRealmInvitation('1234567')
 ```
 
+<summary>Output</summary>
+
 No output
+
+</details>
+
+---
+
+### acceptRealmInviteFromCode
+
+(realmInviteCode: string) => Promise\<Realm>
+
+Accepts a Realm invite from an invite link or code.
+```js
+await api.acceptRealmInviteFromCode('1234567')
+```
+
+<summary>Output</summary>
+
+[Realm](#realm)
+
+</details>
 
 ---
 
@@ -306,7 +346,222 @@ Rejects a pending invite for the authenticating account
 await api.rejectRealmInvitation('1234567')
 ```
 
+<details>
+<summary>Output</summary>
+
 No output
+
+</details>
+
+---
+
+### removePlayerFromRealm
+
+(realmId: string, xuid: string) => Promise\<Realm>
+
+Removes a player from the Realm
+
+```js
+await api.removePlayerFromRealm('1234567', 'a8005260a332457097a50bdbe48a9a21')
+```
+
+<details>
+<summary>Output</summary>
+
+[Realm](#realm)
+
+</details>
+
+---
+
+### resetRealm
+
+(realmId: string) => Promise\<void>
+
+Resets a Realm to its default, or brand new state
+
+```js
+await api.resetRealm('1234567')
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
+
+---
+<!--
+### changeRealmConfiguration
+
+(realmId: string, configuration: object) => Promise\<void>
+
+Updates a Realms configuration. This can be gamerules or general Realm settings
+
+```js
+const configuration = { description:{description: "",name: option:{slotName:"Test",pvp:true,spawnAnimals:true,spawnMonster:true,spawnNPCs:true,spawnProtection:0,commandBlocks:false,forceGameMode:false,gameMode:0,difficulty:2,worldTemplateId:-1,worldTemplateImage:"",adventureMap:false,resourcePackHash:null,incompatibilities:[],versionRef:"",versionLock:false,cheatsAllowed:true,texturePacksRequired:true,timeRequest:null,enabledPacks:{resourcePacks:[""],behaviorPacks:[""]},customGameServerGlobalProperties:null,worldSettings:{sendcommandfeedback:{type:0,value:true}commandblocksenabled:{type:0,value:true},dodaylightcycle:{type:0,value:true},randomtickspeed:{type:1,value:3},naturalregeneration:{type:0,value:true},showtags:{type:0,value:true},commandblockoutput:{type:0,value:true},dofiretick:{type:0,value:false},maxcommandchainlength:{type:1,value:65535},falldamage:{type:0,value:true},tntexplodes:{type:0,value:true},drowningdamage:{type:0,value:true},domobloot:{type:0,value:true},domobspawning:{type:0,value:true},showbordereffect:{type:0,value,:true},showdeathmessages:{type:0,value:true},respawnblocksexplode:{type:0,value:true},doweathercycle:{type:0,value:true},doentitydrops:{type:0,value:true},doimmediaterespawn:{type:0,value:true},freezedamage:{type:0,value:true},pvp:{type:0,value:true},keepinventory:{type:0,value:false},doinsomnia:{type:0,value:true},mobgriefing:{type:0,value:true},dotiledrops:{type:0,value:true},firedamage:{type:0,value:true},functioncommandlimit:{type:1,value:10000},spawnradius:{type:1,value:25},showcoordinates:{type:0,value:true}}}}}
+await api.changeRealmConfiguration('1234567', coinfiguration)
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
+-->
+---
+
+### opRealmPlayer
+
+(realmId: string, uuid: string) => Promise\<Realm>
+
+OPs a player on the Realm
+
+```js
+await api.opRealmPlayer('1234567', 'a8005260a332457097a50bdbe48a9a21')
+```
+
+<details>
+<summary>Output</summary>
+
+[Realm](#realm)
+
+</details>
+
+---
+
+### deopRealmPlayer
+
+(realmId: string, uuid: string) => Promise\<Realm>
+
+DEOPs a player on the Realm
+
+```js
+await api.deopRealmPlayer('1234567', 'a8005260a332457097a50bdbe48a9a21')
+```
+
+<details>
+<summary>Output</summary>
+
+[Realm](#realm)
+
+</details>
+
+---
+
+### banPlayerFromRealm
+
+(realmId: string, uuid: string) => Promise\<void>
+
+Bans a player from the Realm
+
+```js
+await api.banPlayerFromRealm('1234567', 'a8005260a332457097a50bdbe48a9a21')
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
+
+---
+
+### unbanPlayerFromRealm
+
+(realmId: string, uuid: string) => Promise\<void>
+
+Unbans a player from the Realm
+
+```js
+await api.unbanPlayerFromRealm('1234567', 'a8005260a332457097a50bdbe48a9a21')
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
+
+---
+
+### removeRealmFromJoinedList
+
+(realmId: string) => Promise\<void>
+
+Removes the Realm from your joined list
+
+```js
+await api.removeRealmFromJoinedList('1234567')
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
+
+---
+
+### changeIsTexturePackRequired
+
+(realmId: string, forced: boolean) => Promise\<void>
+
+Changes if a texture pack is required to be applied when joining
+
+```js
+await api.changeIsTexturePackRequired('1234567', true)
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
+
+---
+
+### changeRealmDefaultPermission
+
+(realmId: string, permission: string) => Promise\<void>
+
+Changes the Realms default permission. Permission can be VISITOR, MEMBER, or OPERATOR
+
+```js
+await api.changeRealmDefaultPermission('1234567', 'MEMBER')
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
+
+---
+
+### changeRealmPlayerPermission
+
+(realmId: string, permission: string, uuid: string) => Promise\<void>
+
+Changes the a players permission. Permission can be VISITOR, MEMBER, or OPERATOR
+
+```js
+await api.changeRealmPlayerPermission('1234567', 'MEMBER', 'a8005260a332457097a50bdbe48a9a21')
+```
+
+<details>
+<summary>Output</summary>
+
+No output
+
+</details>
 
 ---
 
@@ -412,7 +667,7 @@ await realm.invitePlayer('a8005260a332457097a50bdbe48a9a21', 'Steve')
 
 #### open
 
-() => Promise\<void>
+() => Promise\<boolean>
 
 Opens a Realm. Allows players to join
 
@@ -420,18 +675,32 @@ Opens a Realm. Allows players to join
 await realm.open()
 ```
 
-No output
+True if the world has opened
 
 ---
 
 #### close
 
-() => Promise\<void>
+() => Promise\<boolean>
 
 Closes a Realm. Removes all current players and restricts joining
 
 ```js
 await realm.close()
+```
+
+True if the world has closed
+
+---
+
+#### delete
+
+() => Promise\<void>
+
+Deletes a Realm. This removes all worlds and the Realm itself beyond recovery
+
+```js
+await realm.delete()
 ```
 
 No output
@@ -471,6 +740,81 @@ await realm.getWorldDownload()
 <summary>Output</summary>
 
 [Download](#Download)
+
+</details>
+
+---
+
+#### getSubscriptionInfo
+
+(detailed: boolean) => Promise\<RealmSubscriptionInfo|RealmSubscriptionInfoDetailed>
+
+Gets the subscription info of the Realm
+
+```js
+await realm.getSubscriptionInfo(true)
+```
+
+<details>
+<summary>Output</summary>
+
+```ts
+Basic Subscription Info:
+{
+  startDate: number
+  daysLeft: number
+  subscriptionType: string
+}
+
+Detailed Subscription Info:
+{
+  type: string
+  store: string
+  startDate: number
+  endDate: number
+  renewalPeriod: number
+  daysLeft: number
+  subscriptionId: string
+}
+```
+
+</details>
+
+---
+
+#### changeActiveSlot
+
+(realmId: string, slotId, number) => Promise\<boolean>
+
+Changes the active world slot. Slot ID can be 1, 2, or 3 (or 4 for Java Edition)
+
+```js
+await realm.changeActiveSlot('1234567', 1)
+```
+
+<details>
+<summary>Output</summary>
+
+True if the active world is changed
+
+</details>
+
+---
+
+#### changeNameAndDescription
+
+(realmId: string, name: string, description: string) => Promise\<void>
+
+Changes the name and description of the Realm
+
+```js
+await realm.changeNameAndDescription('1234567', 'Hello', 'World!')
+```
+
+<details>
+<summary>Output</summary>
+
+No output
 
 </details>
 

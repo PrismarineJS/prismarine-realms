@@ -16,7 +16,7 @@ declare module 'prismarine-realms' {
      */
     constructor(authflow: Authflow, platform: 'bedrock' | 'java', options?: Options)
 
-    static from(authflow: Authflow, platform: 'bedrock' | 'java'): BedrockRealmAPI | JavaRealmAPI
+    static from(authflow: Authflow, platform: 'bedrock' | 'java', options?: Options): BedrockRealmAPI | JavaRealmAPI
 
     getRealms(): Promise<Realm[]>
     getRealm(realmId: string): Promise<Realm>

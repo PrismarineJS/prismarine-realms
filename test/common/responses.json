@@ -77,7 +77,7 @@
                 "size": 10000,
                 "metadata": {
                     "game_difficulty": "0",
-                    "name":"Test Realm",
+                    "name": "Test Realm",
                     "game_server_version": "1.19.0",
                     "enabled_packs": "{\"resourcePacks\":[],\"behaviorPacks\":[\"4b45f411-9ca2-4d12-a2a8-4d2de8746538\"]}",
                     "description": null,
@@ -96,5 +96,19 @@
         "downloadLink": "https://wsjavaprodeus.blob.core.windows.net/worlds/1112223/mcr_world_3.tar.gz?snapshot=1970-01-01T00:00:00.000Z",
         "resourcePackUrl": null,
         "resourcePackHash": null
+    },
+    "SubscriptionInfoDetailed": {
+        "type": "SUBSCRIPTION",
+        "store": "xbox1.store",
+        "startDate": 1623908801932,
+        "endDate": 1626428175000,
+        "renewalPeriod": 30,
+        "daysLeft": 2,
+        "subscriptionId": "02ea6dec4d446c5b123dde157920453"
+    },
+    "SubscriptionInfo": {
+        "startDate": 1623908801932,
+        "daysLeft": 2,
+        "subscriptionType": "RECURRING"
     }
 }

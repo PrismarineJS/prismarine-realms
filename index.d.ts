@@ -10,15 +10,19 @@ declare module 'prismarine-realms' {
      */
     constructor(authflow: Authflow, platform: 'bedrock' | 'java')
 
-    static from(authflow: Authflow, platform: 'bedrock' | 'java'): BedrockRealmAPI | JavaRealmAPI 
+    static from(authflow: Authflow, platform: 'bedrock' | 'java'): BedrockRealmAPI | JavaRealmAPI
 
     getRealms(): Promise<Realm[]>
     getRealm(realmId: string): Promise<Realm>
     getRealmAddress(realmId: string): Promise<Address>
     getRealmBackups(realmId: string, slotId: string): Promise<Backup[]>
     getRealmWorldDownload(realmId: string, slotId: string, backupId?: string | 'latest'): Promise<Download>
-    restoreRealmFromBackup(realmId: string, slotId: string, backupId: string): Promise<void>
-    changeRealmState(realmId: string, state: 'open' | 'close'): Promise<void>
+    restoreRealmFromBackup(realmId: string, slotId: string, backupId: string): Promise<string>
+    changeRealmState(realmId: string, state: 'open' | 'close'): Promise<boolean>
+    getRealmSubscriptionInfo(realmId: string, detailed: boolean): Promise<RealmSubscriptionInfo | RealmSubscriptionInfoDetailed>
+    changeRealmActiveSlot(realmId: string, slotId: number): Promise<boolean>
+    changeRealmNameAndDescription(realmId: string, name: string, description: string): Promise<void>
+    deleteRealm(realmId: string): Promise<void>
 
   }
 
@@ -31,7 +35,18 @@ declare module 'prismarine-realms' {
     getPendingInvites(): Promise<RealmPlayerInvite[]>
     acceptRealmInvitation(invitationId: string): Promise<void>
     rejectRealmInvitation(invitationId: string): Promise<void>
-    acceptRealmInviteFromCode(realmInviteCode: string): Promise<void>
+    acceptRealmInviteFromCode(realmInviteCode: string): Promise<Realm>
+    resetRealm(realmId: string): Promise<void>
+    // changeRealmConfiguration(realmId: string, configuration: any): Promise<void>
+    removePlayerFromRealm(realmId: string, xuid: string): Promise<Realm>
+    opRealmPlayer(realmId: string, uuid: string): Promise<Realm>
+    deopRealmPlayer(realmId: string, uuid: string): Promise<Realm>
+    banPlayerFromRealm(realmId: string, uuid: string): Promise<void>
+    unbanPlayerFromRealm(realmId: string, uuid: string): Promise<void>
+    removeRealmFromJoinedList(realmId: string): Promise<void>
+    changeIsTexturePackRequired(realmId: string, forced: boolean): Promise<void>
+    changeRealmDefaultPermission(realmId: string, permission: string): Promise<void>
+    changeRealmPlayerPermission(realmId: string, permission: string, uuid: string): Promise<void>
   }
 
   export class JavaRealmAPI extends RealmAPI {
@@ -41,10 +56,14 @@ declare module 'prismarine-realms' {
   export interface Realm {
     getAddress(): Promise<Address>
     invitePlayer(uuid: string, name: string): Promise<Realm>
-    open(): Promise<void>
-    close(): Promise<void>
+    open(): Promise<boolean>
+    close(): Promise<boolean>
+    delete(): Promise<void>
     getBackups(): Promise<Backup[]>
     getWorldDownload(): Promise<Download>
+    getSubscriptionInfo(): Promise<RealmSubscriptionInfo | RealmSubscriptionInfoDetailed>
+    changeActiveSlot(): Promise<boolean>
+    changeNameAndDescription(): Promise<void>
     id: number
     remoteSubscriptionId: string
     owner: string | null
@@ -77,16 +96,16 @@ declare module 'prismarine-realms' {
     lastModifiedDate: number
     size: number
     metadata: {
-        gameDifficulty: string
-        name: string
-        gameServerVersion: string
-        enabledPacks: { 
-          resourcePack: string
-          behaviorPack: string
-        }
-        description: string | null
-        gamemode: string
-        worldType: string
+      gameDifficulty: string
+      name: string
+      gameServerVersion: string
+      enabledPacks: {
+        resourcePack: string
+        behaviorPack: string
+      }
+      description: string | null
+      gamemode: string
+      worldType: string
     }
   }
 
@@ -99,6 +118,22 @@ declare module 'prismarine-realms' {
     resourcePackHash?: string // Java only
     size?: number // Bedrock only
     token?: string // Bedrock only
+  }
+
+  export interface RealmSubscriptionInfo {
+    startDate: number
+    daysLeft: number
+    subscriptionType: string
+  }
+
+  export interface RealmSubscriptionInfoDetailed {
+    type: string
+    store: string
+    startDate: number
+    endDate: number
+    renewalPeriod: number
+    daysLeft: number
+    subscriptionId: string
   }
 
   export interface RealmPlayerInvite {
@@ -120,22 +155,21 @@ declare module 'prismarine-realms' {
   }
 
   export interface RealmPlayer {
-      uuid: string,
-      name: string,
-      operator: boolean,
-      accepted: boolean,
-      online: boolean,
-      permission: string
+    uuid: string,
+    name: string,
+    operator: boolean,
+    accepted: boolean,
+    online: boolean,
+    permission: string
   }
 
   export interface Slot {
-      options: string
-      slotId: number
+    options: string
+    slotId: number
   }
 
   export interface Address {
     host: string
     port: number
   }
-
 }

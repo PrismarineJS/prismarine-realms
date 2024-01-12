@@ -76,7 +76,8 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
   async acceptRealmInviteFromCode (inviteCode) {
     if (!inviteCode) throw new Error('Need to provide a realm invite code/link')
     const clean = inviteCode.replace(/https:\/\/realms.gg\//g, '')
-    await this.rest.post(`/invites/v1/link/accept/${clean}`)
+    const data = await this.rest.post(`/invites/v1/link/accept/${clean}`)
+    return new Realm(this, data)
   }
 
   async invitePlayer (realmId, uuid) {
@@ -90,12 +91,89 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     return new Realm(this, data)
   }
 
-  async changeRealmState (realmId, state) {
-    return await this.rest.put(`/worlds/${realmId}/${state}`)
-  }
-
   async getRealmWorldDownload (realmId, slotId, backupId = 'latest') {
     const data = await this.rest.get(`/archive/download/world/${realmId}/${slotId}/${backupId}`) // if backupId = latest will get the world as it is now not the most recent backup
     return new Download(this, data)
+  }
+
+  async resetRealm (realmId) {
+    await this.rest.put(`/worlds/${realmId}/reset`)
+  }
+
+  // Reference https://github.com/PrismarineJS/prismarine-realms/issues/34 for configuration structure
+  // async changeRealmConfiguration (realmId, configuration) {
+  //   await this.rest.put(`/worlds/${realmId}/configuration`, {
+  //     body: configuration
+  //   })
+  // }
+
+  async removePlayerFromRealm (realmId, xuid) {
+    const data = await this.rest.put(`/invites/${realmId}/invite/update`, {
+      body: {
+        invites: {
+          [xuid]: 'REMOVE'
+        }
+      }
+    })
+    return new Realm(this, data)
+  }
+
+  async opRealmPlayer (realmId, uuid) {
+    const data = await this.rest.put(`/invites/${realmId}/invite/update`, {
+      body: {
+        invites: {
+          [uuid]: 'OP'
+        }
+      }
+    })
+    return new Realm(this, data)
+  }
+
+  async deopRealmPlayer (realmId, uuid) {
+    const data = await this.rest.put(`/invites/${realmId}/invite/update`, {
+      body: {
+        invites: {
+          [uuid]: 'DEOP'
+        }
+      }
+    })
+    return new Realm(this, data)
+  }
+
+  async banPlayerFromRealm (realmId, uuid) {
+    await this.rest.post(`/worlds/${realmId}/blocklist/${uuid}`)
+  }
+
+  async unbanPlayerFromRealm (realmId, uuid) {
+    await this.rest.delete(`/worlds/${realmId}/blocklist/${uuid}`)
+  }
+
+  async removeRealmFromJoinedList (realmId) {
+    await this.rest.delete(`/invites/${realmId}`)
+  }
+
+  async changeIsTexturePackRequired (realmId, forced) {
+    if (forced) {
+      await this.rest.put(`/world/${realmId}/content/texturePacksRequired`)
+    } else {
+      await this.rest.delete(`/world/${realmId}/content/texturePacksRequired`)
+    }
+  }
+
+  async changeRealmDefaultPermission (realmId, permission) {
+    await this.rest.put(`/world/${realmId}/defaultPermission`, {
+      body: {
+        permission: permission.toUpperCase()
+      }
+    })
+  }
+
+  async changeRealmPlayerPermission (realmId, permission, uuid) {
+    await this.rest.put(`/world/${realmId}/userPermission`, {
+      body: {
+        permission: permission.toUpperCase(),
+        xuid: uuid
+      }
+    })
   }
 }

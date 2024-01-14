@@ -43,6 +43,13 @@ module.exports = class Rest {
       'User-Agent': this.userAgent
     }
 
+    // Minecraft Bedrock has two types of realms: Regular and Preview
+    // Regular realms can be only be accessed by the normal MCBE client, and Preview realms can only be accessed by the Preview (Beta) MCBE Client
+    // These versions have completely different worlds attached
+    if (this.options.usePreview && this.platform === 'bedrock') {
+      headers['is-prerelease'] = true
+    }
+
     if (!this.options.skipAuth) {
       const [key, value] = await this.getAuth()
       headers[key] = value

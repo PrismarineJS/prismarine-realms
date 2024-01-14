@@ -60,6 +60,11 @@
       - [writeToDirectory](#writeToDirectory)
       - [getBuffer](#getBuffer)
 
+## Options
+Used for `RealmAPI.from()`
+| Param           | Type                 | Description                                                           |
+| --------------- | -------------------- | --------------------------------------------------------------------- |
+| usePreview      | `Boolean`            | If the Preview Realms API should be used (Only bedrock)               |
 ---
 
 ## Constructor
@@ -70,7 +75,7 @@ const { RealmAPI } = require('prismarine-realms')
 
 const authflow = new Authflow()
 
-const api = RealmAPI.from(authflow, 'bedrock' | 'java')
+const api = RealmAPI.from(authflow, 'bedrock' | 'java', options)
 ```
 ---
 

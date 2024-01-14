@@ -2,15 +2,21 @@
 import { Authflow } from "prismarine-auth";
 
 declare module 'prismarine-realms' {
+  export class Options {
+    skipAuth?: Boolean
+    maxRetries?: Number
+    usePreview?: Boolean // Bedrock only
+  }
+
   export class RealmAPI {
     /**
      * Creates a new RealmAPI instance, which handles and authenticates calls to the Realms API
      * @param authflow An Authflow instance from [prismarine-auth](https://github.com/PrismarineJS/prismarine-auth).
      * @param platform Which platforms API to access
      */
-    constructor(authflow: Authflow, platform: 'bedrock' | 'java')
+    constructor(authflow: Authflow, platform: 'bedrock' | 'java', options?: Options)
 
-    static from(authflow: Authflow, platform: 'bedrock' | 'java'): BedrockRealmAPI | JavaRealmAPI
+    static from(authflow: Authflow, platform: 'bedrock' | 'java', options?: Options): BedrockRealmAPI | JavaRealmAPI
 
     getRealms(): Promise<Realm[]>
     getRealm(realmId: string): Promise<Realm>

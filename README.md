@@ -17,7 +17,7 @@ npm install prismarine-realms
 
 ### RealmAPI
 
-#### .from(authflow: Authflow, platform: 'bedrock' | 'java')
+#### .from(authflow: Authflow, platform: 'bedrock' | 'java', options: Options)
 
 Takes an **Authflow** instance from [prismarine-auth](https://github.com/PrismarineJS/prismarine-auth), you can see the documentation for this [here.](https://github.com/PrismarineJS/prismarine-auth#authflow)
 

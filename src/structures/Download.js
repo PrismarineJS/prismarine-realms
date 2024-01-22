@@ -17,8 +17,9 @@ module.exports = class Download {
     }
   }
 
-  async writeToDirectory (directory) {
-    return this.#downloadWorld().then(buffer => fs.writeFile(`${directory}/world${this.fileExtension}`, buffer))
+  async writeToDirectory (directory, showProgress = false, filename = 'world') {
+    return (showProgress ? this.#downloadWorldWithProgress() : this.#downloadWorld())
+      .then(buffer => fs.writeFile(`${directory}/${filename}${this.fileExtension}`, buffer))
   }
 
   async getBuffer () {
@@ -33,5 +34,38 @@ module.exports = class Download {
     if (!res.ok) throw new Error(`Failed to download world: ${res.status} ${res.statusText}`)
 
     return await res.buffer()
+  }
+
+  async #downloadWorldWithProgress () {
+    const res = await fetch(this.downloadUrl, {
+      headers: (this.token) ? { Authorization: `Bearer ${this.token}` } : {}
+    })
+
+    if (!res.ok) throw new Error(`Failed to download world: ${res.status} ${res.statusText}`)
+
+    const totalSize = parseInt(res.headers.get('content-length'), 10)
+    let downloadedSize = 0
+
+    const progressBar = (size) => {
+      downloadedSize += size
+      const percentage = ((downloadedSize / totalSize) * 100).toFixed(2)
+      process.stdout.clearLine()
+      process.stdout.cursorTo(0)
+      process.stdout.write(`Progress: [${'#'.repeat((percentage / 10).toFixed(0))}] ${percentage}%`)
+    }
+
+    return new Promise((resolve, reject) => {
+      const fileChunks = []
+      res.body
+        .on('data', (chunk) => {
+          fileChunks.push(chunk)
+          progressBar(chunk.length)
+        })
+        .on('end', () => {
+          process.stdout.write('\n')
+          resolve(Buffer.concat(fileChunks))
+        })
+        .on('error', reject)
+    })
   }
 }

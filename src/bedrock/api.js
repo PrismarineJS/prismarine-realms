@@ -18,11 +18,11 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     return new Realm(this, data)
   }
 
-    async changeRealmName(realmId, name) {
+async changeRealmName(realmId, name, desc) {
     return this.rest.post(`/worlds/${realmId}`, {
       body: {
         "name": `${name}`,
-        "description": `One of the best KitPvP's`
+        "description": `${desc}`
       }
     })
   }

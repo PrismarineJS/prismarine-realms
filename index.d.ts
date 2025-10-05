@@ -19,6 +19,7 @@ declare module 'prismarine-realms' {
     static from(authflow: Authflow, platform: 'bedrock' | 'java', options?: Options): BedrockRealmAPI | JavaRealmAPI
 
     getRealms(): Promise<Realm[]>
+    changeRealmName(realmId: string, name: string, description: string) : Promise<Realm>
     getRealm(realmId: string): Promise<Realm>
     getRealmAddress(realmId: string): Promise<Address>
     getRealmBackups(realmId: string, slotId: string): Promise<Backup[]>
@@ -35,6 +36,7 @@ declare module 'prismarine-realms' {
   export class BedrockRealmAPI extends RealmAPI {
     getRealmFromInvite(realmInviteCode: string, invite: boolean): Promise<Realm>
     invitePlayer(realmId: string, uuid: string): Promise<Realm>
+    changeRealmName(realmId: string, name: string, description: string) : Promise<Realm>
     getRealmInvite(realmId: string): Promise<RealmInvite>
     refreshRealmInvite(realmId: string): Promise<RealmInvite>
     getPendingInviteCount(): Promise<number>

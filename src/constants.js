@@ -1,8 +1,8 @@
 module.exports = {
   bedrock: {
-    host: 'https://bedrock.frontendlegacy.realms.minecraft-services.net/',
+    host: 'https://bedrock.frontendlegacy.realms.minecraft-services.net',
     userAgent: 'MCPE/UWP',
-    relyingParty: 'https://bedrock.frontendlegacy.realms.minecraft-services.net/'
+    relyingParty: 'https://bedrock.frontendlegacy.realms.minecraft-services.net'
   },
   java: {
     host: 'https://pc.realms.minecraft.net',

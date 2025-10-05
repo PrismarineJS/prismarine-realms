@@ -28,7 +28,7 @@
     "chai-as-promised": "^7.1.1",
     "mocha": "^11.0.1",
     "nock": "^13.2.4",
-    "prismarine-auth": "^2.0.1",
+    "prismarine-auth": "^2.7.0",
     "prismarine-realms": "file:.",
     "standard": "^17.0.0"
   },

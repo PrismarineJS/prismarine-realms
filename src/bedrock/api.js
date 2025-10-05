@@ -18,6 +18,15 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     return new Realm(this, data)
   }
 
+async changeRealmName(realmId, name, desc) {
+    return this.rest.post(`/worlds/${realmId}`, {
+      body: {
+        "name": `${name}`,
+        "description": `${desc}`
+      }
+    })
+  }
+
   async getRealmInvite (realmId) {
     const data = await this.rest.get(`/links/v1?worldId=${realmId}`)
     return {

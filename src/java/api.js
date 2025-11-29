@@ -23,10 +23,10 @@ module.exports = class JavaRealmAPI extends RealmAPI {
   // NOTE: There's a bug in the Realms API where updating both the name and
   // description in a single request can fail with:
   //   `400 Bad Request {"errorCode":6009,"errorMsg":"Invalid Realm description","reason":"invalid_realm_description"}`
-  // This behavior has been reproduced in the official web interface and in-game. 
+  // This behavior has been reproduced in the official web interface and in-game.
   // Workaround: call the endpoint twice — first update the name
   // (passing an empty string for the description), then update the
-  // description in a separate call. 
+  // description in a separate call.
   // Example:
   //   await api.changeRealmNameAndDescription(realmId, name, '');
   //   await api.changeRealmNameAndDescription(realmId, name, description);

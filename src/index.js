@@ -66,12 +66,38 @@ class RealmAPI {
   }
 
   async changeRealmNameAndDescription (realmId, name, description) {
-    await this.rest.post(`/worlds/${realmId}`, {
-      body: {
-        name,
-        description
-      }
-    })
+    /**
+     * NOTE: Workaround for Realms API bug where updating both name and
+     * description in a single request can fail with:
+     *   400 Bad Request {"errorCode":6009,"errorMsg":"Invalid Realm description","reason":"invalid_realm_description"}
+     * Call the endpoint twice if both `name` and `description` are set:
+     *   1) update name with empty description
+     *   2) update description
+     * Remove this logic once the upstream endpoint is fixed.
+     */
+    if (name && description) {
+      // Step 1: update name only
+      await this.rest.post(`/worlds/${realmId}`, {
+        body: {
+          name,
+          description: ''
+        }
+      })
+      // Step 2: update description
+      await this.rest.post(`/worlds/${realmId}`, {
+        body: {
+          name,
+          description
+        }
+      })
+    } else {
+      await this.rest.post(`/worlds/${realmId}`, {
+        body: {
+          name,
+          description
+        }
+      })
+    }
   }
 
   async deleteRealm (realmId) {

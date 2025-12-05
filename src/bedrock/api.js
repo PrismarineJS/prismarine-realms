@@ -17,7 +17,16 @@ module.exports = class BedrockRealmAPI extends RealmAPI {
     if (!data.member && invite) await this.acceptRealmInviteFromCode(realmInviteCode) // If the player isn't a member, accept the invite
     return new Realm(this, data)
   }
-
+  
+  async changeRealmName(realmId, name) {
+    return this.rest.post(`/worlds/${realmId}`, {
+      body: {
+        "name": `${name}`,
+        "description": `One of the best KitPvP's`
+      }
+    })
+  }
+  
   async getRealmInvite (realmId) {
     const data = await this.rest.get(`/links/v1?worldId=${realmId}`)
     return {

@@ -1,5 +1,8 @@
 ## History
 
+### 1.4.1
+* [Fix RelyingParty in requests, revert #60 (#67)](https://github.com/PrismarineJS/prismarine-realms/commit/03dc434248c7c4a2a912a7ab510e6a7d7afec0bf) (thanks @NoVa-Gh0ul)
+
 ### 1.4.0
 * [Create commands.yml](https://github.com/PrismarineJS/prismarine-realms/commit/c712fe83272952605cb2079f1113b7a8bf600e8a) (thanks @extremeheat)
 * [feat: Add realm .changeRealmNameAndDescription (#62)](https://github.com/PrismarineJS/prismarine-realms/commit/487635c4dee2bfb08da0702edf4d6f94421a6314) (thanks @BlythT)

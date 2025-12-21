@@ -28,7 +28,7 @@ const authflow = new Authflow()
 
 const api = RealmAPI.from(authflow, 'bedrock', { skipAuth: true })
 
-nock('https://bedrock.frontendlegacy.realms.minecraft-services.net')
+nock('https://pocket.realms.minecraft.net/')
   .get('/worlds')
   .reply(200, { servers: [World] })
   .get(`/worlds/${config.realmId}`)

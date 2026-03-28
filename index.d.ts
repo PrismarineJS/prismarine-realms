@@ -29,6 +29,7 @@ declare module 'prismarine-realms' {
     changeRealmActiveSlot(realmId: string, slotId: number): Promise<boolean>
     changeRealmNameAndDescription(realmId: string, name: string, description: string): Promise<void>
     deleteRealm(realmId: string): Promise<void>
+    getLivePlayerLists(): Promise<LivePlayerList[]>
 
   }
 
@@ -177,5 +178,18 @@ declare module 'prismarine-realms' {
   export interface Address {
     host: string
     port: number
+  }
+
+  export interface LivePlayerList {
+    serverId: number
+    playerList: LivePlayer[]
+  }
+
+  export interface LivePlayer {
+    activeSessionId: string | null
+    deviceSessionId: string | null
+    clientId: string | null
+    globalMultiplayerCorrelationId: string | null
+    playerId: string
   }
 }

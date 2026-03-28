@@ -6,7 +6,7 @@ const chaiAsPromised = require('chai-as-promised')
 
 use(chaiAsPromised)
 
-const { World, Join, JavaWorldDownload, Backups } = require('./common/responses.json')
+const { World, Join, JavaWorldDownload, Backups, LivePlayerLists } = require('./common/responses.json')
 
 const { RealmAPI } = require('prismarine-realms')
 const { Authflow } = require('prismarine-auth')
@@ -52,6 +52,9 @@ nock('https://pc.realms.minecraft.net')
   .reply(200, Backups)
   .put(`/worlds/${config.realmId}/backups?backupId=${config.backupId}&clientSupportsRetries`)
   .reply(204)
+  .get('/activities/liveplayerlist')
+  .times(3)
+  .reply(200, LivePlayerLists)
 
 describe('Java', () => {
   describe('getRealms', () => {
@@ -116,6 +119,41 @@ describe('Java', () => {
     it('should return void', async () => {
       const realm = await api.getRealm(config.realmId)
       await realm.changeNameAndDescription('Hello', 'World!')
+    })
+  })
+  describe('getLivePlayerLists', () => {
+    it('should return an array of LivePlayerList objects', async () => {
+      const lists = await api.getLivePlayerLists()
+      expect(lists).to.be.an('array')
+      expect(lists).to.have.lengthOf(2)
+    })
+    it('should correctly parse the playerList JSON string', async () => {
+      const lists = await api.getLivePlayerLists()
+      const firstList = lists[0]
+      expect(firstList.serverId).to.equal(1112223)
+      expect(firstList.playerList).to.be.an('array')
+      expect(firstList.playerList).to.have.lengthOf(2)
+      expect(firstList.playerList[0]).to.deep.equal({
+        playerId: 'player1',
+        activeSessionId: 'sess1',
+        deviceSessionId: 'dev1',
+        clientId: 'client1',
+        globalMultiplayerCorrelationId: 'corr1'
+      })
+      expect(firstList.playerList[1]).to.deep.equal({
+        playerId: 'player2',
+        activeSessionId: null,
+        deviceSessionId: null,
+        clientId: null,
+        globalMultiplayerCorrelationId: null
+      })
+    })
+    it('should handle an empty player list', async () => {
+      const lists = await api.getLivePlayerLists()
+      const secondList = lists[1]
+      expect(secondList.serverId).to.equal(4445556)
+      expect(secondList.playerList).to.be.an('array')
+      expect(secondList.playerList).to.have.lengthOf(0)
     })
   })
 })

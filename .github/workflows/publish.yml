@@ -16,12 +16,12 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@master
       with:
-        node-version: 14.0.0
+        node-version: 24
         registry-url: 'https://registry.npmjs.org'
     - id: publish
       uses: JS-DevTools/npm-publish@v4
     - name: Create Release
-      if: steps.publish.outputs.type != 'none'
+      if: ${{ steps.publish.outputs.type }}
       id: create_release
       uses: actions/create-release@v1
       env:

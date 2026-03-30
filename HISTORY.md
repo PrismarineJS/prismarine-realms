@@ -1,5 +1,12 @@
 ## History
 
+### 1.5.0
+* [Update CI to Node 24 (#75)](https://github.com/PrismarineJS/prismarine-realms/commit/670e3f864b09c32b19aba991073e6e5c5f5ec8b3) (thanks @rom1504)
+* [Add Live Player List (#71)](https://github.com/PrismarineJS/prismarine-realms/commit/30d1d0a1d7fefb567829cf7dbcd47dd1a7710be3) (thanks @raymondjxu)
+* [Fix publish condition and node version for npm-publish v4 (#74)](https://github.com/PrismarineJS/prismarine-realms/commit/f651404b3668b06c8f01d36a0a2934658bc07515) (thanks @rom1504)
+* [Switch to trusted publishing via OIDC (#73)](https://github.com/PrismarineJS/prismarine-realms/commit/46143077afa4a87c6865cf97cbccd2b1dcc7387f) (thanks @rom1504)
+* [Bump nock from 13.5.6 to 14.0.11 (#70)](https://github.com/PrismarineJS/prismarine-realms/commit/fe324e1d19bd0597a7d2d93b471cf8f8f22ac77f) (thanks @dependabot[bot])
+
 ### 1.4.1
 * [Fix RelyingParty in requests, revert #60 (#67)](https://github.com/PrismarineJS/prismarine-realms/commit/03dc434248c7c4a2a912a7ab510e6a7d7afec0bf) (thanks @NoVa-Gh0ul)
 

@@ -39,7 +39,9 @@ module.exports = class Rest {
     const url = `${this.host}${request.route}`
 
     const headers = {
-      'Client-Version': '0.0.0',
+      // As of Minecraft update 26.13, the "Client-Version" header must be the current version of the game
+      // in the format of 1.x.x, otherwise the Realms API will return an error message of "Unknown client version"
+      'Client-Version': '1.26.13',
       'User-Agent': this.userAgent
     }
 

@@ -37,8 +37,8 @@ module.exports = class Rest {
 
   async prepareRequest (request) {
     const url = `${this.host}${request.route}`
-    const version = this.options.clientVersion ?? await getBedrockVersion();
-    if (!version.startsWith("1.")) {
+    const version = this.options.clientVersion ?? await getBedrockVersion()
+    if (!version.startsWith('1.')) {
       throw new Error(`Invalid client version ${version}, must be in format 1.x.x`)
     }
 

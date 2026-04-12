@@ -3,7 +3,7 @@ const fetch = require('node-fetch')
 
 const constants = require('./constants')
 
-const { formatBedrockAuth, formatJavaAuth } = require('./util')
+const { formatBedrockAuth, formatJavaAuth, getBedrockVersion } = require('./util')
 
 module.exports = class Rest {
   constructor (authflow, platform, options) {
@@ -37,11 +37,15 @@ module.exports = class Rest {
 
   async prepareRequest (request) {
     const url = `${this.host}${request.route}`
+    const version = this.options.clientVersion ?? await getBedrockVersion();
+    if (!version.startsWith("1.")) {
+      throw new Error(`Invalid client version ${version}, must be in format 1.x.x`)
+    }
 
     const headers = {
       // As of Minecraft update 26.13, the "Client-Version" header must be the current version of the game
       // in the format of 1.x.x, otherwise the Realms API will return an error message of "Unknown client version"
-      'Client-Version': '1.26.13',
+      'Client-Version': version,
       'User-Agent': this.userAgent
     }
 

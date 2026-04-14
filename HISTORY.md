@@ -1,5 +1,8 @@
 ## History
 
+### 1.6.0
+* [Add `minecraftVersion` constructor option to set correct `Client-Version` request header (#81)](https://github.com/PrismarineJS/prismarine-realms/commit/b20e8d2da615283cefdaa4206066152e92b353a8) (thanks @Copilot)
+
 ### 1.5.0
 * [Update CI to Node 24 (#75)](https://github.com/PrismarineJS/prismarine-realms/commit/670e3f864b09c32b19aba991073e6e5c5f5ec8b3) (thanks @rom1504)
 * [Add Live Player List (#71)](https://github.com/PrismarineJS/prismarine-realms/commit/30d1d0a1d7fefb567829cf7dbcd47dd1a7710be3) (thanks @raymondjxu)

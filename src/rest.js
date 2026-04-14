@@ -39,7 +39,7 @@ module.exports = class Rest {
     const url = `${this.host}${request.route}`
 
     const headers = {
-      'Client-Version': '0.0.0',
+      'Client-Version': this.options.minecraftVersion ?? '0.0.0',
       'User-Agent': this.userAgent
     }
 

@@ -62,9 +62,10 @@
 
 ## Options
 Used for `RealmAPI.from()`
-| Param           | Type                 | Description                                                           |
-| --------------- | -------------------- | --------------------------------------------------------------------- |
-| usePreview      | `Boolean`            | If the Preview Realms API should be used (Only bedrock)               |
+| Param              | Type                 | Description                                                           |
+| ------------------ | -------------------- | --------------------------------------------------------------------- |
+| usePreview         | `Boolean`            | If the Preview Realms API should be used (Only bedrock)               |
+| minecraftVersion   | `string`             | The Minecraft client version to send in the `Client-Version` header (e.g. `'1.21.0'`) |
 ---
 
 ## Constructor

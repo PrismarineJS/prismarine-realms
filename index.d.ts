@@ -6,6 +6,7 @@ declare module 'prismarine-realms' {
     skipAuth?: Boolean
     maxRetries?: Number
     usePreview?: Boolean // Bedrock only
+    minecraftVersion?: String
   }
 
   export class RealmAPI {
